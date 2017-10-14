@@ -32,8 +32,15 @@ print 'integer3: ',struct.unpack_from('>i',ibuf,8)
 print 'integer4: ',struct.unpack_from('>i',ibuf,12)
 
 
+lbuf=open(label,'rb').read()
+print 'train-labels-idx1-ubyte 前2个是integer: ',struct.unpack_from('>2I',lbuf,0)
+print '从第8个byte开始: ',struct.unpack_from('>20B',lbuf,8)
 
 #再看看图片
-im=struct.unpack_from('784B',ibuf,16)
-plt.imshow(np.array(im).reshape(28,-1),cmap='gray')
-plt.show()
+def show(index):
+  im=struct.unpack_from('784B',ibuf,16+784*index)
+  plt.imshow(np.array(im).reshape(28,-1),cmap='gray')
+  plt.show()
+
+
+[show(i) for i in range(10)]
