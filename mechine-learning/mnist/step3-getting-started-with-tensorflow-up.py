@@ -21,11 +21,15 @@ def model_fn(features , labels , mode):
 
 estimator = tf.estimator.Estimator(model_fn=model_fn)
 # define our data sets
-input_fn = tf.estimator.inputs.numpy_input_fn({"x": np.array(data[0])},np.array(data[1]), batch_size=4, num_epochs=None, shuffle=True)
-input_fn2 = tf.estimator.inputs.numpy_input_fn({"x": np.array(data[0])}, np.array(data[1]), batch_size=4, num_epochs=1000, shuffle=False)
-input_fn3 = tf.estimator.inputs.numpy_input_fn({"x": np.array(data2[0])}, np.array(data2[1]), batch_size=4, num_epochs=1000, shuffle=False)
+# batch_size We have to tell the function how many batches 有多少批次
+# num_epochs how big each batch should be.每批次有多少数据
+# shuffle 重新排列
+input_fn = tf.estimator.inputs.numpy_input_fn({"x": np.array(data[0])},np.array(data[1]), batch_size=6, num_epochs=None, shuffle=True)
+input_fn2 = tf.estimator.inputs.numpy_input_fn({"x": np.array(data[0])}, np.array(data[1]), batch_size=6, num_epochs=1000, shuffle=False)
+input_fn3 = tf.estimator.inputs.numpy_input_fn({"x": np.array(data2[0])}, np.array(data2[1]), batch_size=6, num_epochs=1000, shuffle=False)
 
-# train
+# train 
+# steps 步骤数
 estimator.train(input_fn=input_fn, steps=1000)
 # Here we evaluate how well our model did.
 metrics2 = estimator.evaluate(input_fn=input_fn2)
