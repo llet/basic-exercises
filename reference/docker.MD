@@ -21,7 +21,7 @@
 删除所有镜像|`docker rmi $(docker images -aq)`
 
 
-创建一个web demo并打包成镜像  
+- 创建一个web demo并打包成镜像  
 ```
 docker pull node
 ```
