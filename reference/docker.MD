@@ -44,3 +44,6 @@
     - `docker build -t web-demo`
     - `docker run -p 8888:8888 web-demo &`
     - `curl localhost:8888`
+    ```
+    Hello World
+    ```
