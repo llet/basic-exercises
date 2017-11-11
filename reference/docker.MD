@@ -105,3 +105,11 @@
     }).listen(8888);
     console.log('Server running at http://127.0.0.1:8888/');
     ```
+    + `curl localhost:8888`  
+    ```
+    [{"user_id":1,"email":"homer@thesimpsons.com","phone_number":"+1 888 123 1111"},
+    {"user_id":2,"email":"marge@thesimpsons.com","phone_number":"+1 888 123 1112"},
+    {"user_id":3,"email":"maggie@thesimpsons.com","phone_number":"+1 888 123 1113"},
+    {"user_id":4,"email":"lisa@thesimpsons.com","phone_number":"+1 888 123 1114"},
+    {"user_id":5,"email":"bart@thesimpsons.com","phone_number":"+1 888 123 1115"}]
+    ```
