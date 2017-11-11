@@ -22,8 +22,8 @@
 
 
 + 创建一个web demo并打包成镜像  
-    - `docker pull node`
-    - `cat server.js`
+    + `docker pull node`
+    + `cat server.js`
     ```
     var http = require('http');
     http.createServer(function (request, response) {
@@ -32,7 +32,7 @@
     }).listen(8888);
     console.log('Server running at http://127.0.0.1:8888/');
     ```
-    - `cat Dockerfile`
+    + `cat Dockerfile`
     ```
     FROM node
     RUN mkdir -p /usr/app
@@ -41,14 +41,14 @@
     EXPOSE 8888
     CMD [ "node", "server.js" ]
     ```
-    - `docker build -t web-demo`
-    - `docker run --name web-demo -p 8888:8888 web-demo &`
-    - `curl localhost:8888`
+    + `docker build -t web-demo`
+    + `docker run --name web-demo -p 8888:8888 web-demo &`
+    + `curl localhost:8888`
     ```
     Hello World
     ```
 + 使用mysql镜像创建mysql-demo服务  
-    - `cat start.sh`
+    + `cat start.sh`
     ```
     #!/bin/sh
 
@@ -73,7 +73,7 @@
     insert into directory (email, phone_number) values ('bart@thesimpsons.com', '+1 888 123 1115');
     EOF
     ```
-    - `cat stop.sh`
+    + `cat stop.sh`
     ```
     #!/bin/sh
     docker stop mysql-demo && docker rm mysql-demo
