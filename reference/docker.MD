@@ -1,7 +1,7 @@
 
 问题|命令
 -|-
-给docker添加国内加速器|```vi /etc/systemd/system/multi-user.target.wants/docker.service``` </br> ```ExecStart=/usr/bin/dockerd --registry-mirror=https://jxus37ad.mirror.aliyuncs.com```
+给docker添加国内加速器|```vi /etc/systemd/system/multi-user.target.wants/docker.service```</br>```ExecStart=/usr/bin/dockerd --registry-mirror=https://jxus37ad.mirror.aliyuncs.com```</br>```sudo systemctl daemon-reload```</br>```sudo systemctl restart docker```
 列出当前所有镜像|```docker images```
 搜索tomcat镜像|```docker search tomcat```
 下载tomcat镜像|```docker pull tomcat```
