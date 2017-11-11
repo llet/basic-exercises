@@ -42,7 +42,7 @@
     CMD [ "node", "server.js" ]
     ```
     - `docker build -t web-demo`
-    - `docker run -p 8888:8888 web-demo &`
+    - `docker run --name web-demo -p 8888:8888 web-demo &`
     - `curl localhost:8888`
     ```
     Hello World
