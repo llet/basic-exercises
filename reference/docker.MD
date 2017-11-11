@@ -23,7 +23,7 @@
 
 + 创建一个web demo并打包成镜像  
     - `docker pull node`
-    - server.js  
+    - `cat server.js`
     ```
     var http = require('http');
     http.createServer(function (request, response) {
@@ -32,7 +32,7 @@
     }).listen(8888);
     console.log('Server running at http://127.0.0.1:8888/');
     ```
-    - Dockerfile  
+    - `cat Dockerfile`
     ```
     FROM node
     RUN mkdir -p /usr/app
