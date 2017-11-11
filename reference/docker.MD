@@ -81,11 +81,15 @@
     ```
 + 创建一个web demo查询刚才创建的mysql-demo  
 
-    + `apt-get install npm`  
+
+    + `apt-get install npm`
+    
+    
     + `npm install mysql` #要在server.js所在目录下执行  
-    + `cat server.js`  
+    
+    
+    + `cat server.js`
     ```
-    //连接数据库
     var mysql = require('mysql');
     var connection = mysql.createConnection({
         host: 'localhost',
