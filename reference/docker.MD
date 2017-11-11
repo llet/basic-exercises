@@ -24,6 +24,7 @@
 + 创建一个web demo并打包成镜像  
     + `docker pull node`
     + `cat server.js`
+    
     ```
     var http = require('http');
     http.createServer(function (request, response) {
@@ -33,6 +34,7 @@
     console.log('Server running at http://127.0.0.1:8888/');
     ```
     + `cat Dockerfile`
+    
     ```
     FROM node
     RUN mkdir -p /usr/app
@@ -50,6 +52,7 @@
 + 使用mysql镜像创建mysql-demo服务  
 
     + `cat start.sh`
+    
     ```
     #!/bin/sh
 
@@ -75,6 +78,7 @@
     EOF
     ```
     + `cat stop.sh`
+    
     ```
     #!/bin/sh
     docker stop mysql-demo && docker rm mysql-demo
