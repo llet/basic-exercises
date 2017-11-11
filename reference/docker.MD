@@ -13,6 +13,7 @@
 停止test-tomcat容器|```docker stop test-tomcat```
 启动test-tomcat容器|```docker start test-tomcat```
 进入test-tomcat容器查看日志|```docker exec -it test-tomcat  /bin/sh``` </br> ``` cat logs/catalina.*.log```
+直接查看test-tomcat容器查看日志|```docker logs test-tomcat```
 退出容器|```exit```
 查看当前所有容器|```docker ps -a```
 删除test-tomcat容器|``` docker rm test-tomcat```
