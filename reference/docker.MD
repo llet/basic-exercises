@@ -47,7 +47,7 @@
     ```
     Hello World
     ```
-+ 使用docker镜像创建mysql服务
++ 使用mysql镜像创建mysql-demo服务  
     - `cat start.sh`
     ```
     #!/bin/sh
