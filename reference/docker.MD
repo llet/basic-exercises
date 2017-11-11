@@ -79,3 +79,30 @@
     #!/bin/sh
     docker stop mysql-demo && docker rm mysql-demo
     ```
++ 创建一个web demo查询刚才创建的mysql-demo
+    + `apt-get install npm`
+    + `npm install mysql` #要在server.js所在目录下执行
+    + `cat server.js`
+    ```
+    //连接数据库
+    var mysql = require('mysql');
+    var connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'guests',
+        password: 'guests',
+        database:'users',
+        port: 3306
+    });
+    var http = require('http');
+    connection.connect();
+
+    http.createServer(function (request, response) {
+        connection.query('select * from `directory`', function(err, rows, fields) {
+          if (err) throw err;
+          console.log('查询结果为: ', rows);
+          response.writeHead(200, {'Content-Type': 'text/plain'});
+          response.end(JSON.stringify(rows));
+        });
+    }).listen(8888);
+    console.log('Server running at http://127.0.0.1:8888/');
+    ```
