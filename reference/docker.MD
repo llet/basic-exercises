@@ -21,30 +21,26 @@
 删除所有镜像|`docker rmi $(docker images -aq)`
 
 
-##### - 创建一个web demo并打包成镜像  
-```
-docker pull node
-```
-- server.js  
-```
-var http = require('http');
-http.createServer(function (request, response) {
-    response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.end('Hello World\n');
-}).listen(8888);
-console.log('Server running at http://127.0.0.1:8888/');
-```
-- Dockerfile  
-```
-FROM node
-RUN mkdir -p /usr/app
-WORKDIR /usr/app
-ADD . /usr/app
-EXPOSE 8888
-CMD [ "node", "server.js" ]
-```
-```
-docker build -t web-demo .
-docker run -p 8888:8888 web-demo &
-curl localhost:8888
-```
++ 创建一个web demo并打包成镜像  
+    - `docker pull node`
+    - server.js  
+    ```
+    var http = require('http');
+    http.createServer(function (request, response) {
+        response.writeHead(200, {'Content-Type': 'text/plain'});
+        response.end('Hello World\n');
+    }).listen(8888);
+    console.log('Server running at http://127.0.0.1:8888/');
+    ```
+    - Dockerfile  
+    ```
+    FROM node
+    RUN mkdir -p /usr/app
+    WORKDIR /usr/app
+    ADD . /usr/app
+    EXPOSE 8888
+    CMD [ "node", "server.js" ]
+    ```
+    - `docker build -t web-demo`
+    - `docker run -p 8888:8888 web-demo &`
+    - `curl localhost:8888`
