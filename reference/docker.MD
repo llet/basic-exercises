@@ -47,3 +47,34 @@
     ```
     Hello World
     ```
++ 使用docker镜像创建mysql服务
+    - `cat start.sh`
+    ```
+    #!/bin/sh
+
+    echo "Starting mysql-demo..."  
+    docker run --name mysql-demo -d \
+      -e MYSQL_ROOT_PASSWORD=root \
+      -e MYSQL_DATABASE=users \
+      -e MYSQL_USER=guests \
+      -e MYSQL_PASSWORD=guests \
+      -p 3306:3306 \
+      mysql:latest
+    echo "Waiting for mysql-demo to start up..."  
+    docker exec mysql-demo mysqladmin --silent --wait=30 -uguests -pguests ping || exit 1
+
+    echo "Setting up initial data..."  
+    docker exec -i mysql-demo mysql -uguests -pguests users <<EOF
+    create table directory (user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, email TEXT, phone_number TEXT);  
+    insert into directory (email, phone_number) values ('homer@thesimpsons.com', '+1 888 123 1111');  
+    insert into directory (email, phone_number) values ('marge@thesimpsons.com', '+1 888 123 1112');  
+    insert into directory (email, phone_number) values ('maggie@thesimpsons.com', '+1 888 123 1113');  
+    insert into directory (email, phone_number) values ('lisa@thesimpsons.com', '+1 888 123 1114');  
+    insert into directory (email, phone_number) values ('bart@thesimpsons.com', '+1 888 123 1115');
+    EOF
+    ```
+    - `cat stop.sh`
+    ```
+    #!/bin/sh
+    docker stop mysql-demo && docker rm mysql-demo
+    ```
