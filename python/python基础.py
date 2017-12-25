@@ -57,7 +57,7 @@ list(filter(lambda x:x%2=1,range(20)))
 # filter 2 
 def prime(max=100):
 	yield 2
-	gen=(i for i in range(3,max) if i%2==1 and i>1)
+	gen=(i for i in range(3,max) if i%2==1)
 	while True:
 		try:
 			n=next(gen)
