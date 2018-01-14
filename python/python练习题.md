@@ -161,3 +161,31 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 print(accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
 sess.close()
 ```
+```
+8. mnist数据处理
+import numpy,gzip
+import matplotlib.pyplot as plt
+
+mnist_images=gzip.open("train-images-idx3-ubyte.gz")
+buff_to_array=lambda buff,dt:numpy.frombuffer(buff,dtype=dt)
+magic,num,row,col=buff_to_array(mnist_images.read(16),numpy.dtype(">i4"))
+print(magic,num,row,col)
+data=buff_to_array(mnist_images.read(num*row*col),numpy.dtype("uint8"))
+images=numpy.reshape(data,(num,row,col))
+  #打印第一张图片对应的数组
+print(images[2])
+plt.imshow(images[2],cmap="gray")
+  #显示第一张图片
+plt.show()
+
+mnist_labels=gzip.open("train-labels-idx1-ubyte.gz")
+magic2,num2=buff_to_array(mnist_labels.read(8),numpy.dtype(">i4"))
+print(magic2,num)
+labels=buff_to_array(mnist_labels.read(num2),numpy.dtype("uint8"))
+labels[2]
+
+```
+```
+9. mnist线性模型处理
+
+
