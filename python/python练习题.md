@@ -163,14 +163,20 @@ sess.close()
 ```
 ```
 8. mnist数据处理
-import numpy,gzip
+import numpy,gzip,requests
 import matplotlib.pyplot as plt
 
+  #下载文件
+filenames=('train-images-idx3-ubyte.gz','train-labels-idx1-ubyte.gz','t10k-images-idx3-ubyte.gz','t10k-labels-idx1-ubyte.gz')
+for filename in filenames:
+  with open(filename,'wb') as f:
+    f.write(requests.get("http://yann.lecun.com/exdb/mnist/"+filename).content)
+  #数据处理
 mnist_images=gzip.open("train-images-idx3-ubyte.gz")
-buff_to_array=lambda buff,dt:numpy.frombuffer(buff,dtype=dt)
-magic,num,row,col=buff_to_array(mnist_images.read(16),numpy.dtype(">i4"))
+bytes_to_array=lambda buff,dt:numpy.frombuffer(buff,dtype=dt)
+magic,num,row,col=bytes_to_array(mnist_images.read(16),numpy.dtype(">i4"))
 print(magic,num,row,col)
-data=buff_to_array(mnist_images.read(num*row*col),numpy.dtype("uint8"))
+data=bytes_to_array(mnist_images.read(num*row*col),numpy.dtype("uint8"))
 images=numpy.reshape(data,(num,row,col))
   #打印第一张图片对应的数组
 print(images[2])
@@ -179,13 +185,84 @@ plt.imshow(images[2],cmap="gray")
 plt.show()
 
 mnist_labels=gzip.open("train-labels-idx1-ubyte.gz")
-magic2,num2=buff_to_array(mnist_labels.read(8),numpy.dtype(">i4"))
-print(magic2,num)
-labels=buff_to_array(mnist_labels.read(num2),numpy.dtype("uint8"))
+magic2,num2=bytes_to_array(mnist_labels.read(8),numpy.dtype(">i4"))
+print(magic2,num2)
+labels=bytes_to_array(mnist_labels.read(num2),numpy.dtype("uint8"))
 labels[2]
 
 ```
 ```
 9. mnist线性模型处理
+  #定义一个线性模型 输入多个样本(二维的x) 输出多个预测(二维的y) y=tf.softmax(tf.matmul(x,W)+b) y_ = tf.placeholder(tf.float32, [None, 10])
+  #使用交叉熵作为损失函数 cross_entropy=-tf.reduce_sum(y_*tf.log(y))
+  #定义一个dataset类 每次调用可以获取一批样本 y使用二维独热码表示 x是一个n*728的二维数组
+import numpy,gzip
+import tensorflow as tf
 
+class DataSet(object):
+  def __init__(self,images_array,labels_array):
+    """
+    x的值要转换成[0,1]区间的值
+    y要转换成独热码
+    int类型要转换成float32类型
+    """
+    to_one_hot = lambda x :[1 if x==i else 0 for i in range(10)]
+    self.images = images_array.astype(numpy.float32)/256
+    temp = numpy.array([to_one_hot(i) for i in labels_array])
+    self.labels = temp.astype(numpy.float32)
+    self.index_in_epoch = 0
+  def next_batch(self,batch_size=100):
+    """
+    超过样本空间大小时，简单处理一下，从头开始获取
+    """
+    start = self.index_in_epoch
+    end = start+batch_size
+    if end > len(self.labels):
+      start,end = 0,batch_size
+    self.index_in_epoch = end
+    return self.images[start:end],self.labels[start:end]
+
+class DataSets(object):
+  def __init__(self):
+    """
+    这段代码主要将四个数据转换成训练集、验证集、测试集对应的二维int数组
+    执行代码前要先下载好数据集
+    """
+    bytes_to_array = lambda buff,dt:numpy.frombuffer(buff,dtype=dt)
+    train_images = gzip.open("train-images-idx3-ubyte.gz")
+    magic,num,row,col = bytes_to_array(train_images.read(16),numpy.dtype(">i4"))
+    train_images_array = bytes_to_array(train_images.read(num*row*col),numpy.dtype("uint8")).reshape(num,row*col)
+    train_labels = gzip.open("train-labels-idx1-ubyte.gz")
+    magic,num = bytes_to_array(train_labels.read(8),numpy.dtype(">i4"))
+    train_labels_array = bytes_to_array(train_labels.read(num),numpy.dtype("uint8"))
+    test_images = gzip.open("t10k-images-idx3-ubyte.gz")
+    magic,num,row,col = bytes_to_array(test_images.read(16),numpy.dtype(">i4"))
+    test_images_array = bytes_to_array(test_images.read(num*row*col),numpy.dtype("uint8")).reshape(num,row*col)
+    test_labels = gzip.open("t10k-labels-idx1-ubyte.gz")
+    magic,num = bytes_to_array(test_labels.read(8),numpy.dtype(">i4"))
+    test_labels_array = bytes_to_array(test_labels.read(num),numpy.dtype("uint8"))
+    self.validation = DataSet(train_images_array[:5000],train_labels_array[:5000])
+    self.train = DataSet(train_images_array[5000:],train_labels_array[5000:])
+    self.test = DataSet(test_images_array,test_labels_array)
+
+
+
+mnist=DataSets()
+x = tf.placeholder(tf.float32, [None, 784])
+W = tf.Variable(tf.zeros([784, 10]))
+b = tf.Variable(tf.zeros([10]))
+y = tf.nn.softmax(tf.matmul(x, W) + b)
+y_ = tf.placeholder(tf.float32, [None, 10])
+cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
+train_step = tf.train.GradientDescentOptimizer(0.001).minimize(cross_entropy)
+sess = tf.InteractiveSession()
+tf.global_variables_initializer().run()
+for _ in range(10000):
+  batch_x, batch_y = mnist.train.next_batch()
+  sess.run(train_step, feed_dict={x: batch_x, y_: batch_y})
+
+correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
+sess.run([W,b])
 
