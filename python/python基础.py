@@ -77,4 +77,10 @@ def f(x, y):
 # __slots__
 class Student(object):
 		__slots__ = ('name', 'age') # __slots__ 限制实例的属性只能包含name,age
+# 求方阵A的行列式
+f=lambda j,i:1 if (i+j)%2==0 else -1
+g=lambda A,j,i:np.array([[_ for x,_ in enumerate(B) if x!=i] for y,B in enumerate(A) if y!=j])
+det=lambda A:A[0,0] if A.shape==(1,1) else sum(np.array([f(0,i)*n*det(g(A,0,i)) for i,n in enumerate(A[0])]))
+a=np.random.rand(8,8)
+det(a)
 
