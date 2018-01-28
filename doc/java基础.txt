@@ -1,0 +1,28 @@
+> 多线程:线程的几种状态
+runable->running->(sleep,join) runable->running->dead
+runnable->running->(synchronized) blocked->runable->running->dead
+runable->running->(wait) blocked in wait pool->(notify) blocked in lock pool->runable->running->dead
+> 高并发
+> jvm:GC/加载机制/内存
+什么是java虚拟机
+    java虚拟机是一种进程虚拟机,模拟出一套计算机指令集,类似的有Adobe Flash Player,FC模拟器.
+    JVM,.NET CLR,P-Code这三个 是高级语言虚拟机,一款虚拟机必须通过Java TCK的测试才能成为java虚拟机
+    java虚拟机不一定非要执行java程序,也可以执行其他语言编译后的字节码程序.像groovy等
+    业界三大JVM:Oracle HotSpot(jdk中的虚拟机),Oracle JRockit Vm,IBM J9 VM
+java内存区域
+    方法区     虚拟机栈    本地方法栈
+    堆         程序计数器       
+    执行引擎   本地库接口  本地方法库    
+    
+> io
+> 网络
+> 集合
+> 类加载机制
+> 性能分析调优
+> 分布式:缓存/消息系统/热部署/JMX
+> spring
+> hibernate
+> spring boot
+> Junit/log4j2
+> shell
+> oracle/mysql
