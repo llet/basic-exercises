@@ -26,3 +26,66 @@ java内存区域
 > Junit/log4j2
 > shell
 > oracle/mysql
+
+<JVM6>
+    <BASIC OPTIONS>
+        Heap                                            -Xms512m -Xmx1024m
+        Permanent generation                            -XX:PermSize=128m -XX:MaxPermSize=256m
+        Heap free ratio                                 -XX:MinHeapFreeRatio=40 -XX:MaxHeapFreeRatio=70
+    <GARBAGE COLLECTION>                            
+        <Young generation>                      
+        New Ratio                                       -XX:NewRatio=1
+        Survivor Ratio                                  -XX:SurvivorRatio=99
+        or explicit size of new generation              -XX:NewSize=1m -XX:NewSizeMax=99m
+        <Garbage collector>
+        aggressive heap                                 -XX:+AggressiveHeap
+        G1                                              -XX:+UseG1GC
+            <Basic tuning>
+            Heap region size                            -XX:G1HeapRegionSize=1
+            Initiating heap occupancy percent           -XX:InitiatingHeapOccupancyPercent=1
+            Mixed GC live threshold percent             -XX:G1MixedGCLiveThresholdPercent=1
+            Heap waste percent                          -XX:G1HeapWastePercent=1
+            Old CSetRegion threshold percent            -XX:G1OldCSetRegionThresholdPercent=1
+            <Ergonomics hints>
+            Maximum garbage collection pause time       -XX:MaxGCPauseMillis=1
+            Throughput (gc time ratio)                  -XX:GCTimeRatio=1
+            <Experimental settings>
+            New size percent                            -XX:G1NewSizePercent=1
+            New maximum size percent                    -XX:G1MaxNewSizePercent=1
+            Mixed GC count target                       -XX:G1MixedGCCountTarget=1
+        ConcurrentMarkSweep (old)                       -XX:+UseConcMarkSweepGC
+            Concurrent GC threads                       -XX:ConcGCThreads=1
+            Parallel GC threads                         -XX:ParallelGCThreads=1
+            Initiating occupancy fraction (%)           -XX:CMSInitiatingOccupancyFraction=1
+            checkbox_UseCMSInitiatingOccupancyOnly      -XX:+UseCMSInitiatingOccupancyOnly
+            checkbox_CMSClassUnloadingEnabled           -XX:+CMSClassUnloadingEnabled
+        Parallel Scavenge (young)                       -XX:+UseParallelGC -XX:-UseParallelOldGC
+            Use parallel old                            -XX:+UseParallelOldGC
+            Disable adaptive heap sizing                -XX:-UseAdaptiveSizePolicy
+            Maximum garbage collection pause time       -XX:MaxGCPauseMillis=1
+            Throughput (gc time ratio)                  -XX:GCTimeRatio=1
+        Serial Old (MarkSweepCompact)                   -XX:+UseSerialGC
+    <Debug>
+        <Garbage Collection>
+        Basic information at every gc                   -XX:+PrintGC 
+        More detailed information at every gc           -XX:+PrintGCDetails 
+        GC application stopped time                     -XX:+PrintGCApplicationStoppedTime 
+        GC application concurrent time                  -XX:+PrintGCApplicationConcurrentTime 
+        Adaptive size policy                            -XX:+PrintAdaptiveSizePolicy 
+        Tenuring age information                        -XX:+PrintTenuringDistribution 
+        Relative time stamp at the start of gc event    -XX:+PrintGCTimeStamps 
+        Calendar date stamp at the start of gc event    -XX:+PrintGCDateStamps
+        <GC file output>
+        Log GC to file                                  -Xloggc: 1
+        Number of files                                 -XX:+UseGCLogFileRotation
+        Maximum file size (Mb)                          -XX:GCLogFileSize=1m
+        <Heap debug>
+        Print heap information at every gc              -XX:+PrintHeapAtGC           
+        Dump heap on OutOfMemory error                  -XX:+HeapDumpOnOutOfMemoryError
+        File (very recommended)                         -XX:HeapDumpPath=1
+        <Print JVM Options>
+        Command line options                            -XX:+PrintCommandLineFlags 
+        Initial options values                          -XX:+PrintFlagsInitial 
+        Final options values                            -XX:+PrintFlagsFinal
+        Unlock diagnostics options                      -XX:+UnlockDiagnosticVMOptions
+            
