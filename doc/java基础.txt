@@ -88,4 +88,14 @@ java内存区域
         Initial options values                          -XX:+PrintFlagsInitial 
         Final options values                            -XX:+PrintFlagsFinal
         Unlock diagnostics options                      -XX:+UnlockDiagnosticVMOptions
-            
+
+什么是java中的本地方法?
+简单地讲，一个Native Method就是一个java调用非java代码的接口。java的多线程的机制实现中，许多与操作系统的交互都用到了本地方法.
+怎么实现一个本地方法?
+1.(java代码)声明需要加载的库 helloWordLib
+2.(java代码)声明一个本地方法 helloWord
+3.使用javac命令编译编Java类 HelloWord
+4.使用javah -jni HelloWord 生成后缀名为.h的头文件
+5.使用其他语言（C、C++）实现helloWord方法
+6.将本地方法编写的文件生成动态链接库
+7.运行
