@@ -99,3 +99,23 @@ java内存区域
 5.使用其他语言（C、C++）实现helloWord方法
 6.将本地方法编写的文件生成动态链接库
 7.运行
+
+jconsole怎么连接到websphere服务器
+在was控制台中添加jvm运行参数
+-Djava.rmi.server.hostname=10.132.36.123 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19081 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
+重启服务，jconsole连接10.132.36.123:19081 提示连接拒绝
+--失败
+On the admin console (Click on Servers -> Server types -> WebSphere application servers -> server1 -> Java and Process Management -> Process definition -> Java Virtual Machine), add the following line into the field of
+Generic JVM Argument (note that the first system property is equal to
+nothing and no equal sign for the second system property):
+
+-Djavax.management.builder.initial= -Dcom.sun.management.jmxremote
+
+Add or uncomment the following three lines in file /opt/IBM/ WebSphere/AppServer/java/jre/lib/management/management.properties (or / lib/management/management.properties):
+
+com.sun.management.jmxremote.port=3333
+com.sun.management.jmxremote.authenticate=false
+com.sun.management.jmxremote.ssl=false
+com.sun.management.jmxremote.local.only=false
+
+成功
