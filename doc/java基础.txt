@@ -146,4 +146,22 @@ jcmd 91300 JFR.check
 jcmd 91300 JFR.stop recording=7 
 jcmd 91300 JFR.check //No available recordings.
 
+jcmd 91300 JFR.start 后的可选参数有:
+name=name 指定记录的名称
+defaultrecording=true/false 是否在初始化时启动记录事件，默认为 false，对于反应分析，应设置为 true
+settings=path JFR 配置文件的路径
+delay=time 开始记录前的延时
+duration=time 记录持续时间
+filename=path 保存记录事件的文件路径
+compress=true/false 是否使用 gzip 压缩记录数据，默认为 false
+maxsize=size 环形缓存占用的最大空间
+maxage=time 环形缓存中保存记录的数据的最长时间
+
+jcmd 91300 JFR.dump 后的可选参数有:
+name=name 指定记录的名称
+recording=n JFR 事件记录号
+filename=path 导出文件的路径
+
+
+
 
