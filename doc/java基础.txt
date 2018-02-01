@@ -27,6 +27,8 @@ java内存区域
 > shell
 > oracle/mysql
 
+JVM 参数 
+
 <JVM6>
     <BASIC OPTIONS>
         Heap                                            -Xms512m -Xmx1024m
@@ -90,6 +92,7 @@ java内存区域
         Unlock diagnostics options                      -XX:+UnlockDiagnosticVMOptions
 
 什么是java中的本地方法?
+
 简单地讲，一个Native Method就是一个java调用非java代码的接口。java的多线程的机制实现中，许多与操作系统的交互都用到了本地方法.
 怎么实现一个本地方法?
 1.(java代码)声明需要加载的库 helloWordLib
@@ -100,11 +103,12 @@ java内存区域
 6.将本地方法编写的文件生成动态链接库
 7.运行
 
-jconsole怎么连接到websphere服务器
+jconsole怎么连接到websphere服务器?
 在was控制台中添加jvm运行参数
 -Djava.rmi.server.hostname=10.132.36.123 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19081 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
 重启服务，jconsole连接10.132.36.123:19081 提示连接拒绝
 --失败
+
 On the admin console (Click on Servers -> Server types -> WebSphere application servers -> server1 -> Java and Process Management -> Process definition -> Java Virtual Machine), add the following line into the field of
 Generic JVM Argument (note that the first system property is equal to
 nothing and no equal sign for the second system property):
@@ -118,4 +122,28 @@ com.sun.management.jmxremote.authenticate=false
 com.sun.management.jmxremote.ssl=false
 com.sun.management.jmxremote.local.only=false
 
-成功
+--成功
+
+什么是JFR报告?
+
+JRockit Flight Recorder Java飞行记录器 
+JFR报告记录了JVM 所有事件的历史数据，通过这些数据，可以对JVM性能瓶颈进行分析诊断。
+JRockit Flight Recorder 有两种模式，固定时长模式和持续模式，在持续模式中，使用环形缓存保存最近的事件。
+
+怎么样开启JFR?
+
+通过命令行开启 JFR 功能后
+java -XX:+UnlockCommercialFeatures -XX:+FlightRecorder MyApp
+记录 JFR 报告(固定时长)
+jcmd 91300 JFR.start duration=60s
+查看状态
+jcmd 91300 JFR.check //Recording: recording=7 name="Recording 7" duration=1m (running)
+生成JFR报告(这里文件名指不包含路径的文件名)
+jcmd 91300 JFR.dump recording=7 filename=testxxx.jfr
+查看状态
+jcmd 91300 JFR.check
+停止
+jcmd 91300 JFR.stop recording=7 
+jcmd 91300 JFR.check //No available recordings.
+
+
