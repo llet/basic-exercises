@@ -132,17 +132,17 @@ JRockit Flight Recorder 有两种模式，固定时长模式和持续模式，�
 
 怎么样开启JFR?
 
-通过命令行开启 JFR 功能后
+1 通过JVM参数开启 JFR 功能
 java -XX:+UnlockCommercialFeatures -XX:+FlightRecorder MyApp
-记录 JFR 报告(固定时长)
+2 记录 JFR 报告(固定时长)
 jcmd 91300 JFR.start duration=60s
-查看状态
+3 查看状态
 jcmd 91300 JFR.check //Recording: recording=7 name="Recording 7" duration=1m (running)
-生成JFR报告(这里文件名指不包含路径的文件名)
+4 生成JFR报告(这里文件名指不包含路径的文件名)
 jcmd 91300 JFR.dump recording=7 filename=testxxx.jfr
-查看状态
+5 查看状态
 jcmd 91300 JFR.check
-停止
+6 停止
 jcmd 91300 JFR.stop recording=7 
 jcmd 91300 JFR.check //No available recordings.
 
