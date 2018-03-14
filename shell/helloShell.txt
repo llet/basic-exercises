@@ -1,0 +1,18 @@
+1.如何想脚本传递参数:./test.sh hello
+
+2.如何在脚本中使用参数:./test.sh file0 /tmp/
+----------------------
+#!/bin/bash
+copy $1 $2
+
+3.脚本传递的参数个数:echo $#
+
+4.获取上一个命令的执行状态:echo $?
+
+5.获取脚本的名称:echo $0
+
+6.获取文件最后一行:tail -1 file0
+
+7.获取文件第一行:head -1 file0
+
+https://www.cnblogs.com/jjzd/p/6014301.html
