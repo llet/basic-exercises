@@ -15,8 +15,8 @@ import org.junit.Test;
  * 要点:通道,缓冲区,选择器
  */
 public class BlockingNIO {
-	private String PATH = "E:\\workspace1\\nio-demo\\src\\ch01\\demo.png";
-	private String PATH1 = "E:\\workspace1\\nio-demo\\src\\ch01\\demo1.png";
+	private String PATH = "E:\\workspace1\\nio-demo\\src\\main\\java\\nio\\demo.png";
+	private String PATH1 = "E:\\workspace1\\nio-demo\\src\\main\\java\\nio\\demo1.png";
 	
 	@Test
 	public void server() {
@@ -33,6 +33,8 @@ public class BlockingNIO {
 				fileChannel.write(buffer);
 				buffer.clear();
 			}
+			buffer.put("上传成功!".getBytes());
+			channel.write(buffer);
 			channel.close();
 			fileChannel.close();
 		} catch (IOException e) {
@@ -55,6 +57,11 @@ public class BlockingNIO {
 			}
 			
 			System.out.println("客户端传输完成");
+			int len = 0;
+			while((len=channel.read(buffer))!=-1) {
+				buffer.flip();
+				System.out.println("服务端返回:"+new String(buffer.array(),0,len));
+			}
 		} catch (IOException e) {
 			System.err.println("连接服务器失败");
 		}

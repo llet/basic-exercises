@@ -19,9 +19,9 @@ import org.junit.Test;
 import com.alibaba.fastjson.JSON;
 
 public class CopyFileWithNIO {
-	private String PATH1 = "E:\\workspace1\\nio-demo\\src\\ch01\\App3.java";
-	private String PATH2 = "E:\\workspace1\\nio-demo\\src\\ch01\\App2.txt";
-	private String PATH3 = "E:\\workspace1\\nio-demo\\src\\ch01\\App3.txt";
+	private String PATH1 = "E:\\workspace1\\nio-demo\\src\\main\\java\\nio\\demo.png";
+	private String PATH2 = "E:\\workspace1\\nio-demo\\src\\main\\java\\nio\\demo1.png";
+	private String PATH3 = "E:\\workspace1\\nio-demo\\src\\main\\java\\nio\\demo2.png";
 
 	/**
 	 * 了解Buffer的mark,position,remaining,limit,capacity的含义

@@ -57,3 +57,8 @@ f=lambda j,i:1 if (i+j)%2==0 else -1
 g=lambda A,j,i:np.array([[_ for x,_ in enumerate(B) if x!=i] for y,B in enumerate(A) if y!=j])
 det=lambda A:A[0,0] if A.shape==(1,1) else sum(np.array([f(0,i)*n*det(g(A,0,i)) for i,n in enumerate(A[0])]))
 
+
+x=np.arrange(-100,100)
+y=x**2
+
+
