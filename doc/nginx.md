@@ -30,7 +30,10 @@ cd /usr/local/
 wget http://nginx.org/download/nginx-1.8.1.tar.gz
 tar zxvf nginx-1.8.1.tar.gz
 cd nginx-1.8.1
-./configure --prefix=/usr/local/webserver/nginx --with-http_stub_status_module --with-http_ssl_module --with-pcre=/usr/local/src/pcre-8.35
+./configure \
+--prefix=/usr/local/webserver/nginx \
+--with-http_stub_status_module --with-http_ssl_module \
+--with-pcre=/usr/local/src/pcre-8.35
 make && make install
 ```
 
