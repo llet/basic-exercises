@@ -53,7 +53,7 @@ useradd -g www www
 ## 修改nginx.conf
 
 ```
-user  root;
+user  www;
 http { 
     upstream  myserver #配置集群
     {
