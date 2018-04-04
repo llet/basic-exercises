@@ -1,6 +1,8 @@
 ## 安装gcc和必要库文件
 
+```bash
 yum -y install make zlib zlib-devel gcc-c++ libtool  openssl openssl-devel
+```
 
 ## 安装pcre 
 
@@ -47,7 +49,7 @@ useradd -g www www
 
 ## 修改nginx.conf
 
-```json
+```
 user  root;
 http { 
     upstream  myserver #配置集群
