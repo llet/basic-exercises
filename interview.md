@@ -23,7 +23,59 @@ foreach和while的区别
 常用集合框架有哪些?
 
 ```
-总体是两大接口:Collection 和 Map,Collection 是元素集合Map是键值对集合,Collection下有List和Set接口,
+集合框架有两大接口:Collection元素集合 和 Map键值对集合 
+Collection下有 List可重复集合 和Set不可重复集合
+List的实现有:数组结构的ArrayList,Vector和Stack,链表结构的LinkedList
+Set的实现有:HashSet,LinkedHashSet,TreeSet
+Map的实现有:HashMap,LinkedHashMap,TreeMap,Hashtable
+```
+
+ArrayList 的实现原理
+
+```
+ArrayList 是数组实现的.它有一个重要的成员变量 Object[] elementData;
+插入元素的时候,找到索引所在的位置插入相应的元素,并把当前位置后的元素依次向后移动一位.
+查询的时候可以直接根据索引获取到对应的元素.
+
+ArrayList 初始容量为10, oldCapacity + (oldCapacity >> 1) 大概1.5倍增长
+
+transient Object[] 是实际存放数据的地方,transient 是为了节省内存做的优化, ArrayList 中自定义了序列化的规则,只对Object[] 中实际存在的对象进行序列化,而不是整个数组,这样节省了内存.
+```
+
+Vector的实现原理
+
+```
+Vector 与ArrayList一样都是使用数组来实现的集合,不同的是Vector的所有操作都有synchronized 保证了线程同步.
+```
+
+LinkedList 的实现原理
+
+```
+LinkedList 是基于双向链表实现的, 它有一个静态内部类 Node,Node 中包含了上一个节点和下一个节点的引用，这样就构成了双向的链表。LinkedList 有三个重要的成员变量:first ,last ,size 
+
+假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,在这个Node前面插入新 Node,然后维护好这两个Node的指针.如果是在索引为8的位置插入 则从last开始,由后向前递归.
+查询index为3的元素时,从first开始,由第一个节点递归向后查询到第四个元素返回.
+```
+
+HashMap 的实现原理
+
+```
+HashMap实际上是一个“链表散列”的数据结构，即数组和链表的结合体。HashMap 底层数组的长度总是 2 的 n 次方.
+Node<K,V>[] table;
+int size;
+Node是一个单向链表
+```
+
+https://blog.csdn.net/qq_27093465/article/details/52207152
+
+https://blog.csdn.net/u013851082/article/details/53942319
+
+HashSet 的实现原理
+
+Java的数组要求所有的数组元素具有相同的数据类型,ArrayList是用数组实现的,ArrayList为什么可以存放不同的数据类型?
+
+```
+Java并没有要求数组的元素具有相同的数据类型。可以是不同的类型.
 ```
 
 
@@ -252,6 +304,8 @@ Mybatis的底层实现原理
 #设计模式
 
 #数据库
+
+分库分表技术
 
 #数据结构
 
