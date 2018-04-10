@@ -1,6 +1,6 @@
 # java基础
 
-##编译和运行
+## 编译和运行
 
 foreach和while的区别
 
@@ -18,7 +18,7 @@ foreach和while的区别
 
 
 
-##集合框架
+## 集合框架
 
 常用集合框架有哪些?
 
@@ -102,7 +102,7 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 简述ConcurrentLinkedQueue和LinkedBlockingQueue的用处和不同之处
 
-##动态代理及反射
+## 动态代理及反射
 
 动态代理的几种方式
 
@@ -114,7 +114,7 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 
 
-##泛型
+## 泛型
 
 ## 网络
 
@@ -221,7 +221,7 @@ String，Stringbuffer，StringBuilder的区别？
 
 quartz 和 timer对比
 
-##JVM
+## JVM
 
 什么是native方法
 
@@ -303,11 +303,11 @@ Mybatis的底层实现原理
 
 #设计模式
 
-#数据库
+# 数据库
 
 分库分表技术
 
-#数据结构
+# 数据结构
 
 什么是数据结构？
 
@@ -339,7 +339,7 @@ Mybatis的底层实现原理
 
 
 
-#分布式
+# 分布式
 
 Dubbo的底层实现原理和机制
 
@@ -387,7 +387,7 @@ zookeeper原理和适用场景
 
 zookeeper watch机制
 
-#高并发
+# 高并发
 
 JUC/并发相关
 
