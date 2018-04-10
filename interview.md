@@ -40,14 +40,16 @@ ArrayList 是数组实现的.它有一个重要的成员变量 Object[] elementD
 
 ArrayList 初始容量为10, oldCapacity + (oldCapacity >> 1) 大概1.5倍增长
 
-transient Object[] 是实际存放数据的地方,transient 是为了节省内存做的优化, ArrayList 中自定义了序列化的规则,  
+transient Object[] 是实际存放数据的地方,transient 是为了节省内存做的优化, 
+ArrayList 中自定义了序列化的规则,  
 只对Object[] 中实际存在的对象进行序列化,而不是整个数组,这样节省了内存.
 ```
 
 Vector的实现原理
 
 ```
-Vector 与ArrayList一样都是使用数组来实现的集合,不同的是Vector的所有操作都有synchronized 保证了线程同步.
+Vector 与ArrayList一样都是使用数组来实现的集合,不同的是Vector的所有操作都有synchronized 
+保证了线程同步.
 ```
 
 LinkedList 的实现原理
@@ -56,7 +58,8 @@ LinkedList 的实现原理
 LinkedList 是基于双向链表实现的, 它有一个静态内部类 Node,Node 中包含了上一个节点和下一个节点的引用，这样就构成了双向的链表。  
 LinkedList 有三个重要的成员变量:first ,last ,size 
 
-假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,在这个Node前面插入新 Node,  
+假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,
+在这个Node前面插入新 Node,  
 然后维护好这两个Node的指针.如果是在索引为8的位置插入 则从last开始,由后向前递归.
 查询index为3的元素时,从first开始,由第一个节点递归向后查询到第四个元素返回.
 ```
@@ -64,7 +67,8 @@ LinkedList 有三个重要的成员变量:first ,last ,size
 HashMap 的实现原理
 
 ```
-HashMap实际上是一个“链表散列”的数据结构，即数组和链表的结合体。HashMap 底层数组的长度总是 2 的 n 次方.
+HashMap 实际上是一个“链表散列”的数据结构，即数组和链表的结合体。
+HashMap 底层数组的长度总是 2 的 n 次方.
 Node<K,V>[] table;
 int size;
 Node是一个单向链表
@@ -131,8 +135,9 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 ```
 同步方法锁定的是当前实例，同步代码块锁定的是指定的某个实例
 
-非静态的同步方法锁定的是当前类的一个实例，类似于在同步代码块中使用this作为同步对象，这种情况下，  
-一个实例的某个非静态同步方法不能同时在两个线程中运行，如果这个实例有两个非静态同步方法 a()和 b(),这两个方法也不能同时在两个线程中运行。
+非静态的同步方法锁定的是当前类的一个实例，类似于在同步代码块中使用this作为同步对象，
+这种情况下，  一个实例的某个非静态同步方法不能同时在两个线程中运行，
+如果这个实例有两个非静态同步方法 a()和 b(),这两个方法也不能同时在两个线程中运行。
 静态同步方法锁定的是实例的类对象，同一个对象的多个实例,他们的静态同步方法不能在两个线程中同时运行。
 对于锁定相同对象的方法/代码块不能同时运行在多个线程中。
 ```
@@ -215,7 +220,8 @@ jdk8的 parallelStream 的理解
 cloneable接口实现原理，浅拷贝or深拷贝
 
 ```
-Object a=new Object();Object b;b=a;这种形式的代码复制的是引用,a和b对象仍然指向了同一个对象
+Object a=new Object();Object b;b=a;这种形式的代码复制的是引用,
+a和b对象仍然指向了同一个对象
 浅拷贝
 
 ```
