@@ -55,7 +55,7 @@ Vector 与ArrayList一样都是使用数组来实现的集合,不同的是Vector
 LinkedList 的实现原理
 
 ```
-LinkedList 是基于双向链表实现的, 它有一个静态内部类 Node,Node 中包含了上一个节点和下一个节点的引用，这样就构成了双向的链表。  
+LinkedList 是基于双向链表实现的, 它有一个静态内部类 Node,Node 中包含了上一个节点和下一个节点的引用，这样就构成了双向的链表
 LinkedList 有三个重要的成员变量:first ,last ,size 
 
 假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,
