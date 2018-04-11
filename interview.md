@@ -21,76 +21,153 @@ foreach和while的区别
 
 ## 集合框架
 
-常用集合框架有哪些?
+**常用集合框架有哪些?**
 
+> 集合框架有两大接口:Collection元素集合 和 Map键值对集合 
+> Collection下有 List可重复集合 和Set不可重复集合
+> List的实现有:数组结构的ArrayList,Vector和Stack,链表结构的LinkedList
+> Set的实现有:HashSet,LinkedHashSet,TreeSet
+> Map的实现有:HashMap,LinkedHashMap,TreeMap,Hashtable
+
+
+
+**ArrayList 的实现原理**
+
+> ArrayList 是数组实现的.它有一个重要的成员变量 Object[] elementData;
+> 插入元素的时候,找到索引所在的位置插入相应的元素,并把当前位置后的元素依次向后移动一位.
+> 查询的时候可以直接根据索引获取到对应的元素.
+>
+> ArrayList 初始容量为10, oldCapacity + (oldCapacity >> 1) 大概1.5倍增长
+>
+> transient Object[] 是实际存放数据的地方,transient 是为了节省内存做的优化, 
+> ArrayList 中自定义了序列化的规则,  
+> 只对Object[] 中实际存在的对象进行序列化,而不是整个数组,这样节省了内存.
+
+
+
+**Vector的实现原理**
+
+> Vector 与ArrayList 的实现原理一样,都是使用数组来实现的集合,
+> 不同的是Vector的增删改查操作都是线程同步的。使用了synchronized关键字
+> 保证了线程同步.
+
+
+
+**LinkedList 的实现原理**
+
+> LinkedList 是基于双向链表实现的, 它有一个内部类 Node实现了双向的链表的数据结构,Node 中包含了上一个节点和下一个节点的引用
+> LinkedList 有三个重要的成员变量:Node first ,Node last ,int size 
+>
+> 假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,
+> 在这个Node前面插入新 Node,  
+> 然后维护好这两个Node的指针.如果是在索引为8的位置插入 则从last开始,由后向前递归.
+> 查询index为3的元素时,从first开始,由第一个节点递归向后查询到第四个元素返回.
+
+
+
+**HashMap 的实现原理**
+
+> HashMap 是数组和链表的结合体，本质上是一个数组，数组中保存的是具有链表数据结构的Entry。
+> HashMap 的一些私有变量：int capacity；float loadFactor; Entry[] table;int size;int threshold;
+>
+> put操作的实现：HashMap 的 hash 方法会根据 key 的 hashCode 生成一个索引，如果 table 数组在该位置没有元素，就 new 一个 Entry 保存在该位置，如果已经存在元素且两者的 key 不相等，就将新元素保存在链表头部，如果已经存在元素且两者的 key 相等，就将新元素覆盖旧元素。在JDK8中，当链表长度达到8，会转化成红黑树
+>
+> 读取的实现：hash 方法会根据 key 的 hashCode 生成一个索引，再取出table数组中的索引处的Entry，然后返回该key对应的value。
+>
+> HashMap 的扩容：capacity是数组的长度，默认是大小为16，loadFactor 是装载因子，默认0.75，当元素个数，size表示HashMap中存放KV的数量 。threshold 是扩容临界值。当size > threshold 时会进行扩容。扩容会创建一个原来2倍大小的新数组，然后将原哈希表中的所有数据移动到新的哈希表中，相当于对原哈希表中所有的数据重新做了一个put操作。所以性能消耗很大
+>
+> 链的产生：新的Entry对象添加到 table 中时，新添加的 Entry 对象将持有对原有 Entry 对象的引用，形成Entry链。
+>
+> Hash 冲突：当试图将两个key的hashCode相同时，会产生hash冲突，hashMap是通过链表的形式解决hash冲突。后添加的 Entry 对象将持有对原有 Entry 对象的引用，形成Entry链。这是哈希算法中解决冲突的一种方法,叫链地址法
+
+
+
+**LinkedHashMap 的实现原理**
+
+>LinkedHashMap 是HashMap的子类，拥有HashMap的所有特性。并维护一个自己的双向链表。同时类里有两个成员变量 Entry head ;Entry  tail, 分别指向双向链表的表头、表尾。  accessOrder 默认 false 基于插入顺序 
+>
+>put 操作: LinkedHashMap并没有重写任何put方法。但是其重写了构建新节点的newNode()方法. 在每次构建新节点时，将新节点链接在内部双向链表的尾部。
+>
+>get操作：LinkedHashMap的get()方法会改变数据链表，LinkedHashMap具有可预知的迭代顺序：插入顺序、访问顺序。默认是插入顺序排序，如果指定按访问顺序排序，那么调用get方法后会将这次访问的元素放到链表的尾部，不断访问可以形成按访问顺序形成的列表.
+>
+>LinkedHashMap简直就是为了实现LRU Cache(Least Recently Used)而编写的
+
+```java
+Map<String, String> map = new LinkedHashMap<String, String>(16, 0.75f, true);  
+for (int i = 0; i < 10; i++) {  
+    map.put("key" + i, "value" + i);  
+}
+map.get("key" + 3);  
+for (String value : map.keySet()) {  
+    System.out.println(value); // key3:value3 被放在了最后
+}
 ```
-集合框架有两大接口:Collection元素集合 和 Map键值对集合 
-Collection下有 List可重复集合 和Set不可重复集合
-List的实现有:数组结构的ArrayList,Vector和Stack,链表结构的LinkedList
-Set的实现有:HashSet,LinkedHashSet,TreeSet
-Map的实现有:HashMap,LinkedHashMap,TreeMap,Hashtable
-```
 
-ArrayList 的实现原理
+**TreeMap 的实现原理**
 
-```
-ArrayList 是数组实现的.它有一个重要的成员变量 Object[] elementData;
-插入元素的时候,找到索引所在的位置插入相应的元素,并把当前位置后的元素依次向后移动一位.
-查询的时候可以直接根据索引获取到对应的元素.
+> TreeMap 初始化的时候会初始化下列参数，第一个Comparator是可以自己定义实现的一个比较的实现，默认为Null,那么默认的比较方式就是compare方法。Entry root;默认为Null。其中Entry内部维护了left,right,parent,color  其中color默认是black。https://www.cnblogs.com/daoluanxiaozi/p/3340382.html
 
-ArrayList 初始容量为10, oldCapacity + (oldCapacity >> 1) 大概1.5倍增长
-
-transient Object[] 是实际存放数据的地方,transient 是为了节省内存做的优化, 
-ArrayList 中自定义了序列化的规则,  
-只对Object[] 中实际存在的对象进行序列化,而不是整个数组,这样节省了内存.
-```
-
-Vector的实现原理
-
-```
-Vector 与ArrayList一样都是使用数组来实现的集合,不同的是Vector的所有操作都有synchronized 
-保证了线程同步.
-```
-
-LinkedList 的实现原理
-
-```
-LinkedList 是基于双向链表实现的, 它有一个静态内部类 Node,Node 中包含了上一个节点和下一个节点的引用，这样就构成了双向的链表
-LinkedList 有三个重要的成员变量:first ,last ,size 
-
-假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,
-在这个Node前面插入新 Node,  
-然后维护好这两个Node的指针.如果是在索引为8的位置插入 则从last开始,由后向前递归.
-查询index为3的元素时,从first开始,由第一个节点递归向后查询到第四个元素返回.
-```
-
-HashMap 的实现原理
-
-```
-HashMap 实际上是一个“链表散列”的数据结构，即数组和链表的结合体。
-HashMap 底层数组的长度总是 2 的 n 次方.
-Node<K,V>[] table;
-int size;
-Node是一个单向链表
-```
-
-https://blog.csdn.net/qq_27093465/article/details/52207152
-
-https://blog.csdn.net/u013851082/article/details/53942319
-
-HashSet 的实现原理
-
-Java的数组要求所有的数组元素具有相同的数据类型,ArrayList是用数组实现的,ArrayList为什么可以存放不同的数据类型?
-
-```
-Java并没有要求数组的元素具有相同的数据类型。可以是不同的类型.
+```java
+class 节点{
+	String str;
+	节点 左节点;
+	节点 右节点;
+	boolean 有左节点(){
+		return 左节点!=null;
+	}
+	boolean 有右节点(){
+		return 右节点!=null;
+	}
+	public 节点(String str) {
+		this.str = str;
+	}
+}
+static void 遍历(节点 节点){
+	if(节点.有左节点()){
+		遍历(节点.左节点);
+	}else{
+		list.add(节点);
+	}
+	if(节点.有右节点()){
+		遍历(节点.右节点);
+	}else{
+		return;
+	}
+}
+static ArrayList<节点> list =new ArrayList<节点>();
+	public static void main(String[] args) {
+		节点 节点1 = new 节点("节点1");
+		节点 节点2 = new 节点("节点2");
+		节点 节点3 = new 节点("节点3");
+		节点 节点4 = new 节点("节点4");
+		节点 节点5 = new 节点("节点5");
+		节点 节点6 = new 节点("节点6");
+		节点 节点7 = new 节点("节点7");
+		节点1.左节点=节点2;
+		节点2.右节点=节点3;
+		节点1.右节点=节点4;
+		节点4.左节点=节点5;
+		节点4.右节点=节点6;
+		节点5.右节点=节点7;
+		
+		遍历(节点1);
+		for (节点  节点 : list) {
+			System.out.println(节点.str);
+		}
+	}
 ```
 
 
 
-Arrays.sort 和 Collections.sort怎么实现的？
+**HashSet 的实现原理**
 
-HashMap的并发问题
+>HashSet 聚合了 一个HashMap ，使用HashMap的key来保存数据， 它所有的方法都是调用HashMap对应的方法来实现的
+
+
+
+**Arrays.sort 和 Collections.sort怎么实现的？**
+
+> Arrays.sort对于基本数据类型使用的是快速排序，对 对象使用的是归并排序 ，两者的时间复杂度都是n*logn,但合并排序需要额外的n个空间
 
 LinkedHashMap的应用场景
 
@@ -132,50 +209,50 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 同步方法与同步块的区别
 
-```
-同步方法锁定的是当前实例，同步代码块锁定的是指定的某个实例
+> 同步方法锁定的是当前实例，同步代码块锁定的是指定的某个实例
+>
+> 非静态的同步方法锁定的是当前类的一个实例，类似于在同步代码块中使用this作为同步对象，
+> 这种情况下，  一个实例的某个非静态同步方法不能同时在两个线程中运行，
+> 如果这个实例有两个非静态同步方法 a()和 b(),这两个方法也不能同时在两个线程中运行。
+> 静态同步方法锁定的是实例的类对象，同一个对象的多个实例,他们的静态同步方法不能在两个线程中同时运行。
+> 对于锁定相同对象的方法/代码块不能同时运行在多个线程中。
 
-非静态的同步方法锁定的是当前类的一个实例，类似于在同步代码块中使用this作为同步对象，
-这种情况下，  一个实例的某个非静态同步方法不能同时在两个线程中运行，
-如果这个实例有两个非静态同步方法 a()和 b(),这两个方法也不能同时在两个线程中运行。
-静态同步方法锁定的是实例的类对象，同一个对象的多个实例,他们的静态同步方法不能在两个线程中同时运行。
-对于锁定相同对象的方法/代码块不能同时运行在多个线程中。
-```
+
 
 java中锁的种类
 
-```
-- 公平锁/非公平锁 对于Synchronized而言，也是一种非公平锁
-- 可重入锁
-- 独享锁/共享锁
-- 互斥锁/读写锁
-- 乐观锁/悲观锁
-- 分段锁
-- 偏向锁/轻量级锁/重量级锁
-- 自旋锁
-```
+> - 公平锁/非公平锁 对于Synchronized而言，也是一种非公平锁
+> - 可重入锁
+> - 独享锁/共享锁
+> - 互斥锁/读写锁
+> - 乐观锁/悲观锁
+> - 分段锁
+> - 偏向锁/轻量级锁/重量级锁
+> - 自旋锁
+
+
 
 完成线程同步的方式有哪些
 
-```
-1. 使用带有synchronized关键字的同步方法。
-2. 使用synchronized块。
-3. 使用JDK 5中提供的java.util.concurrent.lock包中的Lock对象。
-```
+> 1. 使用带有synchronized关键字的同步方法。
+> 2. 使用synchronized块。
+> 3. 使用JDK 5中提供的java.util.concurrent.lock包中的Lock对象。
+
+
 
 什么是死锁
 
-```
-两个线程都在等待对方释放锁之后才能继续往下执行，就发生了死锁
-```
+> 两个线程都在等待对方释放锁之后才能继续往下执行，就发生了死锁
+
+
 
 
 
 线程有哪些状态？
 
-```
-就绪、运行中、等待中、休眠中、IO阻塞、同步阻塞、死亡
-```
+> 就绪、运行中、等待中、休眠中、IO阻塞、同步阻塞、死亡
+
+
 
 
 
@@ -219,12 +296,11 @@ jdk8的 parallelStream 的理解
 
 cloneable接口实现原理，浅拷贝or深拷贝
 
-```
-Object a=new Object();Object b;b=a;这种形式的代码复制的是引用,
-a和b对象仍然指向了同一个对象
-浅拷贝
+> Object a=new Object();Object b;b=a;这种形式的代码复制的是引用,
+> a和b对象仍然指向了同一个对象
+> 浅拷贝
 
-```
+
 
 
 
