@@ -398,7 +398,17 @@ g1和cms区别,吞吐量优先和响应优先的垃圾收集器选择
 
 # web服务器
 
+## tomcat
 
+reader.readLine() 和 inputStream.read(), outputStream.flush() 的坑 
+
+> reader.readLine() 在遇到换行符之前会一直读 , 这就会发生阻塞,  直到遇到换行符的时候才会返回读取结果 ,且 换行符并不返回, 
+>
+> inputStream.read() 方法执行时如果遇到文件末尾会返回-1,而socket通信时，服务端会一直等待客户端输入. 
+>
+> 解决办法:  在最后一次读取时由于流里所剩的字节数小于b的长度，流就认为到了流的末尾。如果为整数的话阻塞原因同上。
+>
+> outputStream.flush()  的作用是清空缓冲区, 并不保证网络传输.  
 
 # spring
 
