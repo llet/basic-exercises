@@ -197,6 +197,34 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 ## 序列化
 
+**UID的作用**
+
+反序列化时的UID必须与序列化前的UID相同,否则会序列化失败
+
+**java默认的序列化的缺点**
+
+只支持java语言, 性能比较低 
+
+**其他序列化方案**
+
+json, xml, kryo, protocol buf, hesson, thrift, messagepack
+
+![](img/serialized-1.png)
+
+序列化的应用: 深拷贝对象
+
+```java
+public Student testClone()  throws Exception{
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    ObjectOutputStream outputStream2 = new ObjectOutputStream(outputStream);
+    outputStream2.writeObject(this);
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+    ObjectInputStream inputStream2 = new ObjectInputStream(inputStream);
+    Object object = inputStream2.readObject();
+    return (Student) object;
+}
+```
+
 
 
 ## 泛型
@@ -310,6 +338,24 @@ quartz 和 timer对比
 
 ## JVM
 
+虚拟机启动参数有哪些类别?
+
+> 1. 准参数（-）, 所有 JVM 都必须实现这些参数的功能，而且向后兼容；
+> 2. 扩展参数（-X）, 不保证所有jvm实现都满足，且不保证向后兼容；
+> 3. 不稳定参数（-XX）, 将来可能会随时取消，需要慎重使用；
+
+java标准参数
+
+> -D<key>=<value> 设置系统属性,代码中可以通过 System.getProperty("key"); 获取该属性
+
+不稳定参数语法规则
+
+>  -XX:+<option>  表示启用该选项
+>
+> -XX:-<option>  表示关闭该选项
+>
+> -XX:<option>=<value> 给选项设置一个值
+
 什么是native方法
 
 ```
@@ -350,9 +396,9 @@ g1和cms区别,吞吐量优先和响应优先的垃圾收集器选择
 
 说一下强引用、软引用、弱引用、虚引用以及他们之间和gc的关系
 
-# tomcat等
+# web服务器
 
-tomcat结构，类加载器流程
+
 
 # spring
 
