@@ -191,36 +191,69 @@ public Student testClone()  throws Exception{
 
 ## 网络
 
+### TCP 建立连接的过程
+
+```js
+tcp共6个标志位：SYN(synchronous),ACK(acknowledge),PSH(push),FIN(fine),RET(reset),URG(urgent)
+client:SYN=1  //在吗
+client:SYN_SEND
+server:SYN=1,ACK=1  //在的
+server:SYN_RCVD
+client:ACK=1  //好的
+client:ESTABLISED
+server:ESTABLISED
+交流中...
+client:下次聊？
+server:好的
+client:拜拜
+server:再见
+```
+
+
+
 ##IO/NIO
 
 ## 多线程
 
-同步方法与同步块的区别
+### 线程有哪些状态？
 
-> 同步方法获得的是当前实例的锁，同步代码块锁定的是指定的某个实例
+> java中有一个枚举类描述的线程状态，一共6个：new,runable,blocked,timed_waiting,waiting,terminated
 >
-> 非静态的同步方法锁定的是当前类的一个实例，类似于在同步代码块中使用this作为同步对象，
-> 这种情况下，  一个实例的某个非静态同步方法不能同时在两个线程中运行，
+> 一般认为线程有5个状态，首先是新建状态，调用这个线程的start方法后线程进入就绪状态，CPU调度到这个线程后进入运行状态，遇到IO、网络连接、或者调用sleep、wait 时会进入阻塞状态，需要重新等待CPU的调度，最后是终止状态。
+
+### 同步方法与同步块的区别
+
+> 执行同步方法需要获得当前实例的监视器，执行同步代码块需要获取指定实例的监视器
+>
+> 同步的实例方法执行时需要获取类对象的监视器，类似于在同步代码块中使用this作为同步对象，这种情况下， 一个实例的某个非静态同步方法不能同时在两个线程中运行，
 > 如果这个实例有两个非静态同步方法 a()和 b(),这两个方法也不能同时在两个线程中运行。
 > 静态同步方法锁定的是实例的类对象，同一个对象的多个实例,他们的静态同步方法不能在两个线程中同时运行。
 > 对于锁定相同对象的方法/代码块不能同时运行在多个线程中。
 
+### 如何让多个线程按顺序执行
 
+通过join方法来实现，主线程中启动了一个子线程，主线程调用子线程的join方法后，子线程完成后主线程才继续执行。也可 以通过线程数为1的线程池来实现
 
-java中锁的种类
+```java
+ExectorService excutor =  Excutors.newSingleThreadExcutor();
+excutor.execte(thread1);
+excutor.execte(thread2);
+excutor.shuntdow();
+```
 
-> - 公平锁/非公平锁 对于Synchronized而言，也是一种非公平锁
-> - 可重入锁
-> - 独享锁/共享锁
-> - 互斥锁/读写锁
-> - 乐观锁/悲观锁
-> - 分段锁
-> - 偏向锁/轻量级锁/重量级锁
-> - 自旋锁
+### volatile, synchronized, Lock
 
+> java内存分为工作内存和主存，工作内存是线程私有的，当一个线程对volatile变量的进行修改时，会立即从工作内存刷新到主存，并且其他线程对volatile变量的读会读主存中的值。主内存主要包括本地方法区和堆，工作内存主要包括栈、本地方法栈和程序计数器
+>
+> 当一个线程执行 某个对象的 synchronized 方法的时候，会先获取这个对象的监视器 Monitor，之后才能执行这个方法，如果获取不到监视器，则会阻塞并进入到一个同步队列等待获取监视器，其他线程释放这个监视器时会通知这个队列。当线程在synchronized 方法中又执行了这个对象的其他的synchronized  方法，则这个线程需要重新获取监视器，这个时候不会阻塞而是对Monitor的计数器加1。
+>
+> Lock是一个接口，它有3个实现类，ReentrantLock，ReadLock，WriteLock，其中后两个是ReentrantReadWriteLock的内部类，Lock 实例以及 Condition 实例可以用来阻塞、唤醒线程，达到控制线程的目的。
 
+### 线程间如何通信
 
-完成线程同步的方式有哪些
+共享内存 volatile，消息传递 wait/notfy
+
+### 完成线程同步的方式有哪些
 
 > 1. 使用带有synchronized关键字的同步方法。
 > 2. 使用synchronized块。
@@ -231,16 +264,6 @@ java中锁的种类
 什么是死锁
 
 > 两个线程都在等待对方释放锁之后才能继续往下执行，就发生了死锁
-
-
-
-
-
-线程有哪些状态？
-
-> 就绪、运行中、等待中、休眠中、IO阻塞、同步阻塞、死亡
-
-
 
 
 
@@ -344,9 +367,9 @@ quartz 和 timer对比
 
 >  -XX:+<option>  表示启用该选项
 >
-> -XX:-<option>  表示关闭该选项
+>  -XX:-<option>  表示关闭该选项
 >
-> -XX:<option>=<value> 给选项设置一个值
+>  -XX:<option>=<value> 给选项设置一个值
 
 ### 怎么查看GC日志?
 
@@ -586,6 +609,60 @@ public class App {
 
 
 # 分布式
+
+### 什么是RPC以及RMI
+
+基于网络通信进行接口访问的一种技术实现，它跨平台跨语言，类似于java 的RMI ，
+
+### 如何实现一个RMI程序
+
+>创建远程接口， 并且继承java.rmi.Remote接口
+>
+>实现远程接口，并且继承：UnicastRemoteObject
+>
+>创建服务器程序： createRegistry方法注册远程对象，并监听一个端口	
+>
+>创建客户端程序
+
+### 集群怎么共享session
+
+> mysql/redis： 采用mysql 或 redis 保存session 信息，用户登录的时候会尝试从数据库中获取session ，使用mysql 中性能不是很好，一般使用redis，并且redis也可以做集群
+>
+> cookie：服务端生产access_token(userid/name/timestamp) 保存在客户端cookie中，接到请求时服务端先看自己有没有这个session，没有的话就使用客户端上送的session，这种方式安全性不高
+>
+> session同步：服务器之间同步session，由一台服务器生产session，通过脚本或者其他方式同步到其他服务器上，这方案速度慢，同步session有延迟性什么是webservice
+
+
+
+### 什么是wsdl
+
+wsdl 他是基于xml定义的一种文件类型，wsdl的作用类似于接口文档，主要对请求和响应的方式和数据格式做说明，一个webservice只有一个wsdl文档 
+
+### 什么是SOAP 简单对象访问协议
+
+## zookeeper
+
+### zookeeper的数据模型
+
+> zookeeper的数据模型和文件系统类似，是一种树形的结构，每个节点称为znode，它是zookeeper中最基本的数据单元，节点可以保存数据和挂载子节点，这些节点的数据保存在内存中，zookeeper会定时把内存中的数据写入到磁盘中。节点分为持久化节点和临时节点，临时节点与客户端会话保持一致，会话失效节点会被清除。
+
+### zookeeper的工作机制
+
+> zookeeper一般暴露使用2181端口对客服端提供服务，客户端向zookeeper注册一个监听（watcher），并维护一个TCP长连接，zookeeper上的节点触发监听事件的时候，zookeeper会向客户端发送一个通知，注册的监听是一次性的，继续监听需要重新注册。
+>
+> 另外 访问zookeeper 上的资源，需要通过zookeeper的权限验证（ACL）。
+
+### ZooKeeper集群中服务器之间是怎样通信的
+
+Leader服务器会和每一个Follower建立TCP连接，默认2888端口，同时为每个Follower都创建一个叫做LearnerHandler的实体。LearnerHandler主要负责Leader和Follower之间的网络通讯，包括数据同步，请求转发和提议的投票等。Leader服务器保存了所有Follower的LearnerHandler。
+
+### 客户端如何正确处理连接断开的
+
+> 客户端会定时向服务器发送心态报文，zookeeper收到心跳报文后重置超时时间，在session未过期的情况下，客户端会主动在地址列表里选择新的地址进行连接
+
+数据的发布和订阅（配置中心：disconf），负载均衡（dubbo+zookeeper）、命名服务、master选举（kafka、hadoop、hbase）、分布式队列、分布式锁
+
+
 
 Dubbo的底层实现原理和机制
 
