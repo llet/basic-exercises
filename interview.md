@@ -1,3 +1,5 @@
+[TOC]
+
 # java基础
 
 ## 编译和运行
@@ -8,12 +10,21 @@ foreach和while的区别
 
 内部类与外部类？
 
-类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，他们的执行顺序
+类的实例化顺序
+
+```
+1. 赋值父类静态变量和执行静态代码块
+2. 赋值子类静态变量和执行静态代码块
+3. 执行父类构造代码块和构造方法
+4. 执行子类构造代码块和构造方法
+```
 
 说一说你对环境变量classpath的理解？如果一个类不在classpath下，为什么会抛出ClassNotFoundException异常，  
 如果在不改变这个类路径的前期下，怎样才能正确加载这个类？
 
 ## 面向对象
+
+多态的
 
 抽象类和接口
 
@@ -21,9 +32,9 @@ foreach和while的区别
 
 ## 集合框架
 
-**常用集合框架有哪些?**
+### 常用集合框架有哪些?
 
-> 集合框架有两大接口:Collection元素集合 和 Map键值对集合 
+> 集合框架有两大接口:Collection  和 Map 
 > Collection下有 List可重复集合 和Set不可重复集合
 > List的实现有:数组结构的ArrayList,Vector和Stack,链表结构的LinkedList
 > Set的实现有:HashSet,LinkedHashSet,TreeSet
@@ -31,7 +42,7 @@ foreach和while的区别
 
 
 
-**ArrayList 的实现原理**
+### ArrayList 的实现原理
 
 > ArrayList 是数组实现的.它有一个重要的成员变量 Object[] elementData;
 > 插入元素的时候,找到索引所在的位置插入相应的元素,并把当前位置后的元素依次向后移动一位.
@@ -45,7 +56,7 @@ foreach和while的区别
 
 
 
-**Vector的实现原理**
+### Vector的实现原理
 
 > Vector 与ArrayList 的实现原理一样,都是使用数组来实现的集合,
 > 不同的是Vector的增删改查操作都是线程同步的。使用了synchronized关键字
@@ -53,7 +64,7 @@ foreach和while的区别
 
 
 
-**LinkedList 的实现原理**
+### LinkedList 的实现原理
 
 > LinkedList 是基于双向链表实现的, 它有一个内部类 Node实现了双向的链表的数据结构,Node 中包含了上一个节点和下一个节点的引用
 > LinkedList 有三个重要的成员变量:Node first ,Node last ,int size 
@@ -65,7 +76,7 @@ foreach和while的区别
 
 
 
-**HashMap 的实现原理**
+### HashMap 的实现原理
 
 > HashMap 是数组和链表的结合体，本质上是一个数组，数组中保存的是具有链表数据结构的Entry。
 > HashMap 的一些私有变量：int capacity；float loadFactor; Entry[] table;int size;int threshold;
@@ -82,15 +93,13 @@ foreach和while的区别
 
 
 
-**LinkedHashMap 的实现原理**
+### **LinkedHashMap 的实现原理**
 
->LinkedHashMap 是HashMap的子类，拥有HashMap的所有特性。并维护一个自己的双向链表。同时类里有两个成员变量 Entry head ;Entry  tail, 分别指向双向链表的表头、表尾。  accessOrder 默认 false 基于插入顺序 
+>LinkedHashMap 是HashMap的子类，拥有HashMap的所有特性。并自己维护了一个双向链表。类里有两个成员变量 Entry head ;Entry  tail, 分别指向双向链表的表头、表尾。  accessOrder 默认 false ,表示 基于插入顺序 
 >
 >put 操作: LinkedHashMap并没有重写任何put方法。但是其重写了构建新节点的newNode()方法. 在每次构建新节点时，将新节点链接在内部双向链表的尾部。
 >
 >get操作：LinkedHashMap的get()方法会改变数据链表，LinkedHashMap具有可预知的迭代顺序：插入顺序、访问顺序。默认是插入顺序排序，如果指定按访问顺序排序，那么调用get方法后会将这次访问的元素放到链表的尾部，不断访问可以形成按访问顺序形成的列表.
->
->LinkedHashMap简直就是为了实现LRU Cache(Least Recently Used)而编写的
 
 ```java
 Map<String, String> map = new LinkedHashMap<String, String>(16, 0.75f, true);  
@@ -103,69 +112,20 @@ for (String value : map.keySet()) {
 }
 ```
 
-**TreeMap 的实现原理**
+### **TreeMap 的实现原理**
 
 > TreeMap 初始化的时候会初始化下列参数，第一个Comparator是可以自己定义实现的一个比较的实现，默认为Null,那么默认的比较方式就是compare方法。Entry root;默认为Null。其中Entry内部维护了left,right,parent,color  其中color默认是black。https://www.cnblogs.com/daoluanxiaozi/p/3340382.html
-
-```java
-class 节点{
-	String str;
-	节点 左节点;
-	节点 右节点;
-	boolean 有左节点(){
-		return 左节点!=null;
-	}
-	boolean 有右节点(){
-		return 右节点!=null;
-	}
-	public 节点(String str) {
-		this.str = str;
-	}
-}
-static void 遍历(节点 节点){
-	if(节点.有左节点()){
-		遍历(节点.左节点);
-	}else{
-		list.add(节点);
-	}
-	if(节点.有右节点()){
-		遍历(节点.右节点);
-	}else{
-		return;
-	}
-}
-static ArrayList<节点> list =new ArrayList<节点>();
-	public static void main(String[] args) {
-		节点 节点1 = new 节点("节点1");
-		节点 节点2 = new 节点("节点2");
-		节点 节点3 = new 节点("节点3");
-		节点 节点4 = new 节点("节点4");
-		节点 节点5 = new 节点("节点5");
-		节点 节点6 = new 节点("节点6");
-		节点 节点7 = new 节点("节点7");
-		节点1.左节点=节点2;
-		节点2.右节点=节点3;
-		节点1.右节点=节点4;
-		节点4.左节点=节点5;
-		节点4.右节点=节点6;
-		节点5.右节点=节点7;
-		
-		遍历(节点1);
-		for (节点  节点 : list) {
-			System.out.println(节点.str);
-		}
-	}
-```
+>
 
 
 
-**HashSet 的实现原理**
+### HashSet 的实现原理
 
 >HashSet 聚合了 一个HashMap ，使用HashMap的key来保存数据， 它所有的方法都是调用HashMap对应的方法来实现的
 
 
 
-**Arrays.sort 和 Collections.sort怎么实现的？**
+### Arrays.sort 和 Collections.sort怎么实现的？
 
 > Arrays.sort对于基本数据类型使用的是快速排序，对 对象使用的是归并排序 ，两者的时间复杂度都是n*logn,但合并排序需要额外的n个空间
 
@@ -197,15 +157,15 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 ## 序列化
 
-**UID的作用**
+### UID的作用
 
 反序列化时的UID必须与序列化前的UID相同,否则会序列化失败
 
-**java默认的序列化的缺点**
+### java默认的序列化的缺点
 
 只支持java语言, 性能比较低 
 
-**其他序列化方案**
+### 其他序列化方案
 
 json, xml, kryo, protocol buf, hesson, thrift, messagepack
 
@@ -237,7 +197,7 @@ public Student testClone()  throws Exception{
 
 同步方法与同步块的区别
 
-> 同步方法锁定的是当前实例，同步代码块锁定的是指定的某个实例
+> 同步方法获得的是当前实例的锁，同步代码块锁定的是指定的某个实例
 >
 > 非静态的同步方法锁定的是当前类的一个实例，类似于在同步代码块中使用this作为同步对象，
 > 这种情况下，  一个实例的某个非静态同步方法不能同时在两个线程中运行，
@@ -322,6 +282,38 @@ jdk8的 parallelStream 的理解
 
 ## 常用类及接口
 
+### String, StringBuilder,  StringBuffer
+
+> 三者都是使用char[] 的数组保存数据的 ,都是CharSequence 接口的实现类
+>
+> String中的 concat, replace 等方法不对char[]数组进行操作, 它最终返回一个新的String对象, 所以原String对象一但创建好后它的值将不会改变(没有改变这个值的入口)
+>
+> StringBuilder 的append,delete等方法是对当前对象进行操作 并返回当前对象
+>
+> StringBuffer 的append 等方法都有 synchronized 关键字修饰
+
+### final,finally,finalize
+
+> final修饰类，表示类不能被继承,修饰方法,表示方法不能被重写,修饰成员变量,表示基本数据类型的变量是不可改变或者引用类型的引用不可改变,引用对象中的内容可以改变
+>
+> finally 是 try catch代码块的组成部分, 不管有没有异常发生finally 语句块都将被执行.
+>
+> finalize 是Object中的一个方法, 这个方法一般在GC线程中被调用,一般用来做关闭连接、关闭文件等释放资源的操作
+
+
+
+### throw,throws,throwable
+
+> throw 用在方法体内,表示抛出异常
+>
+> throws 用在方法声明后面,表示再抛出异常,由调用这个方法的上一级方法中的语句来处理,出现异常的一种可能性
+>
+> Throwable 是 Java 语言中所有错误或异常的超类
+
+### sleep,wait
+
+
+
 cloneable接口实现原理，浅拷贝or深拷贝
 
 > Object a=new Object();Object b;b=a;这种形式的代码复制的是引用,
@@ -338,17 +330,17 @@ quartz 和 timer对比
 
 ## JVM
 
-虚拟机启动参数有哪些类别?
+### 虚拟机启动参数有哪些类别?
 
 > 1. 准参数（-）, 所有 JVM 都必须实现这些参数的功能，而且向后兼容；
+>
+>    -D<key>=<value> 设置系统属性,代码中可以通过 System.getProperty("key"); 获取该属性
+>
 > 2. 扩展参数（-X）, 不保证所有jvm实现都满足，且不保证向后兼容；
+>
 > 3. 不稳定参数（-XX）, 将来可能会随时取消，需要慎重使用；
 
-java标准参数
-
-> -D<key>=<value> 设置系统属性,代码中可以通过 System.getProperty("key"); 获取该属性
-
-不稳定参数语法规则
+### 不稳定参数语法规则
 
 >  -XX:+<option>  表示启用该选项
 >
@@ -356,7 +348,22 @@ java标准参数
 >
 > -XX:<option>=<value> 给选项设置一个值
 
-什么是native方法
+### 怎么查看GC日志?
+
+在JVM启动时 指定参数 `-XX:+PrintGCDetails -Xloggc:./gc.log -XX:+PrintGCDateStamps  `
+
+```
+2018-04-13T21:59:38.595+0800: 22.258: GC (Allocation Failure) [PSYoungGen: 214013K->33789K(186368K)] 353197K->253557K(407552K), 0.0560998 secs 
+2018-04-13T21:59:38.651+0800: 22.315: Full GC (Ergonomics) [PSYoungGen: 33789K->33765K(186368K)] [ParOldGen: 219768K->219156K(401920K)] 253557K-252921K(588288K), [Metaspace: 2836K->2836K(1056768K)], 2.4230938 secs 
+2018-04-13T21:59:44.922+0800: 28.585: GC (Allocation Failure) [PSYoungGen: 186341K->51116K(266752K)] 405497K->301024K(668672K), 0.0650235 secs 
+```
+### Java 有哪些引用类型
+
+```
+强引用, 软引用, 弱引用, 虚引用
+```
+
+
 
 ```
 native方法是非Java语言实现的代码
@@ -396,9 +403,51 @@ g1和cms区别,吞吐量优先和响应优先的垃圾收集器选择
 
 说一下强引用、软引用、弱引用、虚引用以及他们之间和gc的关系
 
+# JDBC
+
+### 什么是JDBC
+
+java database connection ,java 数据库连接技术, 是由java提供的一组与平台无关的操作数据库的一组接口标准. 一个类: DriverManager; 四个接口: Connection, Statement, ResultSet, PreparedStatement
+
+### 实现JDBC的技术有哪些
+
+1. JDBC-ODBC桥接技术
+
+   ODBC指的是开放数据库连接, 是由微软提供的数据库连接应用,利用JDBC 操作ODBC 从而实现数据库的连接, 性能较差. 支持的JDBC版本是最新的.
+
+2. JDBC直接连接
+
+   由不同的数据库生产商提供指定的数据库连接驱动程序, 性能是最好的, 一般支持的JDBC版本不是最新的.
+
+3. JDBC网络连接
+
+   使用专门的数据库网络连接命令进行指定主机的数据库操作,此种方式使用最多. 
+
+4. 模拟指定数据库的通讯协议自己编写数据库操作
+
+
+
+### JDBC连接数据库的流程
+
+1. 加载数据库的驱动程序, 数据库的生产厂商提供数据库驱动程序来适配 JDBC
+
+2. 进行数据库的连接, 连接地址,用户名,密码
+
+   要连接数据库必须要靠 DriverManager 类完成, 它接收用户名密码, 返回一个Connection 
+
+3. 进行数据库的 操作
+
+4. 关闭数据库
+
+### JDBC体现的设计模式
+
+JDBC操作在取得数据库连接对象时, 采用的是工厂设计模式, DriverManager 是工厂类, Connection 是产品接口, 对于mysql 得到的是 com.mysql.jdbc.JDBC4Connection 实现类 
+
 # web服务器
 
 ## tomcat
+
+![](java/nio/BlockingNIO.java)
 
 reader.readLine() 和 inputStream.read(), outputStream.flush() 的坑 
 
@@ -455,6 +504,60 @@ Mybatis的底层实现原理
 什么是数据结构？
 
 > 数据元素以及元素之间关系的集合
+
+### 怎么去遍历一个二叉树?
+
+```java
+import java.util.ArrayList;
+
+public class App {
+	private ArrayList<Node> list = new ArrayList<Node>();
+
+	public static void main(String[] args) {
+		new App();
+	}
+	
+	public App() {
+		Node root = new Node("root");
+		Node node2 = new Node("node2");
+		Node node3 = new Node("node3");
+		Node node4 = new Node("node4");
+		Node node5 = new Node("node5");
+		Node node6 = new Node("node6");
+		Node node7 = new Node("node7");
+		root.left = node2;
+		node2.right = node3;
+		root.right = node4;
+		node4.left = node5;
+		node4.right = node6;
+		node5.right = node7;
+
+		recursive(root);
+		for (Node node : list) {
+			System.out.println(node.name);
+		}
+	}
+
+	private void recursive(Node node) {
+		if(node!=null) {
+			recursive(node.left);
+			this.list.add(node);
+			recursive(node.right);
+		}
+	}
+
+	class Node {
+		String name;
+		Node left;
+		Node right;
+		public Node(String name) {
+			this.name = name;
+		}
+	}
+}
+```
+
+
 
 树 
 
