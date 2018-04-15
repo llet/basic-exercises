@@ -185,7 +185,7 @@ public Student testClone()  throws Exception{
 
 ## 多线程
 
-### 线程有哪些状态？
+### 线程状态？
 
 > java中有一个枚举类描述的线程状态，一共6个：new,runable,blocked,timed_waiting,waiting,terminated
 >
@@ -202,7 +202,7 @@ public Student testClone()  throws Exception{
 
 ### 如何让多个线程按顺序执行
 
-通过join方法来实现，主线程中启动了一个子线程，主线程调用子线程的join方法后，子线程完成后主线程才继续执行。也可 以通过线程数为1的线程池来实现.
+> 通过join方法来实现，主线程中启动了一个子线程，主线程调用子线程的join方法后，子线程完成后主线程才继续执行。也可 以通过线程数为1的线程池来实现.
 
 ```java
 ExectorService excutor =  Excutors.newSingleThreadExcutor();
@@ -229,11 +229,9 @@ excutor.shuntdow();
 > 1. 使用带有synchronized关键字的同步方法或者同步代码块
 > 2. 使用 java.util.concurrent.lock Lock对象。
 
+### 什么是死锁
 
-
-什么是死锁
-
-> 两个线程都在等待对方释放锁之后才能继续往下执行，就发生了死锁
+> 两个线程都在等待对方释放锁之后才能继续往下执行，就发生了死锁, 一般发生在两段同步代码块中
 
 
 
@@ -462,7 +460,7 @@ reader.readLine() 和 inputStream.read(), outputStream.flush() 的坑
 
 ### MVC框架原理，他们都是怎么做url路由的
 
-##spring boot
+## spring boot
 
 ### spring boot特性，优势，适用场景等
 
