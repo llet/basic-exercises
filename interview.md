@@ -2,31 +2,20 @@
 
 # java基础
 
-## 编译和运行
+## java语言相关
 
-foreach和while的区别
+### 类的实例化顺序
 
-父类与子类的静态代码构造方法和普通方法的执行顺序？
+> 1. 赋值父类静态变量和执行静态代码块
+> 2. 赋值子类静态变量和执行静态代码块
+> 3. 执行父类构造代码块和构造方法
+> 4. 执行子类构造代码块和构造方法
 
-内部类与外部类？
+### 面向对象特性
 
-类的实例化顺序
+### 多态
 
-```
-1. 赋值父类静态变量和执行静态代码块
-2. 赋值子类静态变量和执行静态代码块
-3. 执行父类构造代码块和构造方法
-4. 执行子类构造代码块和构造方法
-```
-
-说一说你对环境变量classpath的理解？如果一个类不在classpath下，为什么会抛出ClassNotFoundException异常，  
-如果在不改变这个类路径的前期下，怎样才能正确加载这个类？
-
-## 面向对象
-
-多态的
-
-抽象类和接口
+### 抽象类和接口
 
 
 
@@ -58,7 +47,7 @@ foreach和while的区别
 
 ### Vector的实现原理
 
-> Vector 与ArrayList 的实现原理一样,都是使用数组来实现的集合,
+> Vector 与ArrayList 的实现原理一样,都是使用数组来保存数据,
 > 不同的是Vector的增删改查操作都是线程同步的。使用了synchronized关键字
 > 保证了线程同步.
 
@@ -67,12 +56,13 @@ foreach和while的区别
 ### LinkedList 的实现原理
 
 > LinkedList 是基于双向链表实现的, 它有一个内部类 Node实现了双向的链表的数据结构,Node 中包含了上一个节点和下一个节点的引用
-> LinkedList 有三个重要的成员变量:Node first ,Node last ,int size 
+> java8 中LinkedList 有这三个成员变量:Node first ；Node last ；int size ；
 >
 > 假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,
 > 在这个Node前面插入新 Node,  
-> 然后维护好这两个Node的指针.如果是在索引为8的位置插入 则从last开始,由后向前递归.
-> 查询index为3的元素时,从first开始,由第一个节点递归向后查询到第四个元素返回.
+> 然后维护好这两个Node的指针.如果是在索引为8的位置插入 则从last开始,由后向前进行.
+>
+> 查询index为3的元素时,从first开始,由第一个节点向后查询到第四个元素返回.
 
 
 
@@ -127,7 +117,7 @@ for (String value : map.keySet()) {
 
 ### Arrays.sort 和 Collections.sort怎么实现的？
 
-> Arrays.sort对于基本数据类型使用的是快速排序，对 对象使用的是归并排序 ，两者的时间复杂度都是n*logn,但合并排序需要额外的n个空间
+> Arrays.sort对于基本数据类型使用的是快速排序，对 对象使用的是归并排序 ，两者的时间复杂度都是n*logn,但合并排序需要额外的n个空间 
 
 LinkedHashMap的应用场景
 
@@ -147,13 +137,19 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 简述ConcurrentLinkedQueue和LinkedBlockingQueue的用处和不同之处
 
-## 动态代理及反射
+## 动态代理
 
 动态代理的几种方式
 
 反射的原理，反射创建类实例的三种方式是什么？
 
 反射中，Class.forName和ClassLoader区别
+
+## 反射
+
+## 泛型
+
+## IO/NIO
 
 ## 序列化
 
@@ -169,9 +165,9 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 json, xml, kryo, protocol buf, hesson, thrift, messagepack
 
-![](img/serialized-1.png)
+### 序列化的应用
 
-序列化的应用: 深拷贝对象
+深拷贝对象
 
 ```java
 public Student testClone()  throws Exception{
@@ -187,39 +183,13 @@ public Student testClone()  throws Exception{
 
 
 
-## 泛型
-
-## 网络
-
-### TCP 建立连接的过程
-
-```js
-tcp共6个标志位：SYN(synchronous),ACK(acknowledge),PSH(push),FIN(fine),RET(reset),URG(urgent)
-client:SYN=1  //在吗
-client:SYN_SEND
-server:SYN=1,ACK=1  //在的
-server:SYN_RCVD
-client:ACK=1  //好的
-client:ESTABLISED
-server:ESTABLISED
-交流中...
-client:下次聊？
-server:好的
-client:拜拜
-server:再见
-```
-
-
-
-##IO/NIO
-
 ## 多线程
 
 ### 线程有哪些状态？
 
 > java中有一个枚举类描述的线程状态，一共6个：new,runable,blocked,timed_waiting,waiting,terminated
 >
-> 一般认为线程有5个状态，首先是新建状态，调用这个线程的start方法后线程进入就绪状态，CPU调度到这个线程后进入运行状态，遇到IO、网络连接、或者调用sleep、wait 时会进入阻塞状态，需要重新等待CPU的调度，最后是终止状态。
+> 一般认为线程有5个状态，首先是新建状态，调用这个线程的start方法后线程进入就绪状态，CPU调度到这个线程后进入运行状态，遇到IO、网络连接、或者调用sleep、wait 时会进入阻塞状态，需要重新等待CPU的调度，最后是终止状态。（我们认为IO、网络连接不消耗CPU ）
 
 ### 同步方法与同步块的区别
 
@@ -232,7 +202,7 @@ server:再见
 
 ### 如何让多个线程按顺序执行
 
-通过join方法来实现，主线程中启动了一个子线程，主线程调用子线程的join方法后，子线程完成后主线程才继续执行。也可 以通过线程数为1的线程池来实现
+通过join方法来实现，主线程中启动了一个子线程，主线程调用子线程的join方法后，子线程完成后主线程才继续执行。也可 以通过线程数为1的线程池来实现.
 
 ```java
 ExectorService excutor =  Excutors.newSingleThreadExcutor();
@@ -251,13 +221,13 @@ excutor.shuntdow();
 
 ### 线程间如何通信
 
-共享内存 volatile，消息传递 wait/notfy
+> 1. volatile 共享内存 
+> 2. wait/notify 消息传递 
 
-### 完成线程同步的方式有哪些
+### 完成线程同步的方式
 
-> 1. 使用带有synchronized关键字的同步方法。
-> 2. 使用synchronized块。
-> 3. 使用JDK 5中提供的java.util.concurrent.lock包中的Lock对象。
+> 1. 使用带有synchronized关键字的同步方法或者同步代码块
+> 2. 使用 java.util.concurrent.lock Lock对象。
 
 
 
@@ -303,13 +273,13 @@ jdk8的 parallelStream 的理解
 
 分段锁的原理,锁力度减小的思考
 
-## 常用类及接口
+## 常用类及方法
 
 ### String, StringBuilder,  StringBuffer
 
 > 三者都是使用char[] 的数组保存数据的 ,都是CharSequence 接口的实现类
 >
-> String中的 concat, replace 等方法不对char[]数组进行操作, 它最终返回一个新的String对象, 所以原String对象一但创建好后它的值将不会改变(没有改变这个值的入口)
+> String中的 concat, replace 等方法不对char[]数组进行操作, 它最终返回一个新的String对象, 所以原String对象一但创建好后它的值将不会改变(因为没有改变的入口)
 >
 > StringBuilder 的append,delete等方法是对当前对象进行操作 并返回当前对象
 >
@@ -323,8 +293,6 @@ jdk8的 parallelStream 的理解
 >
 > finalize 是Object中的一个方法, 这个方法一般在GC线程中被调用,一般用来做关闭连接、关闭文件等释放资源的操作
 
-
-
 ### throw,throws,throwable
 
 > throw 用在方法体内,表示抛出异常
@@ -333,9 +301,7 @@ jdk8的 parallelStream 的理解
 >
 > Throwable 是 Java 语言中所有错误或异常的超类
 
-### sleep,wait
-
-
+### sleep,wait 
 
 cloneable接口实现原理，浅拷贝or深拷贝
 
@@ -345,15 +311,11 @@ cloneable接口实现原理，浅拷贝or深拷贝
 
 
 
-
-
-String，Stringbuffer，StringBuilder的区别？
-
 quartz 和 timer对比
 
 ## JVM
 
-### 虚拟机启动参数有哪些类别?
+### 虚拟机启动参数
 
 > 1. 准参数（-）, 所有 JVM 都必须实现这些参数的功能，而且向后兼容；
 >
@@ -426,51 +388,45 @@ g1和cms区别,吞吐量优先和响应优先的垃圾收集器选择
 
 说一下强引用、软引用、弱引用、虚引用以及他们之间和gc的关系
 
-# JDBC
+## JDBC
 
 ### 什么是JDBC
 
-java database connection ,java 数据库连接技术, 是由java提供的一组与平台无关的操作数据库的一组接口标准. 一个类: DriverManager; 四个接口: Connection, Statement, ResultSet, PreparedStatement
+> java database connection ,java 数据库连接技术, 是一组接口标准,它访问各种不同关系数据库的公共API，.主要包括 一个类: DriverManager; 四个接口: Connection, Statement, ResultSet, PreparedStatement
 
 ### 实现JDBC的技术有哪些
 
-1. JDBC-ODBC桥接技术
-
-   ODBC指的是开放数据库连接, 是由微软提供的数据库连接应用,利用JDBC 操作ODBC 从而实现数据库的连接, 性能较差. 支持的JDBC版本是最新的.
-
-2. JDBC直接连接
-
-   由不同的数据库生产商提供指定的数据库连接驱动程序, 性能是最好的, 一般支持的JDBC版本不是最新的.
-
-3. JDBC网络连接
-
-   使用专门的数据库网络连接命令进行指定主机的数据库操作,此种方式使用最多. 
-
-4. 模拟指定数据库的通讯协议自己编写数据库操作
-
-
+> 1. JDBC-ODBC桥接技术
+>
+>    ODBC指的是开放数据库连接, 是由微软提供的数据库连接应用,利用JDBC 操作ODBC 从而实现数据库的连接, 性能较差. 支持的JDBC版本是最新的.
+>
+> 2. JDBC直接连接
+>
+>    由不同的数据库生产商提供指定的数据库连接驱动程序, 性能是最好的, 一般支持的JDBC版本不是最新的.
+>
+> 3. JDBC网络连接
+>
+>    使用专门的数据库网络连接命令进行指定主机的数据库操作,此种方式使用最多. 
+>
+> 4. 模拟指定数据库的通讯协议自己编写数据库操作
 
 ### JDBC连接数据库的流程
 
-1. 加载数据库的驱动程序, 数据库的生产厂商提供数据库驱动程序来适配 JDBC
-
-2. 进行数据库的连接, 连接地址,用户名,密码
-
-   要连接数据库必须要靠 DriverManager 类完成, 它接收用户名密码, 返回一个Connection 
-
-3. 进行数据库的 操作
-
-4. 关闭数据库
+> 1. 加载数据库的驱动程序, 数据库的生产厂商提供数据库驱动程序来适配 JDBC
+>
+> 2. 进行数据库的连接, 连接地址,用户名,密码
+>
+>    要连接数据库必须要靠 DriverManager 类完成, 它接收用户名密码, 返回一个Connection 
+>
+> 3. 进行数据库的 操作
+>
+> 4. 关闭数据库
 
 ### JDBC体现的设计模式
 
 JDBC操作在取得数据库连接对象时, 采用的是工厂设计模式, DriverManager 是工厂类, Connection 是产品接口, 对于mysql 得到的是 com.mysql.jdbc.JDBC4Connection 实现类 
 
-# web服务器
 
-## tomcat
-
-![](java/nio/BlockingNIO.java)
 
 reader.readLine() 和 inputStream.read(), outputStream.flush() 的坑 
 
@@ -482,53 +438,96 @@ reader.readLine() 和 inputStream.read(), outputStream.flush() 的坑
 >
 > outputStream.flush()  的作用是清空缓冲区, 并不保证网络传输.  
 
-# spring
+# framework
 
-Spring AOP与IOC的实现原理
+## spring
 
-Spring的beanFactory和factoryBean的区别
+### AOP与IOC的实现原理
 
-为什么CGlib方式可以对接口实现代理？
+### beanFactory和factoryBean
 
-RMI与代理模式
+### CGlib
 
-Spring的事务隔离级别，实现原理
+### RMI与代理模式
 
-对Spring的理解，非单例注入的原理？它的生命周期？循环注入的原理，aop的实现原理，说说aop中的几个术语，它们是怎么相互工作的？
+### 事务隔离级别
 
-spring的controller是单例还是多例，怎么保证并发的安全
+### 非单例注、循环注入
+
+### controller是单例还是多例，怎么保证并发的安全
 
 
 
-# spring mvc
+## spring mvc
 
-MVC框架原理，他们都是怎么做url路由的
+### MVC框架原理，他们都是怎么做url路由的
 
-#spring boot
+##spring boot
 
-spring boot特性，优势，适用场景等
+### spring boot特性，优势，适用场景等
 
-#NoSql
+## mybatis
 
-# mybatis
+### Mybatis的底层实现原理
 
-Mybatis的底层实现原理
+## netty
 
-# netty
+# 各种协议、思想、规范
 
-#设计模式
+##设计模式
 
-# 数据库
+### 工厂模式
 
-分库分表技术
+1. 创建接口 `Shape `
+2. 创建两个以上的具体类,分别实现 `Shape` 接口
+3. 创建一个`ShapeFactory `工厂类, 编写一个`public Shape getShape(String shapeType){}` 方法, 根据不同的入参返回不同的`Shape`
+4. 使用:`new ShapeFactory().getShape("CIRCLE") `
 
-# 数据结构
+### 抽象工厂模式
+
+1. 创建第一个接口`Shape`
+2. 创建两个以上的具体类,分别实现 `Shape` 接口
+3. 创建第二个接口`Color`
+4. 创建两个以上的具体类,分别实现 `Shape` 接口
+5. 创建`AbstractFactory.java`,声明两个抽象方法,分别返回`Shape`和`Color`
+6. 创建工厂类`ShapeFactory`,继承` AbstractFactory`,根据不同的入参返回不同的Shape
+7. 创建工厂类`ColorFactory `,继承` AbstractFactory`,根据不同的入参返回不同的Color
+8. 创建超级工厂`FactoryProducer `,静态方法根据不同的入参返回不同的工厂
+9. 使用:`FactoryProducer.getFactory("COLOR").getColor("RED")`
+
+### 单例模式
+
+1. 创建一个`SingleObject `类,并在类中定义一个静态私有字段
+
+   `private static SingleObject instance = new SingleObject()`,
+
+   然后定义私有构造函数,
+
+   再定义静态的`getInstance()`方法,返回instance 
+
+2. 使用:`SingleObject.getInstance()`
+
+### 原型模式
+
+### 模板模式
+
+# 数据
+
+## 排序问题
+
+### 归并排序
+
+### 快速排序
+
+### 希尔排序
+
+## 数据结构
 
 什么是数据结构？
 
 > 数据元素以及元素之间关系的集合
 
-### 怎么去遍历一个二叉树?
+### 遍历一个二叉树?
 
 ```java
 import java.util.ArrayList;
@@ -604,25 +603,251 @@ public class App {
 
 前序遍历、中序遍历、后续遍历
 
+## redis
+
+## mysql
+
+## oracle
+
+## 数据库集群
+
+### 分库分表？
+
+先考虑业务拆分和硬件升级, 增加数据库节点和负载均衡进行读写分离，
 
 
 
+# 中间件
 
+> ObjectWeb defines middleware as: "The software layer that lies between the operating system and applications on each side of a distributed computing system in a network."[4] Services that can be regarded as middleware include enterprise application integration, data integration, message oriented middleware (MOM), object request brokers (ORBs), and the enterprise service bus (ESB).
+>
+> ObjectWeb将中间件定义为：“位于网络中分布式计算系统两侧的操作系统和应用程序之间的软件层。” 可被视为中间件的服务包括企业应用程序集成，数据集成，面向消息的中间件（MOM），对象请求代理（ORB）和企业服务总线（ESB）。
+>
+> from [wikipedia](https://en.wikipedia.org/wiki/Middleware)
+
+## tomcat
+
+## nginx
+
+### 安装步骤
+
+> 1. 安装gcc和库文件:
+>
+> ```
+> yum -y install make zlib zlib-devel gcc-c++ libtool  openssl openssl-devel
+> ```
+>
+> 2. 编译安装pcre：
+>
+> ```bash
+> cd /usr/local/
+> wget http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.g
+> tar zxvf pcre-8.35.tar.gz
+> cd pcre-8.35
+> ./configure
+> make && make install
+> ```
+>
+> 3. 编译安装Nginx
+> ```bash
+> cd /usr/local/
+> wget http://nginx.org/download/nginx-1.8.1.tar.gz
+> tar zxvf nginx-1.8.1.tar.gz
+> cd nginx-1.8.1
+> ./configure \
+> --prefix=/usr/local/webserver/nginx \
+> --with-http_stub_status_module --with-http_ssl_module \
+> --with-pcre=/usr/local/src/pcre-8.35
+> make && make install
+> /usr/local/webserver/nginx/sbin/nginx -v
+> ```
+> 4. 创建 www 用户组
+> ```bash
+> groupadd www
+> useradd -g www www
+> ```
+> 5. 修改 nginx.conf
+> ```properties
+> user  www;
+> http { 
+>     upstream  myserver #配置集群
+>     {
+>         server  127.0.0.1:18080  weight=1;
+>         server  127.0.0.1:28080  weight=2;
+>     }
+>     server {
+>         listen       8888;
+>         server_name demo.com  #监听HOST为demo.com的请求
+>         location / { 
+>             proxy_pass http://myserver;  #myserver
+>         }
+>     }
+> }
+> ```
+>
+
+### 管理命令
+
+```bash
+./nginx				#启动
+./nginx -s reload	#重载配置
+./nginx -s reopen	#重启
+./nginx -s stop 	#停止
+```
+
+### 配置文件-路径匹配？
+
+```bash
+~ 	     #为区分大小写匹配
+~*	     #为不区分大小写匹配
+!~	     #分别为区分大小写不匹配
+!~*	     #不区分大小写不匹配
+-f       #判断是否存在文件 
+-d       #判断是否存在目录
+-e       #判断是否存在文件或目录 
+-x       #判断文件是否可执行
+!-x      #判断文件是否可执行
+```
+
+### 配置文件-nginx指令？
+
+nginx.conf  中用到了一些指令，这些指令如下
+
+- root
+
+```properties
+location ~ .(mp3|mp4) {
+	root /www/media;
+}
+# /test/123.mp3 -->  /www/media/123.mp3  指定目录作为根目录/www/media/进行检索
+```
+
+- alias
+
+```properties
+location /test/   
+{   
+    alias/first/second/img/;
+}
+# /test/1.jpg  -->  /first/second/img/1.jpg 将字符串/test/替换为/first/second/img/
+```
+
+- proxy_pass
+
+```properties
+location /test/   
+{
+    proxy_pass http://127.0.0.1:8080/;   
+}
+# /test/1.jpg  -->  http://127.0.0.1:8080/1.jpg（转发，不附加/test/路径）
+```
+
+```properties
+location /test/   
+{   
+    proxy_pass http://127.0.0.1:8080;
+} 
+# /test/1.jpg  -->  http://127.0.0.1:8080/test/1.jpg (转发，附加/test/路径)
+```
+
+```properties
+location/test/   
+{   
+    proxy_pass http://127.0.0.1:8080/img;
+}  
+# /test/1.jpg -->  http://127.0.0.1:8080/img1.jpg（未附加/test/路径，但附加了/test/之后的路径
+```
+
+## docker
+
+### docker 基本命令
+
+| 问题                    | 命令                                       |
+| --------------------- | ---------------------------------------- |
+| 添加国内镜像                | `vi /etc/systemd/system/multi-user.target.wants/docker.service` </br> `ExecStart=/usr/bin/dockerd --registry-mirror=https://jxus37ad.mirror.aliyuncs.com` `sudo systemctl daemon-reload` </br> `sudo systemctl restart docker` |
+| 列出镜像                  | `docker images`                          |
+| 搜索镜像                  | `docker search tomcat`                   |
+| 下载镜像                  | `docker pull tomcat`                     |
+| 搜索镜像                  | `docker search mongodb`                  |
+| 下载镜像                  | `docker pull mongodb`                    |
+| 创建并启动容器               | `docker run --name test-tomcat -p 80:8080 tomcat &` |
+| 创建并启动容器               | `docker run --name test-tomcat2 -p 81:8080 tomcat &` |
+| 创建并启动一个test-tomcat3容器 | `docker run --name test-tomcat3 -p 82:8080 tomcat &` |
+| 停止容器                  | `docker stop test-tomcat`                |
+| 启动容器                  | `docker start test-tomcat`               |
+| 进入容器                  | `docker exec -it test-tomcat  /bin/sh`  ` cat logs/catalina.*.log` |
+| 直接查看容器日志              | `docker logs test-tomcat`                |
+| 退出容器                  | `exit`                                   |
+| 查看当前所有容器              | `docker ps -a`                           |
+| 删除容器                  | ` docker rm test-tomcat`                 |
+| 删除所有容器                | `docker rm $(docker ps -aq)`             |
+| 删除镜像                  | `docker rmi tomcat`                      |
+| 删除所有镜像                | `docker rmi $(docker images -aq)`        |
+
+### docker helloworld
+
++ `docker pull node`
++ `cat server.js`
+```
+var http = require('http');
+http.createServer(function (request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.end('Hello World\n');
+}).listen(8888);
+console.log('Server running at http://127.0.0.1:8888/');
+```
++ `cat Dockerfile`
+```
+FROM node
+RUN mkdir -p /usr/app
+WORKDIR /usr/app
+ADD . /usr/app
+EXPOSE 8888
+CMD [ "node", "server.js" ]
+```
++ `docker build -t web-demo`
++ `docker run --name web-demo -p 8888:8888 web-demo &`
++ `curl localhost:8888`
+```
+Hello World
+```
 # 分布式
 
-### 什么是RPC以及RMI
+## 基础篇
 
-基于网络通信进行接口访问的一种技术实现，它跨平台跨语言，类似于java 的RMI ，
+### 什么是 RPC，RMI ，JMS
+
+> RPC 指的是远程过程调用协议，使用的是Client/Server 模型，请求时需要通过程序号、版本号、过称号等确定一个服务
+>
+> RMI 指的是用 Java 语言开发的进行远程方法调用的一组API，能够让一个虚拟机上的对象调用另一个虚拟机对象上的方法
+>
+> JMS 指的是Java面向消息中间件(MOM)的技术规范，提供标准的产生、发送、接收消息的接口，类似于JDBC
+
+### 什么是 SOAP 
+
+> SOAP 叫做简单对象访问协议, 他是一种协议规范，使用XML作为消息格式，并依赖HTTP或者SMTP协议进行传输。
+
+### 什么是 webservice
+
+> webservice 是一套提供给 服务方和调用方的通信标准，是两个应用程序之间实现通信的解决方案，可以用HTTP POST/GET 代替这种方案
+>
+> 1. 使用WSDL（XML）描述服务方接口
+> 2. 使用XML 传输请求、响应报文
+> 3. 使用 SOAP 协议进行网络通信 
+>
+> 因为XML与编程语言无关，所以很容易做到了跨平台/系统调用。
+
+
 
 ### 如何实现一个RMI程序
 
->创建远程接口， 并且继承java.rmi.Remote接口
+>创建远程接口， 并且继承java.rmi.Remote接口 
 >
->实现远程接口，并且继承：UnicastRemoteObject
+>实现远程接口，并且继承：java.rmi.server.UnicastRemoteObject 类 
 >
->创建服务器程序： createRegistry方法注册远程对象，并监听一个端口	
+>创建服务器程序：通过 InitialContext 类的bind方法注册服务并监听端口 
 >
->创建客户端程序
+>客户端程序直接用 javax.naming.InitialContext 的实例根据服务名 ”rmi://主机名:端口号/实例名“ 获取对象
 
 ### 集群怎么共享session
 
@@ -632,91 +857,151 @@ public class App {
 >
 > session同步：服务器之间同步session，由一台服务器生产session，通过脚本或者其他方式同步到其他服务器上，这方案速度慢，同步session有延迟性什么是webservice
 
+### 对分布式事务的理解
 
+简单点说，分布式事务就是多应用跨数据库的事务,
 
-### 什么是wsdl
-
-wsdl 他是基于xml定义的一种文件类型，wsdl的作用类似于接口文档，主要对请求和响应的方式和数据格式做说明，一个webservice只有一个wsdl文档 
-
-### 什么是SOAP 简单对象访问协议
+数据库的两段提交或者MQ消息
 
 ## zookeeper
+
+### 什么是 zookeeper
+
+> zookeeper是使用树形结构保存数据的一个服务，可以单机部署，也可以做集群,集群中有一个leader,多个follower,每个server保存一份数据部分,所有server数据一致,分布式读写,数据保存在内存中，节点znode是保存数据的基本单元，节点可以有子节点。zookeeper也会定时持久化内存中的数据。zookeeper与客户端以TCP长连接保持会话，客户端可以在zookeeper上监听一些节点事件，事件触发时，zookeeper会通知客户端。
+
+### 单机部署
+
+> 单机安装比较简单直接下载zookeeper 解压后，配置下的数据文件目录，日志文件目录和超时时间设置，之后运行zookeeper 启动，OK
+
+### 集群部署
+
+> zookeeper集群包含3中角色，leader，follower，observer, 单机部署成功后，关闭服务，修改配置文件，在配置文件中以 server.${myid} 作为key  配置服务集群的IP:服务端口:选举端口[:observer],  之后创建myid文件，然后启动验证，其他服务做相同的操作，myid一般从1开始按服务器顺序递增。如果某台服务器是observer，还需要增加一行 peerType=observer 的配置
+
+### 默认端口
+
+> 对客户端提供服务：2181；集群间通信：2888；选举leader：3888
+
+### observer 的作用
+
+> zookeeper的数据变更需要半数以上服务器投票通过，在增加集群节点的时候会带来写性能上的下降，observer 不参与数据写入时的投票，因此在增加服务器节点的时候能带来读性能上的提升
 
 ### zookeeper的数据模型
 
 > zookeeper的数据模型和文件系统类似，是一种树形的结构，每个节点称为znode，它是zookeeper中最基本的数据单元，节点可以保存数据和挂载子节点，这些节点的数据保存在内存中，zookeeper会定时把内存中的数据写入到磁盘中。节点分为持久化节点和临时节点，临时节点与客户端会话保持一致，会话失效节点会被清除。
 
-### zookeeper的工作机制
+### zooKeeper集群间通信
 
-> zookeeper一般暴露使用2181端口对客服端提供服务，客户端向zookeeper注册一个监听（watcher），并维护一个TCP长连接，zookeeper上的节点触发监听事件的时候，zookeeper会向客户端发送一个通知，注册的监听是一次性的，继续监听需要重新注册。
+> Leader服务器会和每一个Follower建立TCP连接，默认2888端口，同时为每个Follower都创建一个叫做LearnerHandler的实体。LearnerHandler主要负责Leader和Follower之间的网络通讯，包括数据同步，请求转发和提议的投票等。Leader服务器保存了所有Follower的LearnerHandler。
+
+### zooKeeper宕机
+
+> 客户端会定时向服务器发送心态报文，zookeeper收到心跳报文后重置超时时间，在session未过期的情况下，客户端可以主动在地址列表里选择新的地址进行连接 
+
+### zookeeper watcher机制 
+
+> Znode 节点创建，节点删除，节点改变，子节点改变等事件，客户端可以对不同的节点的不同事件进行注册监听，这个监听是一次性的，事件触发后，zookeeper会通过TCP长连接通知客户端。
+
+### zookeeper的用途
+
+配置集中管理, 服务名称解析(根据服务名找到对方IP，类似DNS)， 分布式锁
+
+### 选举的原理
+
+### 分布式锁
+
+> 1. 利用节点的唯一性来实现共享锁
 >
-> 另外 访问zookeeper 上的资源，需要通过zookeeper的权限验证（ACL）。
+> ZooKeeper 同一个目录下只能有一个唯一的文件名，两个客户端在相同目录下创建相同的znode，只能有一个成功。可以利用这个特性实现对资源的加锁，解锁时将创建的节点删除。其他监听该节点的客户端会收到通知来竞争这个锁
+>
+> 2. 利用临时的顺序实现共享锁
+>
+>   当多个客户端同时访问一个持久节点的时候，如果需要对资源加锁，需要告知zookeeper在当前节点下创建一个临时顺序节点，然后立即获取所有子节点，找到节点序号最小的节点，判断这个节点是不是自己创建的，如果是则代表获取到了锁，客户端完成对资源进行操作后删除该节点。
 
-### ZooKeeper集群中服务器之间是怎样通信的
+## dubbo
 
-Leader服务器会和每一个Follower建立TCP连接，默认2888端口，同时为每个Follower都创建一个叫做LearnerHandler的实体。LearnerHandler主要负责Leader和Follower之间的网络通讯，包括数据同步，请求转发和提议的投票等。Leader服务器保存了所有Follower的LearnerHandler。
+### dubbo 注册与发现过程
 
-### 客户端如何正确处理连接断开的
+![](img/dubbo05.png)
 
-> 客户端会定时向服务器发送心态报文，zookeeper收到心跳报文后重置超时时间，在session未过期的情况下，客户端会主动在地址列表里选择新的地址进行连接
+> 1. 服务提供者在启动时，向注册中心注册自己的服务。 
+> 2. 消费者在启动时，向注册中心订阅自己所需的服务。 
+> 3. 注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。 
+> 4. 消费者从提供者地址列表中，基于软负载均衡，选一台提供者进行调用，如果调用失败，再选另一台调用。 
+> 5. 消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。
 
-数据的发布和订阅（配置中心：disconf），负载均衡（dubbo+zookeeper）、命名服务、master选举（kafka、hadoop、hbase）、分布式队列、分布式锁
+### 注册中心宕机
 
+>  如果是zookeeper集群，任意一台宕机后，dubbo将切换到另外一台，注册中心全部宕机后，消费者和服务提供者仍能通过本地缓存进行通信
 
+### 服务提供者宕机
 
-Dubbo的底层实现原理和机制
+> 服务提供者无状态，任意一台宕机后不影响使用，服务提供者全部宕机后，消费者应用将无法使用，并无限重连等待服务提供者恢复,dubbo默认有重试机制和超时机制，调用服务不成功时会重试, 重试时请求路由到其他机器上
 
-```
-Dubbo默认采用单一长连接和NIO异步通讯，
-适合于小数据量大并发的服务调用，以及消费者数远大于生产者数的情况
-1.client一个线程调用远程接口，生成一个ID，Dubbo是使用AtomicLong从0开始累计数字的
-2.将接口名称，方法名称，参数值列表，处理结果的回调对象callback，全部封装在一起，组成一个 object
-3.向专门存放调用信息的全局ConcurrentHashMap里面put(ID, object)
-4.将ID和打包的方法调用信息封装成一对象connRequest，使用IoSession.write(connRequest)异步发送出去
-5.当前线程再使用callback的get()方法试图获取远程返回的结果，在get()内部，则使用synchronized获取回调对象callback的锁，  
-再先检测是否已经获取到结果，如果没有，然后调用callback的wait()方法，释放callback上的锁，让当前线程处于等待状态。
-6.服务端接收到请求并处理后，将结果（此结果中包含了前面的ID，即回传）发送给客户端，客户端socket连接上专门监听消息的线程收到消息，  
-分析结果，取到ID，再从前面的ConcurrentHashMap里面get(ID)，从而找到callback，将方法调用结果设置到callback对象里。
-7.监听线程接着使用synchronized获取回调对象callback的锁（因为前面调用过wait()，那个线程已释放callback的锁了），再notifyAll()，  
-唤醒前面处于等待状态的线程继续执行（callback的get()方法继续执行就能拿到调用结果了），至此，整个过程结束。
-```
+### 聊聊Dubbo
 
-Dubbo的协议支持
+### 分布式系统怎么做服务治理
 
-```
-dubbo支持的协议有：dubbo/hessian/http/RMI/WebService/thrift/mamcached/redis
-```
+> dubbo的基本功能是完成远程服务的调用，除此之外dubbo还有服务治理的功能，包括：软负载均衡, 容错 ,监控与统计 ,容量评估 ,路由 ,黑白名单 ，权限控制 ，依赖管理等
+>
+> 参考 [[服务治理过程演进](http://javatar.iteye.com/blog/1345073)]
 
+### Dubbo的协议支持
 
+> dubbo支持的协议有：dubbo/hessian/http/RMI/WebService/thrift/mamcached/redis
 
-描述一个服务从发布到被消费的详细过程
+### 接口的幂等性的概念
 
-分布式系统怎么做服务治理
+> 简单点说：对于重复提交的请求返回相同的结果。
+>
+> 幂等是数学中的概念，如果存在x∈X,  有f(x) = x 则称 x相对于f 是幂等的,  可以构造一个函数 f(x) = x^2+x-1,  x^2+x-1=x,得 x=1或-1，则 -1 相对于f(x) = x^2+x-1是幂等元素，因为f(-1)=-1,
 
-接口的幂等性的概念
+## activeMQ
 
-消息中间件如何解决消息丢失问题
+### 部署
 
-Dubbo的服务请求失败怎么处理
+> 下载activeMq安装包
+>
+> tar -zxvf **.tar.gz
+>
+> sh bin/activemq start 启动activeMQ服务
 
-重连机制会不会造成错误
+### 默认端口/通信协议
 
-对分布式事务的理解
+> activeMQ使用61616提供服务，管理控制台在 8161端口，通信支持TCP、UDP、HTTP
 
-如何实现负载均衡，有哪些算法可以实现？
+### JMS 提供了哪些接口
 
-Zookeeper的用途，选举的原理是什么？
+> 连接工厂（ConnectionFactory）是由管理员创建，并绑定到 JNDI 树中。客户端使用 JNDI 查找连接工厂，然后利用连接工厂创建一个JMS连接。
+>
+> JMS连接（Connection）表示JMS客户端和服务器端之间的一个活动的连接，是由客户端通过调用连接工厂的方法建立的。
+>
+> JMS会话（Session）表示JMS客户与JMS服务器之间的会话状态。JMS会话建立在JMS连接上，表示客户与服务器之间的一个会话线程。
+>
+> JMS目的（Destination），又称为消息队列，是实际的消息源。
+>
+> JMS生产者和消费者。生产者（Message Producer）和消费者（Message Consumer）对象由Session对象创建，用于发送和接收消息。
 
-数据的垂直拆分水平拆分。
+### JMS的消息确认 
 
-zookeeper原理和适用场景
+> JMS消息之后被确认后，才会认为是被成功消费。消息的消费包含三个阶段： 客户端接收消息、客户端处理消息、消息被确认 
 
-zookeeper watch机制
+### 点对点(p2p)
+
+> 每个消息只能有一个消费者
+>
+> 消息的生产者和消费者之间没有时间上的相关性。无论消费者在生产者发送消息的时候是否处于运行状态，都可以提取消息
+
+### 发布订阅(pub/sub) 
+> 每个消息可以有多个消费者
+>
+> 消息的生产者和消费者之间存在时间上的相关性，订阅一个主题的消费者只能消费自它订阅之后发布的消息。JMS规范允许提供客户端创建持久订阅
+
+### 消息组成
+
+> 消息头:包含消息的识别信息和路由信息; 消息体; 属性
+
+### 消息丢失问题
 
 # 高并发
 
-JUC/并发相关
-
-
-
-https://www.cnblogs.com/pureEve/p/6546280.html
+# bash
