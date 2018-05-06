@@ -73,6 +73,30 @@ http {
 }
 ```
 
+```
+# 反向代理
+server {
+    listen 80;
+    server_name your.domain.name;
+    location / {
+        # 把跟路径下的请求转发给前端工具链（如gulp）打开的开发服务器
+        # 如果是产品环境，则使用root等指令配置为静态文件服务器
+        proxy_pass http://localhost:5000/;
+    }
+
+    location /api/ {
+        # 把 /api 路径下的请求转发给真正的后端服务器
+        proxy_pass http://localhost:8080/service/;
+        # 把host头传过去，后端服务程序将收到your.domain.name, 否则收到的是localhost:8080
+        proxy_set_header Host $http_host;
+        # 把cookie中的path部分从/api替换成/service
+        proxy_cookie_path /api /service;
+        # 把cookie的path部分从localhost:8080替换成your.domain.name
+        proxy_cookie_domain localhost:8080 your.domain.name         
+    }
+}  
+```
+
 
 
 ## Nginx WIKI

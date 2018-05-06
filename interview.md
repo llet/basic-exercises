@@ -13,11 +13,9 @@
 
 ### 面向对象特性
 
-### 多态
+### 多态 
 
-### 抽象类和接口
-
-
+### 抽象类和接口 
 
 ## 集合框架
 
@@ -125,7 +123,7 @@ hashtable和hashmap的区别及实现原理
 
 hashmap会问到数组索引
 
-hash碰撞怎么解决
+hash碰撞怎么解决 
 
 arraylist和linkedlist区别及实现原理
 
@@ -139,13 +137,23 @@ concurrenthashmap具体实现及其原理，jdk8下的改版
 
 ## 动态代理
 
-动态代理的几种方式
+### JDK 动态代理
 
-反射的原理，反射创建类实例的三种方式是什么？
+JDK动态代理有一定的使用限制, 只能对实现了接口的类进行代理, 它实现方式是 通过 Proxy类 的一个静态方法来产生一个代理对象, 这个过程需要指定代理对象, 指定类装载器, 指定接口, 指定回调处理.   在回调中调用目标对象的方法, 并增加横切业务. 在使用生成的代理类时, 需要把这个代理对象强转成指定的接口类型, 然后完成调用. 
 
-反射中，Class.forName和ClassLoader区别
+### CGLIB 动态代理
 
-## 反射
+根据目标对象的字节码 动态生成一个子类，子类重写父类的非final方法。在子类中拦截所有父类方法的调用，并增加横切业务。代码实现过程: 创建一个enhancer ,设置父类和MethodInterceptor, 使用enhancer 生成代理对象, 
+
+### 反射的原理
+
+一般的java程序在运行之前, 所有的字节码都需要加载到内存中去, 而java的反射指的是在程序运行时去加载字节码文件,  
+
+### 创建类实例的三种方式
+
+### Class.forName和ClassLoader区别
+
+classLoader只是将字节码加载到jvm中, class.forName() 除了将字节码加载到jvm中之外，还会对类进行解释, 并执行静态代码块
 
 ## 泛型
 
@@ -315,25 +323,17 @@ quartz 和 timer对比
 
 ### 虚拟机启动参数
 
-> 1. 准参数（-）, 所有 JVM 都必须实现这些参数的功能，而且向后兼容；
->
->    -D<key>=<value> 设置系统属性,代码中可以通过 System.getProperty("key"); 获取该属性
->
-> 2. 扩展参数（-X）, 不保证所有jvm实现都满足，且不保证向后兼容；
->
-> 3. 不稳定参数（-XX）, 将来可能会随时取消，需要慎重使用；
+第一种是标准参数: 比如 -version 、 -verbose:class 、-verbose:gc、 -Dfile.encoding=UTF-8、第二种是扩展参数 -Xms512m  -Xmx1024m -Xmn200m -Xss1m -Xloggc:gc.log ,第三种是非标准参数,常用的有: -XX:PermSize -XX:MaxPermSize  -XX:newSize -XX:MaxnewSize -XX:+PrintGCDetails -XX:+PrintGCDateStamps 
 
-### 不稳定参数语法规则
+### JVM内存模型 
 
->  -XX:+<option>  表示启用该选项
->
->  -XX:-<option>  表示关闭该选项
->
->  -XX:<option>=<value> 给选项设置一个值
+线程共享的: 方法区: (常量、静态变量、类的元数据信息), 堆区, 线程私有的: 虚拟机栈, 本地方法栈, 程序计数器
+
+堆区包括: 新生代(Eden+两个Survivor)和 老年代 (OldGen) 
+
+永久代/元空间 (PermGen/Metaspace)
 
 ### 怎么查看GC日志?
-
-在JVM启动时 指定参数 `-XX:+PrintGCDetails -Xloggc:./gc.log -XX:+PrintGCDateStamps  `
 
 ```
 2018-04-13T21:59:38.595+0800: 22.258: GC (Allocation Failure) [PSYoungGen: 214013K->33789K(186368K)] 353197K->253557K(407552K), 0.0560998 secs 
@@ -390,35 +390,11 @@ g1和cms区别,吞吐量优先和响应优先的垃圾收集器选择
 
 ### 什么是JDBC
 
-> java database connection ,java 数据库连接技术, 是一组接口标准,它访问各种不同关系数据库的公共API，.主要包括 一个类: DriverManager; 四个接口: Connection, Statement, ResultSet, PreparedStatement
-
-### 实现JDBC的技术有哪些
-
-> 1. JDBC-ODBC桥接技术
->
->    ODBC指的是开放数据库连接, 是由微软提供的数据库连接应用,利用JDBC 操作ODBC 从而实现数据库的连接, 性能较差. 支持的JDBC版本是最新的.
->
-> 2. JDBC直接连接
->
->    由不同的数据库生产商提供指定的数据库连接驱动程序, 性能是最好的, 一般支持的JDBC版本不是最新的.
->
-> 3. JDBC网络连接
->
->    使用专门的数据库网络连接命令进行指定主机的数据库操作,此种方式使用最多. 
->
-> 4. 模拟指定数据库的通讯协议自己编写数据库操作
+JDBC指的是java程序访问各种不同关系数据库的通用标准,是一组API接口，主要包括 一个类: DriverManager; Connection, Statement,  PreparedStatement,ResultSet
 
 ### JDBC连接数据库的流程
 
-> 1. 加载数据库的驱动程序, 数据库的生产厂商提供数据库驱动程序来适配 JDBC
->
-> 2. 进行数据库的连接, 连接地址,用户名,密码
->
->    要连接数据库必须要靠 DriverManager 类完成, 它接收用户名密码, 返回一个Connection 
->
-> 3. 进行数据库的 操作
->
-> 4. 关闭数据库
+加载数据库的驱动程序, 获取数据库的连接,  进行数据库的 操作, 关闭连接
 
 ### JDBC体现的设计模式
 
@@ -468,8 +444,6 @@ Spring的事务方法不能调用同一个类里面的另外一个事务方法�
 
 ### BeanFactory和FactoryBean
 
-
-
 ### CGlib
 
 ### RMI与代理模式
@@ -488,6 +462,8 @@ Spring的事务方法不能调用同一个类里面的另外一个事务方法�
 
 ## spring boot
 
+
+
 ### spring boot特性，优势，适用场景等
 
 ## mybatis
@@ -500,40 +476,15 @@ Spring的事务方法不能调用同一个类里面的另外一个事务方法�
 
 ##设计模式
 
-### 工厂模式
+### 熟悉哪些设计模式 
 
-1. 创建接口 `Shape `
-2. 创建两个以上的具体类,分别实现 `Shape` 接口
-3. 创建一个`ShapeFactory `工厂类, 编写一个`public Shape getShape(String shapeType){}` 方法, 根据不同的入参返回不同的`Shape`
-4. 使用:`new ShapeFactory().getShape("CIRCLE") `
-
-### 抽象工厂模式
-
-1. 创建第一个接口`Shape`
-2. 创建两个以上的具体类,分别实现 `Shape` 接口
-3. 创建第二个接口`Color`
-4. 创建两个以上的具体类,分别实现 `Shape` 接口
-5. 创建`AbstractFactory.java`,声明两个抽象方法,分别返回`Shape`和`Color`
-6. 创建工厂类`ShapeFactory`,继承` AbstractFactory`,根据不同的入参返回不同的Shape
-7. 创建工厂类`ColorFactory `,继承` AbstractFactory`,根据不同的入参返回不同的Color
-8. 创建超级工厂`FactoryProducer `,静态方法根据不同的入参返回不同的工厂
-9. 使用:`FactoryProducer.getFactory("COLOR").getColor("RED")`
+创建对象: 单例模式, 工厂模式;  类的继承组合: 适配器模式, 装饰器模式, 代理模式 ; 对象间通信: 观察者模式, 策略模式, 模板方法; 
 
 ### 单例模式
 
-1. 创建一个`SingleObject `类,并在类中定义一个静态私有字段
+保证一个类仅有一个实例，并提供一个访问入口。 共享的资源一般使用单例: 日志文件, 数据库连接池等
 
-   `private static SingleObject instance = new SingleObject()`,
 
-   然后定义私有构造函数,
-
-   再定义静态的`getInstance()`方法,返回instance 
-
-2. 使用:`SingleObject.getInstance()`
-
-### 原型模式
-
-### 模板模式
 
 # 数据
 
@@ -628,6 +579,8 @@ public class App {
 前序遍历、中序遍历、后续遍历
 
 ## redis
+
+## sql 调优
 
 ## mysql
 
