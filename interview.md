@@ -159,6 +159,16 @@ classLoader只是将字节码加载到jvm中, class.forName() 除了将字节码
 
 ## IO/NIO
 
+reader.readLine() 和 inputStream.read(), outputStream.flush() 的坑 
+
+> reader.readLine() 在遇到换行符之前会一直读 , 这就会发生阻塞,  直到遇到换行符的时候才会返回读取结果 ,且 换行符并不返回, 
+>
+> inputStream.read() 方法执行时如果遇到文件末尾会返回-1,而socket通信时，只要客户端保存连接，服务端会一直等待客户端输入. 
+>
+> 解决办法:  在最后一次读取时由于流里所剩的字节数小于b的长度，流就认为到了流的末尾。如果为整数的话阻塞原因同上。
+>
+> outputStream.flush()  的作用是清空缓冲区, 并不保证网络传输.  
+
 ## 序列化
 
 ### UID的作用
@@ -275,9 +285,11 @@ Condition 接口及其实现原理
 
 Fork/Join框架的理解
 
-jdk8的 parallelStream 的理解
-
 分段锁的原理,锁力度减小的思考
+
+## jdk8
+
+ parallelStream 的理解
 
 ## 常用类及方法
 
@@ -400,31 +412,19 @@ JDBC指的是java程序访问各种不同关系数据库的通用标准,是一�
 
 JDBC操作在取得数据库连接对象时, 采用的是工厂设计模式, DriverManager 是工厂类, Connection 是产品接口, 对于mysql 得到的是 com.mysql.jdbc.JDBC4Connection 实现类 
 
-
-
-reader.readLine() 和 inputStream.read(), outputStream.flush() 的坑 
-
-> reader.readLine() 在遇到换行符之前会一直读 , 这就会发生阻塞,  直到遇到换行符的时候才会返回读取结果 ,且 换行符并不返回, 
->
-> inputStream.read() 方法执行时如果遇到文件末尾会返回-1,而socket通信时，服务端会一直等待客户端输入. 
->
-> 解决办法:  在最后一次读取时由于流里所剩的字节数小于b的长度，流就认为到了流的末尾。如果为整数的话阻塞原因同上。
->
-> outputStream.flush()  的作用是清空缓冲区, 并不保证网络传输.  
-
 # framework
 
 ## spring
 
 ### 谈谈spring
 
-降低了组件之间的耦合性 ，实现了软件各层之间的解耦 
+降低了组件之间的耦合性 ，实现了软件各层之间的解耦，属于低侵入式设计，
 可以使用容易提供的众多服务，如事务管理，消息服务等 
 容器提供单例模式支持 
 容器提供了AOP技术，利用它很容易实现如权限拦截，运行期监控等功能 
 容器提供了众多的辅助类，能加快应用的开发 
 spring对于主流的应用框架提供了集成支持，如hibernate，JPA，Struts等 
-spring属于低侵入式设计，代码的污染极低 
+
 独立于各种应用服务器 
 spring的DI机制降低了业务对象替换的复杂性 
 Spring的高度开放性，并不强制应用完全依赖于Spring，开发者可以自由选择spring的部分或全部 
@@ -494,8 +494,6 @@ spring AOP
 
 ## spring boot
 
-
-
 ### spring boot特性，优势，适用场景等
 
 ## mybatis
@@ -515,8 +513,6 @@ spring AOP
 ### 单例模式
 
 保证一个类仅有一个实例，并提供一个访问入口。 共享的资源一般使用单例: 日志文件, 数据库连接池等
-
-
 
 # 数据
 
