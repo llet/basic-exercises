@@ -19,7 +19,7 @@
 
 ## 集合框架
 
-### 常用集合框架有哪些?
+### 常用集合有哪些
 
 > 集合框架有两大接口:Collection  和 Map 
 > Collection下有 List可重复集合 和Set不可重复集合
@@ -29,7 +29,7 @@
 
 
 
-### ArrayList 的实现原理
+### ArrayList 原理
 
 > ArrayList 是数组实现的.它有一个重要的成员变量 Object[] elementData;
 > 插入元素的时候,找到索引所在的位置插入相应的元素,并把当前位置后的元素依次向后移动一位.
@@ -43,7 +43,7 @@
 
 
 
-### Vector的实现原理
+### Vector 原理
 
 > Vector 与ArrayList 的实现原理一样,都是使用数组来保存数据,
 > 不同的是Vector的增删改查操作都是线程同步的。使用了synchronized关键字
@@ -51,7 +51,7 @@
 
 
 
-### LinkedList 的实现原理
+### LinkedList 原理
 
 > LinkedList 是基于双向链表实现的, 它有一个内部类 Node实现了双向的链表的数据结构,Node 中包含了上一个节点和下一个节点的引用
 > java8 中LinkedList 有这三个成员变量:Node first ；Node last ；int size ；
@@ -64,7 +64,7 @@
 
 
 
-### HashMap 的实现原理
+### HashMap 原理
 
 > HashMap 是数组和链表的结合体，本质上是一个数组，数组中保存的是具有链表数据结构的Entry。
 > HashMap 的一些私有变量：int capacity；float loadFactor; Entry[] table;int size;int threshold;
@@ -81,7 +81,7 @@
 
 
 
-### **LinkedHashMap 的实现原理**
+### **LinkedHashMap 原理**
 
 >LinkedHashMap 是HashMap的子类，拥有HashMap的所有特性。并自己维护了一个双向链表。类里有两个成员变量 Entry head ;Entry  tail, 分别指向双向链表的表头、表尾。  accessOrder 默认 false ,表示 基于插入顺序 
 >
@@ -100,14 +100,14 @@ for (String value : map.keySet()) {
 }
 ```
 
-### **TreeMap 的实现原理**
+### **TreeMap 原理**
 
 > TreeMap 初始化的时候会初始化下列参数，第一个Comparator是可以自己定义实现的一个比较的实现，默认为Null,那么默认的比较方式就是compare方法。Entry root;默认为Null。其中Entry内部维护了left,right,parent,color  其中color默认是black。https://www.cnblogs.com/daoluanxiaozi/p/3340382.html
 >
 
 
 
-### HashSet 的实现原理
+### HashSet 原理
 
 >HashSet 聚合了 一个HashMap ，使用HashMap的key来保存数据， 它所有的方法都是调用HashMap对应的方法来实现的
 
@@ -287,7 +287,7 @@ Fork/Join框架的理解
 
 分段锁的原理,锁力度减小的思考
 
-## jdk8
+## java8
 
  parallelStream 的理解
 
@@ -498,7 +498,9 @@ spring AOP
 
 ## mybatis
 
-### Mybatis的底层实现原理
+### mybatis 是什么
+
+mybatis 是一个基于 JDBC 的 ORM 框架，可以通过 XML 或者注解配置 SQL，完成 SQL 查询、存储过程和高级映射等功能。MyBatis 的核心是 SqlSessionFactory 。
 
 ## netty
 
