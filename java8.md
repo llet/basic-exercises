@@ -257,3 +257,5 @@ private void doService(Person p) {
 ```
 
 ## Date API
+
+IntStream/
