@@ -1,3 +1,20 @@
+## Overview
+
+```java
+//java.util.concurrent.atomic
+AtomicInteger atomicInteger = new AtomicInteger(); //0
+atomicInteger.incrementAndGet();  //1
+atomicInteger.decrementAndGet();  //0
+atomicInteger.updateAndGet(x->x+3);  //3
+atomicInteger.accumulateAndGet(7, (x,y)->x+3*y);  //24
+
+AtomicIntegerArray array = new AtomicIntegerArray(10);
+array.updateAndGet(0, x->x+3);  //[3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+```
+
+
+
 ## Default Methods for Interfaces
 
 ```java
