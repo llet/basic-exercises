@@ -1,4 +1,167 @@
-## Overview
+
+
+## 多线程
+
+### Atomic and volatile
+
+#### 什么是内存屏障
+
+内存屏障 是一个CPU指令。 a) 确保一些特定操作执行的顺序； b) 影响一些数据的可见性。插入一个内存屏障，相当于告诉CPU和编译器先于这个命令的必须先执行，后于这个命令的必须后执行。内存屏障另一个作用是强制更新一次不同CPU的缓存。例如，一个写屏障会把这个屏障前写入的数据刷新到缓存，这样任何试图读取该数据的线程将得到最新值，而不用考虑到底是被哪个cpu核心或者哪颗CPU执行的。
+
+#### volatile 的作用
+
+在多核CPU的计算机中，对非volatile变量，每个线程先将变量从主存拷贝到CPU Cache中，当一个变量定义为 volatile 之后，将具备两种特性，1. 保证可见性和一致性，一个线程修改了变量的值，volatile 保证了新值能立即同步到主内存，以及每次使用前立即从主内存刷新。2. 保证有序性，禁止编译器、处理器对指令的重排序优化。
+
+#### 什么叫原子性
+
+原子性是指多个线程修改同一个变量时，能保证所有的修改都是有效的，且最终修改的结果是正确的
+
+#### volatile 能保证原子性吗
+
+下面的例子说明 volatile 不能保证原子性
+
+```java
+public class TestVolatile {
+	private volatile Integer i=0;
+	private void increase(){
+		i++;
+	}
+	public static void main(String[] args) throws InterruptedException {
+		TestVolatile testVolatile = new TestVolatile();
+		ExecutorService executorService = Executors.newCachedThreadPool();
+		IntStream.range(0, 2).forEach((x)->{
+			executorService.submit(()->{
+				IntStream.range(0, 10).forEach((y)->{
+					testVolatile.increase();
+				});
+			});
+		});
+		executorService.shutdown();
+		if(executorService.awaitTermination(10, TimeUnit.SECONDS)){
+			System.out.println(testVolatile.i); //14
+		}
+	}
+}
+```
+
+#### Atomic 是怎么保证原子性的 
+
+操作系统的原语是指由若干条指令组成的，用于完成一定功能的一个过程。即原语的执行必须是连续的，在执行过程中不允许被中断。CAS 是基于原语的比较和替换算法，当且仅当预期值和内存值相同时，修改内存值，否则什么都不做。 CAS是基于乐观锁的，修改失败会继续尝试。不会有两个线程同时比较并替换一个变量，来保证原子性。
+
+> 将 《volatile 不能保证原子性》的例子中的 private volatile Integer i=0; 替换为 private AtomicInteger i=new AtomicInteger(); 验证Atomic的原子性。
+
+### 练习：生产者消费者模型
+
+Producer、Consumer、BlockingQueue、Question 、ExecutorService
+
+```java
+public class Producer implements Runnable{
+    private volatile boolean isRunning = true;
+	private BlockingQueue<Question> queue; 
+    private static AtomicInteger count = new AtomicInteger();// 总数
+    private static final int SLEEPTIME = 1000;
+
+    public Producer(BlockingQueue<Question> queue) {
+        this.queue = queue;
+    }
+    @Override
+    public void run() {
+    	Question data = null;
+        Random r = new Random();
+        System.out.println("start producting id:" + Thread.currentThread().getId());
+        try {
+            while (isRunning) {
+                Thread.sleep(r.nextInt(SLEEPTIME));
+                data = new Question(count.incrementAndGet());
+                System.out.println(data + " 加入队列");
+                if (!queue.offer(data, 2, TimeUnit.SECONDS)) {
+                    System.err.println(" 加入队列失败");
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+public class Consumer implements Runnable {
+	private BlockingQueue<Question> queue;
+	private static final int SLEEPTIME = 1000;
+	public Consumer(BlockingQueue<Question> queue) {
+		this.queue = queue;
+	}
+	@Override
+	public void run() {
+		Random r = new Random();
+		try {
+			while (true) {
+				Question data = queue.take();
+				if (data != null) {
+					ScriptEngine se = new ScriptEngineManager().getEngineByName("JavaScript");
+					Object eval = se.eval(data.getQuestion());
+					System.out.println(data.toString() + " = " + eval);
+					Thread.sleep(r.nextInt(SLEEPTIME));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Thread.currentThread().interrupt();
+		}
+	}
+}
+
+public class Question {
+	private int index;
+	public static Random random=new Random();
+	public static String[] operation=new String[]{"+","-","*","/"};
+	private String question;
+	public Question(int index) {
+		this.index=index;
+		int x = random.nextInt(9999);
+		int i = random.nextInt(4);
+		int y = random.nextInt(9999);
+		this.question=x+""+operation[i]+y;
+	}
+	@Override
+	public String toString() {
+		return "Q " +index+": "+ question;
+	}
+	public String getQuestion() {
+		return question;
+	}
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+}
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+        BlockingQueue<Question> queue = new LinkedBlockingDeque<>(10);
+        Producer p1 = new Producer(queue);
+        Producer p2 = new Producer(queue);
+        Producer p3 = new Producer(queue);
+        Consumer c1 = new Consumer(queue);
+        Consumer c2 = new Consumer(queue);
+        Consumer c3 = new Consumer(queue);
+        ExecutorService service = Executors.newCachedThreadPool();
+        service.execute(p1);
+        service.execute(p2);
+        service.execute(p3);
+        service.execute(c1);
+        service.execute(c2);
+        service.execute(c3);
+        System.out.println("done");
+	}
+```
+
+
+
+### 练习：多线程打印ABC
+
+
+
+## Lambda 
+
+### Overview
 
 ```java
 //java.util.concurrent.atomic
@@ -15,7 +178,7 @@ array.updateAndGet(0, x->x+3);  //[3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
 
-## Default Methods for Interfaces
+### Default Methods for Interfaces
 
 ```java
 @Test
@@ -43,7 +206,7 @@ interface Formula {
 }
 ```
 
-## Lambda Expressions
+### Lambda Expressions
 
 ```java 
 @Test
@@ -61,7 +224,7 @@ public void lambdaExpressions() {
 	assertEquals(list, list2);
 }
 ```
-## Functional Interface 
+### Functional Interface 
 
 ``` java
 
@@ -109,7 +272,7 @@ interface PersonFactory<P extends Person> {
 }
 ```
 
-## Lambda Scopes
+### Lambda Scopes
 
 ``` java
 static int outx=10;
@@ -145,7 +308,7 @@ public void lambdaScopes(){
 	//Formula formula = (a) -> sqrt(a * 100);	
 }
 ```
-## Built-in Functional Interfaces
+### Built-in Functional Interfaces
 
 ```java
 @Test
@@ -273,6 +436,6 @@ private void doService(Person p) {
 }
 ```
 
-## Date API
+### Date API
 
 IntStream/
