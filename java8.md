@@ -1,4 +1,8 @@
+## 内部类
 
+静态内部类: new ABCPrinterTest.Printer();
+
+内部类: new ABCPrinterTest().new Printer();
 
 ## 多线程
 
@@ -48,11 +52,71 @@ public class TestVolatile {
 
 操作系统的原语是指由若干条指令组成的，用于完成一定功能的一个过程。即原语的执行必须是连续的，在执行过程中不允许被中断。CAS 是基于原语的比较和替换算法，当且仅当预期值和内存值相同时，修改内存值，否则什么都不做。 CAS是基于乐观锁的，修改失败会继续尝试。不会有两个线程同时比较并替换一个变量，来保证原子性。
 
-> 将 《volatile 不能保证原子性》的例子中的 private volatile Integer i=0; 替换为 private AtomicInteger i=new AtomicInteger(); 验证Atomic的原子性。
+### 锁的一些性质
+
+#### 公平/非公平
+
+公平锁是指多个线程按照申请锁的顺序来获取锁。非公平锁是指多个线程随机获取锁.可以通过 new ReentrantLock(true);获取一个公平锁.
+
+#### 乐观/悲观
+
+悲观锁认为对于同一个数据的并发操作持保守态度,认为会发生修改。因此对于同一个数据的并发操作，必须先获取。syncrhoized是一种悲观锁。
+
+乐观锁则认为对于同一个数据的并发操作，是不会发生修改的。在更新数据的时候，会采用尝试更新，不断重新的方式更新数据。乐观的认为，不加锁的并发操作是没有事情的。
+
+乐观锁在Java中的使用场景，是无锁编程，常常采用的是CAS算法，典型的例子就是原子类，通过CAS自旋实现原子操作的更新
+
+#### 独享/共享
+
+独享锁是指该锁一次只能被一个线程所持有。ReentrantLock Synchronized 是独享锁
+共享锁是指该锁可被多个线程所持有。new ReentrantReadWriteLock().readLock();是共享锁
+
+#### 互斥/读写
+
+互斥锁在Java中的具体实现就 ReentrantLock 
+读写锁在Java中的具体实现就 ReadWriteLock
+
+#### 偏向/轻量级/重量级
+
+这三种锁是指锁的状态，并且是针对`Synchronized`。在Java 5通过引入锁升级的机制来实现高效`Synchronized`。这三种锁的状态是通过对象监视器在对象头中的字段来表明的。
+偏向锁是指一段同步代码一直被一个线程所访问，那么该线程会自动获取锁。降低获取锁的代价。
+轻量级锁是指当锁是偏向锁的时候，被另一个线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，提高性能。
+重量级锁是指当锁为轻量级锁的时候，另一个线程虽然是自旋，但自旋不会一直持续下去，当自旋一定次数的时候，还没有获取到锁，就会进入阻塞，该锁膨胀为重量级锁。重量级锁会让其他申请的线程进入阻塞，性能降低。
+
+#### 自旋
+
+在Java中，自旋锁是指尝试获取锁的线程不会立即阻塞，而是采用循环的方式去尝试获取锁，这样的好处是减少线程上下文切换的消耗，缺点是循环会消耗CPU。
+
+#### 分段
+
+ConcurrentHashMap 就是通过分段锁的形式来实现高效的并发操作。`ConcurrentHashMap`中的分段锁称为Segment，它即类似于HashMap（JDK7与JDK8中HashMap的实现）的结构，即内部拥有一个Entry数组，数组中的每个元素又是一个链表；同时又是一个ReentrantLock（Segment继承了ReentrantLock)。
+当需要put元素的时候，并不是对整个hashmap进行加锁，而是先通过hashcode来知道他要放在那一个分段中，然后对这个分段进行加锁，所以当多线程put的时候，只要不是放在一个分段中，就实现了真正的并行的插入。
+
+#### 可重入
+
+同一个线程可以重新获取已经获取到的锁。
+
+```java
+synchronized void setA() throws Exception{
+    Thread.sleep(1000);
+    setB();
+}
+synchronized void setB() throws Exception{
+    Thread.sleep(1000);
+}
+```
+
+
 
 ### 练习：生产者消费者模型
 
-Producer、Consumer、BlockingQueue、Question 、ExecutorService
+生产者生产算术题(如"2 + 5"), 消费者对问题进行计算.
+
+#### 解法1
+
+Producer、Consumer、Question
+
+AtomicInteger、BlockingQueue 、ExecutorService、ScriptEngineManager
 
 ```java
 public class Producer implements Runnable{
@@ -68,7 +132,6 @@ public class Producer implements Runnable{
     public void run() {
     	Question data = null;
         Random r = new Random();
-        System.out.println("start producting id:" + Thread.currentThread().getId());
         try {
             while (isRunning) {
                 Thread.sleep(r.nextInt(SLEEPTIME));
@@ -121,11 +184,11 @@ public class Question {
 		int x = random.nextInt(9999);
 		int i = random.nextInt(4);
 		int y = random.nextInt(9999);
-		this.question=x+""+operation[i]+y;
+		this.question=x+operation[i]+y;
 	}
 	@Override
 	public String toString() {
-		return "Q " +index+": "+ question;
+		return "Q" +index+": "+ question;
 	}
 	public String getQuestion() {
 		return question;
@@ -134,7 +197,7 @@ public class Question {
 		this.question = question;
 	}
 }
-	public static void main(String[] args) throws InterruptedException, ExecutionException {
+	public static void main(String[] args) throws Exception {
         BlockingQueue<Question> queue = new LinkedBlockingDeque<>(10);
         Producer p1 = new Producer(queue);
         Producer p2 = new Producer(queue);
@@ -149,6 +212,8 @@ public class Question {
         service.execute(c1);
         service.execute(c2);
         service.execute(c3);
+        service.shutdown();
+        service.awaitTermination(1, TimeUnit.SECONDS);
         System.out.println("done");
 	}
 ```
@@ -157,9 +222,142 @@ public class Question {
 
 ### 练习：多线程打印ABC
 
+使用3个线程依次打印A/B/C,循环10次
 
+#### 解法1  synchronized
+
+```java
+public class Test{
+    public static void main(String[] args) throws Exception {
+        ABCPrinter a = new ABCPrinter("A ");
+        ABCPrinter b = new ABCPrinter("B ").setPrev(a);
+        ABCPrinter c = new ABCPrinter("C ").setPrev(b);
+        a.setPrev(c);
+
+        Thread threadA = new Thread(a);
+        Thread threadB = new Thread(b);
+        Thread threadC = new Thread(c);
+        threadA.start();
+        Thread.sleep(10);
+        threadB.start();
+        threadB.sleep(10);
+        threadC.start();
+
+        threadA.join(); // threadA 第10次执行时会停留在 prev.wait() 这一行代码上, ThreadC在第10次执行时会通知ThreadA,从而ThreadA结束
+
+        synchronized (a){
+            a.notifyAll(); //ThreadB 需要ThreadA的通知才能结束
+        }
+        synchronized (b){
+            b.notifyAll();//ThreadC 需要ThreadB的通知才能结束
+        }
+        System.out.println("all done");
+    }
+}
+class ABCPrinter implements Runnable{
+    private String name;
+    private ABCPrinter prev;
+    private int count=0;
+
+    public ABCPrinter setPrev(ABCPrinter prev) {
+        this.prev = prev;
+        return this;
+    }
+    public ABCPrinter(String name) {
+        this.name = name;
+    }
+    @Override
+    public void run() {
+        while (count<10){
+            synchronized (prev){ //TheadA 获取ThreadC的监视器 ThreadC的业务代码不能执行
+                synchronized (this){ //TheadA 获取自身的监视器 TheadB的业务代码不能执行
+                    System.out.print(name); //业务代码
+                    count++;
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    this.notifyAll();//TheadA 并通知TheadB
+                }
+                try {
+                    prev.wait(); //TheadA 等待ThreadC执行完成
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+```
+
+#### 解法2 Lock Condition
+
+```java
+public class ABCPrinterTest {
+    public static void main(String[] args) throws Exception {
+        ThreadGroup group = new ThreadGroup("PrinterGroup");
+        Thread printerA = new Thread(group, new Printer("A", 0));
+        Thread printerB = new Thread(group, new Printer("B", 1));
+        Thread printerC = new Thread(group, new Printer("C", 2));
+        // 依次开始A B C线程
+        printerA.start();
+        Thread.sleep(100);
+        printerB.start();
+        Thread.sleep(100);
+        printerC.start();
+        // 等待活动线程结束
+        while (group.activeCount() > 0) {
+            Thread.yield();
+        }
+        System.out.println("done");
+    }
+}
+
+// 打印线程
+class Printer implements Runnable {
+    private static final int count = 2;
+    private static final Lock lock=new ReentrantLock();
+    private static final Condition[] conditions = new Condition[]{lock.newCondition(),lock.newCondition(),lock.newCondition()};
+
+    private final Condition thisCondition;
+    private final Condition nextCondition;
+    private int order;
+    private String name;
+
+    public Printer(String name,int order) {
+        this.thisCondition=conditions[order];
+        this.nextCondition=conditions[(order+1)%3];
+        this.name = name;
+        this.order = order;
+    }
+    @Override
+    public void run() {
+        lock.lock();
+        try {
+            IntStream.range(0, count).forEach((i)->{
+                System.out.print(name);
+                nextCondition.signal(); //唤醒下一个线程
+                // 最后一次不能等待,否则死锁
+                if (i < count - 1) {
+                    try {
+                        thisCondition.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } finally {
+            // 释放打印锁
+            lock.unlock();
+        }
+    }
+}
+```
 
 ## Lambda 
+
+
 
 ### Overview
 
