@@ -1,11 +1,11 @@
-## 1.工厂模式
+## 工厂模式
 
 1. 创建接口 `Shape `
 2. 创建两个以上的具体类,分别实现 `Shape` 接口
 3. 创建一个`ShapeFactory `工厂类, 编写一个`public Shape getShape(String shapeType){}` 方法, 根据不同的入参返回不同的`Shape`
 4. 使用:`new ShapeFactory().getShape("CIRCLE") `
 
-## 2.抽象工厂模式
+## 抽象工厂模式
 
 1. 创建第一个接口`Shape`
 2. 创建两个以上的具体类,分别实现 `Shape` 接口
@@ -17,7 +17,7 @@
 8. 创建工厂生成器`FactoryProducer `,静态方法根据不同的入参返回不同的工厂
 9. 使用:`FactoryProducer.getFactory("COLOR").getColor("RED")`
 
-## 3.单例模式
+## 单例模式
 
 1. 创建一个`SingleObject `类,并在类中定义一个静态私有字段
 
@@ -29,7 +29,9 @@
 
 2. 使用:`SingleObject.getInstance()`
 
-## 4.建造者模式
+## 建造者模式
 
 1. 创建两个接口 `Food` `Packing`
 
+
+## 责任链模式
