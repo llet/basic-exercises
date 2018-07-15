@@ -1,44 +1,58 @@
-## 工厂模式
+### 设计模式的六大原则
 
-1. 创建接口 `Shape `
-2. 创建两个以上的具体类,分别实现 `Shape` 接口
-3. 创建一个`ShapeFactory `工厂类, 编写一个`public Shape getShape(String shapeType){}` 方法, 根据不同的入参返回不同的`Shape`
-4. 使用:`new ShapeFactory().getShape("CIRCLE") `
+- 开闭原则: 对扩展开放，对修改关闭。
+- 里氏代换: 任何父类可以出现的地方，子类一定可以出现。
+- 依赖倒转: 针对接口编程，依赖于抽象而不依赖于具体。
+- 接口隔离: 使用多个独立的接口，比使用单个接口要好。
+- 迪米特法则: 一个实体应当尽量少地与其他实体之间发生相互作用，使得系统功能模块相对独立。
+- 合成复用: 尽量使用合成/聚合的方式，而不是使用继承。
 
-## 抽象工厂模式
+## 创建型模式 
 
-1. 创建第一个接口`Shape`
-2. 创建两个以上的具体类,分别实现 `Shape` 接口
-3. 创建第二个接口`Color`
-4. 创建两个以上的具体类,分别实现 `Shape` 接口
-5. 创建`AbstractFactory.java`,声明两个抽象方法,分别返回`Shape`和`Color`
-6. 创建工厂类`ShapeFactory`,继承` AbstractFactory`,根据不同的入参返回不同的Shape
-7. 创建工厂类`ColorFactory `,继承` AbstractFactory`,根据不同的入参返回不同的Color
-8. 创建工厂生成器`FactoryProducer `,静态方法根据不同的入参返回不同的工厂
-9. 使用:`FactoryProducer.getFactory("COLOR").getColor("RED")`
+### 工厂模式 Factory
+### 抽象工厂模式 Abstract Factory
+### 单例模式 Singleton
+### 建造者模式 Builder
+### 原型模式 Prototype
 
-## 单例模式
+## 结构型模式 
 
-1. 创建一个`SingleObject `类,并在类中定义一个静态私有字段
+> 关注类和对象的组合
 
-   `private static SingleObject instance = new SingleObject()`,
+### 适配器模式 Adapter
+### 桥接模式 Bridge
+### 过滤器模式 Filter、Criteria
+### 组合模式 Composite
+### 装饰器模式 Decorator
+### 外观模式 Facade
+### 享元模式 Flyweight
+### 代理模式 Proxy
 
-   然后定义私有构造函数,
+## 行为型模式 
 
-   再定义静态的`getInstance()`方法,返回instance 
+> 关注对象之间的通信
 
-2. 使用:`SingleObject.getInstance()`
+### 责任链模式 Chain of Responsibility
+### 命令模式 Command
+### 解释器模式 Interpreter
+### 迭代器模式 Iterator
+### 中介者模式 Mediator
+### 备忘录模式 Memento
+### 观察者模式 Observer
+### 状态模式 State
+### 空对象模式 Null Object
+### 策略模式 Strategy
+### 模板模式 Template
+### 访问者模式 Visitor
 
-## 建造者模式
+### AbstractDocument
 
-1. 创建两个接口 `Food` `Packing`
-
-
-## 责任链模式
-
-## 策略模式
-
-## 原型模式
-
-## 模板模式
-
+## J2EE 模式 
+### MVC 模式 MVC
+### 业务代表模式 Business Delegate
+### 组合实体模式 Composite Entity
+### 数据访问对象模式 Data Access Object
+### 前端控制器模式 Front Controller
+### 拦截过滤器模式 Intercepting Filter
+### 服务定位器模式 Service Locator
+### 传输对象模式 Transfer Object
