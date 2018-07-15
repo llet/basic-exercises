@@ -17,8 +17,6 @@
 
 ## 结构型模式 
 
-> 关注类和对象的组合
-
 ### 适配器模式 Adapter
 ### 桥接模式 Bridge
 ### 过滤器模式 Filter、Criteria
@@ -29,8 +27,6 @@
 ### 代理模式 Proxy
 
 ## 行为型模式 
-
-> 关注对象之间的通信
 
 ### 责任链模式 Chain of Responsibility
 ### 命令模式 Command
