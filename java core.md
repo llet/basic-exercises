@@ -98,31 +98,32 @@ public class Test {
 		HelloImpl impl = new HelloImpl();
 		Object proxy = Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
 				new Class<?>[] { Hello.class, Print.class }, (proxy1, method, params) -> {
-					System.out.println("------------------before------------------");
+					log("------------------before------------------");
 					method.invoke(impl, params);
-					System.out.println("------------------after-------------------");
+					log("------------------after-------------------");
 					return Void.TYPE;
 				});
-		//对应 $Proxy0.class文件 动态生成的文件
-		System.out.println(proxy.getClass());
-		//对应java.lang.reflect.Proxy.class文件
-         System.out.println(proxy.getClass().getSuperclass()); 
-		System.out.println(proxy.getClass().getSuperclass().getSuperclass());
-		System.out.println("实现陈接口有:");
+		log("1 查看代理类的信息");
+		log(proxy.getClass());//生成了一个  $Proxy0.class 文件
+		log(proxy.getClass().getSuperclass()); //对应 java.lang.reflect.Proxy.class 文件
+		log(proxy.getClass().getSuperclass().getSuperclass());
+		log("2 实现陈接口有:");
 		Stream.of(proxy.getClass().getInterfaces()).forEach(System.out::println);
-		System.out.println("转换成 Hello");
+		log("3 转换成 Hello");
 		Hello hello=(Hello)proxy;
 		hello.hello("world");
 		
-		System.out.println("转换成  Print");
+		log("4 转换成  Print");
 		Print print=(Print)proxy;
 		print.print("prety");
 	}
+	private static void log(Object obj) {System.out.println(obj);}
 }
 
 class HelloImpl implements Hello, Print {
-	@Override public void hello(String str) {System.out.println("HelloImpl: " + str);}
-	@Override public void print(String str) {System.out.println("HelloImpl: " + str);}
+	@Override public void hello(String str) {log("HelloImpl: " + str);}
+	@Override public void print(String str) {log("HelloImpl: " + str);}
+    private static void log(Object obj) {System.out.println(obj);}
 }
 interface Hello { void hello(String str);}
 interface Print { void print(String str);}
