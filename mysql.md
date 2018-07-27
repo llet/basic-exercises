@@ -70,8 +70,8 @@ mysql> source /root/test.sql
 ##数据库的好处
 	1.持久化数据到本地
 	2.可以实现结构化查询，方便管理
-	
 
+##数据库相关概念
 ##数据库相关概念
 ##数据库相关概念
 	1、DB：数据库，保存一组有组织的数据的容器
@@ -84,8 +84,8 @@ mysql> source /root/test.sql
 	3、表具有一些特性，这些特性定义了数据在表中如何存储，类似java中 “类”的设计。
 	4、表由列组成，我们也称为字段。所有表都是由一个或多个列组成的，每一列类似java 中的”属性”
 	5、表中的数据是按行存储的，每一行类似于java中的“对象”。
-	
 
+##MySQL产品的介绍和安装
 ##MySQL产品的介绍和安装
 ##MySQL产品的介绍和安装
 
@@ -108,8 +108,8 @@ mysql> source /root/test.sql
 	exit或ctrl+C
 	
 	
-	
 
+###MySQL的常见命令 
 ###MySQL的常见命令 
 ###MySQL的常见命令 
 
@@ -139,8 +139,8 @@ mysql> source /root/test.sql
 	mysql --version
 	或
 	mysql --V
-	
 
+###MySQL的语法规范
 ###MySQL的语法规范
 ###MySQL的语法规范
 	1.不区分大小写,但建议关键字大写，表名、列名小写
@@ -152,8 +152,8 @@ mysql> source /root/test.sql
 		多行注释：/* 注释文字  */
 	
 	
-	
 
+###SQL的语言分类
 ###SQL的语言分类
 ###SQL的语言分类
 	DQL（Data Query Language）：数据查询语言
@@ -165,8 +165,8 @@ mysql> source /root/test.sql
 	TCL（Transaction Control Language）：事务控制语言
 		commit、rollback
 	
-	
 
+###SQL的常见命令
 ###SQL的常见命令
 ###SQL的常见命令
 
@@ -181,8 +181,8 @@ mysql> source /root/test.sql
 	
 	desc 表名; 查看指定表的结构
 	select * from 表名;显示表中的所有数据
-	
 
+##DQL语言的学习
 ##DQL语言的学习
 ##DQL语言的学习
 ###进阶1：基础查询
@@ -277,8 +277,8 @@ mysql> source /root/test.sql
 		user当前连接用户
 	
 	
-	
 
+二、分组函数
 二、分组函数
 二、分组函数
 
@@ -549,8 +549,8 @@ sql92
 	
 	DROP TABLE [IF EXISTS] studentinfo;
 	
-	
 
+###常见类型
 ###常见类型
 ###常见类型
 
@@ -562,8 +562,8 @@ sql92
 	字符型：
 	日期型：
 	Blob类型：
-	
 
+###常见约束
 ###常见约束
 ###常见约束
 
@@ -647,8 +647,8 @@ sql92
 查看隔离级别：
 
 	select @@tx_isolation;
-	
 
+##视图
 ##视图
 ##视图
 含义：理解成一张虚拟的表
@@ -789,8 +789,8 @@ sql92
 	SELECT 函数名（实参列表）
 	
 	
-	
 
+###函数和存储过程的区别
 ###函数和存储过程的区别
 ###函数和存储过程的区别
 
@@ -875,8 +875,8 @@ sql92
 使用：
 
 	select 变量名
-	
 
+二者的区别：
 二者的区别：
 二者的区别：
 
@@ -950,37 +950,6 @@ sql92
 	如果要搭配leave跳转语句，需要使用标签，否则可以不用标签
 	
 	leave类似于java中的break语句，跳出所在循环！！！
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
