@@ -26,245 +26,157 @@ mysql> source /root/test.sql
 
 ```
 
-
-
-﻿##本单元目标
-
-	一、为什么要学习数据库
-	二、数据库的相关概念      
-		DBMS、DB、SQL
-	三、数据库存储数据的特点
-	四、初始MySQL
-		MySQL产品的介绍        
-		MySQL产品的安装          ★        
-		MySQL服务的启动和停止     ★
-		MySQL服务的登录和退出     ★      
-		MySQL的常见命令和语法规范      
-	五、DQL语言的学习   ★              
-		基础查询        ★             
-		条件查询  	   ★			
-		排序查询  	   ★				
-		常见函数        ★               
-		分组函数        ★              
-		分组查询		   ★			
-		连接查询	 	★			
-		子查询       √                  
-		分页查询       ★              
-		union联合查询	√			
-		
-	六、DML语言的学习    ★             
-		插入语句						
-		修改语句						
-		删除语句						
-	七、DDL语言的学习  
-		库和表的管理	 √				
-		常见数据类型介绍  √          
-		常见约束  	  √			
-	八、TCL语言的学习
-		事务和事务处理                 
-	九、视图的讲解           √
-	十、变量                      
-	十一、存储过程和函数   
-	十二、流程控制结构       
-
-##数据库的好处
-	1.持久化数据到本地
-	2.可以实现结构化查询，方便管理
-
-##数据库相关概念
-##数据库相关概念
 ##数据库相关概念
 	1、DB：数据库，保存一组有组织的数据的容器
 	2、DBMS：数据库管理系统，又称为数据库软件（产品），用于管理DB中的数据
 	3、SQL:结构化查询语言，用于和DBMS通信的语言
+	4、DQL（Data Query Language）：数据查询语言 select 
+	5、DML(Data Manipulate Language):数据操作语言 insert 、update、delete
+	6、DDL（Data Define Languge）：数据定义语言 create、drop、alter
+	7、TCL（Transaction Control Language）：事务控制语言 commit、rollback
 
-##数据库存储数据的特点
-	1、将数据放到表中，表再放到库中
-	2、一个数据库中可以有多个表，每个表都有一个的名字，用来标识自己。表名具有唯一性。
-	3、表具有一些特性，这些特性定义了数据在表中如何存储，类似java中 “类”的设计。
-	4、表由列组成，我们也称为字段。所有表都是由一个或多个列组成的，每一列类似java 中的”属性”
-	5、表中的数据是按行存储的，每一行类似于java中的“对象”。
+##常见命令 
 
-##MySQL产品的介绍和安装
-##MySQL产品的介绍和安装
-##MySQL产品的介绍和安装
+```sql
+--1.查看当前所有的数据库
+show databases;
+--2.打开指定的库
+use 库名;
+--3.查看当前库的所有表
+show tables;
+--4.查看其它库的所有表
+show tables from 库名;
+--5.创建表
+create table 表名(列名 列类型,列名 列类型);
+--6.查看表结构
+desc 表名;
+--7.查看服务器的版本 bash: mysql --version  或 mysql --V
+select version();
+```
 
-###MySQL服务的启动和停止
-	方式一：计算机——右击管理——服务
-	方式二：通过管理员身份运行
-	net start 服务名（启动服务）
-	net stop 服务名（停止服务）
+## 数据类型
 
-###MySQL服务的登录和退出   
-###MySQL服务的登录和退出   
-	方式一：通过mysql自带的客户端
-	只限于root用户
-	
-	方式二：通过windows自带的客户端
-	登录：
-	mysql 【-h主机名 -P端口号 】-u用户名 -p密码
-	
-	退出：
-	exit或ctrl+C
-	
-	
+```sql
+TINYINT 1字节,SMALLINT 2字节,MEDIUMINT 3字节,INT或INTEGER 4字节,BIGINT 8字节,FLOAT 4字节,DOUBLE 8字节
 
-###MySQL的常见命令 
-###MySQL的常见命令 
-###MySQL的常见命令 
+DATE 3字节,TIME 3字节,YEAR 1字节,DATETIME 8字节,TIMESTAMP 4字节
 
-	1.查看当前所有的数据库
-	show databases;
-	2.打开指定的库
-	use 库名
-	3.查看当前库的所有表
-	show tables;
-	4.查看其它库的所有表
-	show tables from 库名;
-	5.创建表
-	create table 表名(
-	
-		列名 列类型,
-		列名 列类型，
-		。。。
-	);
-	6.查看表结构
-	desc 表名;
-	
-	
-	7.查看服务器的版本
-	方式一：登录到mysql服务端
-	select version();
-	方式二：没有登录到mysql服务端
-	mysql --version
-	或
-	mysql --V
+CHAR 0-255字节,VARCHAR 0-65535 字节,TINYBLOB 0-255字节,TINYTEXT 0-255字节,BLOB 0-65535字节,TEXT 0-65535字节,MEDIUMBLOB 0-16777215字节,MEDIUMTEXT 0-16777215字节,LONGBLOB 0-4294967295字节,LONGTEXT 0-4294967295字节
+```
 
-###MySQL的语法规范
-###MySQL的语法规范
-###MySQL的语法规范
-	1.不区分大小写,但建议关键字大写，表名、列名小写
-	2.每条命令最好用分号结尾
-	3.每条命令根据需要，可以进行缩进 或换行
-	4.注释
-		单行注释：#注释文字
-		单行注释：-- 注释文字
-		多行注释：/* 注释文字  */
-	
-	
 
-###SQL的语言分类
-###SQL的语言分类
-###SQL的语言分类
-	DQL（Data Query Language）：数据查询语言
-		select 
-	DML(Data Manipulate Language):数据操作语言
-		insert 、update、delete
-	DDL（Data Define Languge）：数据定义语言
-		create、drop、alter
-	TCL（Transaction Control Language）：事务控制语言
-		commit、rollback
-	
 
-###SQL的常见命令
-###SQL的常见命令
-###SQL的常见命令
+##DQL 查询
 
-	show databases； 查看所有的数据库
-	use 库名； 打开指定 的库
-	show tables ; 显示库中的所有表
-	show tables from 库名;显示指定库中的所有表
-	create table 表名(
-		字段名 字段类型,	
-		字段名 字段类型
-	); 创建表
-	
-	desc 表名; 查看指定表的结构
-	select * from 表名;显示表中的所有数据
+```sql
+CREATE TABLE Persons
+(
+    Id int,
+    Age int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+insert into Persons values(1,28,'Jean','Williams','Somewhere1','Shanghai');
+insert into Persons values(2,38,'Bill','Williams','Somewhere2','Shanghai');
+insert into Persons values(3,25,'Ketty','Williams','Somewhere3','Shanghai');
+insert into Persons values(4,11,'Jean','Smith',null,'Shanghai');
+insert into Persons values(5,32,'Blue','Smith','Somewhere2','Shanghai');
+insert into Persons values(6,15,'Red','Smith','Somewhere3','Shanghai');
 
-##DQL语言的学习
-##DQL语言的学习
-##DQL语言的学习
-###进阶1：基础查询
-	语法：
-	SELECT 要查询的东西
-	【FROM 表名】;
-	
-	类似于Java中 :System.out.println(要打印的东西);
-	特点：
-	①通过select查询完的结果 ，是一个虚拟的表格，不是真实存在
-	② 要查询的东西 可以是常量值、可以是表达式、可以是字段、可以是函数
+/*
++------+------+----------+-----------+------------+----------+
+| Id   | Age  | LastName | FirstName | Address    | City     |
++------+------+----------+-----------+------------+----------+
+|    1 |   28 | Jean     | Williams  | Somewhere1 | Shanghai |
+|    2 |   38 | Bill     | Williams  | Somewhere2 | Shanghai |
+|    3 |   25 | Ketty    | Williams  | Somewhere3 | Shanghai |
+|    4 |   11 | Jean     | Smith     |            | Shanghai |
+|    5 |   32 | Blue     | Smith     | Somewhere2 | Shanghai |
+|    6 |   15 | Red      | Smith     | Somewhere3 | Shanghai |
++------+------+----------+-----------+------------+----------+
+*/
+```
 
-###进阶2：条件查询
-	条件查询：根据条件过滤原始表的数据，查询到想要的数据
-	语法：
-	select 
-		要查询的字段|表达式|常量值|函数
-	from 
-		表
-	where 
-		条件 ;
-	
-	分类：
-	一、条件表达式
-		示例：salary>10000
-		条件运算符：
-		> < >= <= = != <>
-	
-	二、逻辑表达式
-	示例：salary>10000 && salary<20000
-	
-	逻辑运算符：
-	
-		and（&&）:两个条件如果同时成立，结果为true，否则为false
-		or(||)：两个条件只要有一个成立，结果为true，否则为false
-		not(!)：如果条件成立，则not后为false，否则为true
-	
-	三、模糊查询
-	示例：last_name like 'a%'
+```sql
+--条件查询;条件运算符有: > < >= <= = != <> 
+select * from Persons where id = 123;
+--逻辑运算符有: and && or || not ! 
+select * from Persons where LastName = 'Bill' && FirstName='Williams'; 
+--模糊查询
+select * from Persons where LastName like '%e%'; 
+--按Id倒叙排序
+select * from Persons order by Id desc; 
 
-###进阶3：排序查询	
-
-	语法：
-	select
-		要查询的东西
-	from
-		表
-	where 
-		条件
-	
-	order by 排序的字段|表达式|函数|别名 【asc|desc】
+```
 
 ###进阶4：常见函数
-###进阶4：常见函数
+
+```sql
+--字符函数
+select concat('hello ','Ketty')拼接,substr('Ketty',2)截取子串,substr('Ketty',-2)截取子串,substr('Ketty',1,1)截取子串;
+select upper('Ketty'),lower('Ketty'),trim('	Ketty '),ltrim('	Ketty '),rtrim('	Ketty ');
+select lpad('101',8,'0')左填充,rpad('101',8,'0'),length('Ketty'),instr('Ketty','K')索引;
+--数学函数
+select abs(-10)绝对值,bin(1024)二进制,oct(1024)八进制,hex(1024)十六进制,ceiling(.01)向上取整;
+select exp(3),floor(0.9)向下取整,greatest(1,2,3)最大值,least(1,2,3)最小值;
+select ln(9.8)自然对数函数,log(10,100)对数函数,mod(9,4)余数,pi()圆周率,rand()随机数;
+select round(3.4)四舍五入,sign(-2) Logistic函数,sqrt(4)平方根,truncate(.1,3)保留n位数;
+--聚合函数
+select avg(age),count(1),count(Address),min(age),max(age),group_concat(id) from persons group by FirstName;
+--日期函数
+select now(),sleep(3),now();
+select sysdate(),sleep(3),sysdate();
+select curdate(),curtime(),now(),sysdate(),timestamp();
+DATE_ADD(date,INTERVAL int keyword) 返回日期date加上间隔时间int的结果(int必须按照关键字进行格式化),如：SELECT DATE_ADD(CURRENT_DATE,INTERVAL 6 MONTH);
+DATE_FORMAT(date,fmt) 依照指定的fmt格式格式化日期date值 
+DATE_SUB(date,INTERVAL int keyword) 返回日期date加上间隔时间int的结果(int必须按照关键字进行格式化),如：SELECT DATE_SUB(CURRENT_DATE,INTERVAL 6 MONTH);
+DAYOFWEEK(date) 返回date所代表的一星期中的第几天(1~7) 
+DAYOFMONTH(date) 返回date是一个月的第几天(1~31) 
+DAYOFYEAR(date) 返回date是一年的第几天(1~366) 
+DAYNAME(date) 返回date的星期名，如：SELECT DAYNAME(CURRENT_DATE); 
+FROM_UNIXTIME(ts,fmt) 根据指定的fmt格式，格式化UNIX时间戳ts HOUR(time) 返回time的小时值(0~23) 
+MINUTE(time) 返回time的分钟值(0~59) 
+MONTH(date) 返回date的月份值(1~12) 
+MONTHNAME(date) 返回date的月份名，如：SELECT MONTHNAME(CURRENT_DATE); 
+NOW() 返回当前的日期和时间 
+QUARTER(date) 返回date在一年中的季度(1~4)，如SELECT QUARTER(CURRENT_DATE); 
+WEEK(date) 返回日期date为一年中第几周(0~53) 
+YEAR(date) 返回日期date的年份(1000~9999)
+
+--一些示例： 获取当前系统时间：
+SELECT FROM_UNIXTIME(UNIX_TIMESTAMP()); 
+SELECT EXTRACT(YEAR_MONTH FROM CURRENT_DATE); 
+SELECT EXTRACT(DAY_SECOND FROM CURRENT_DATE); 
+SELECT EXTRACT(HOUR_MINUTE FROM CURRENT_DATE); 
+--返回两个日期值之间的差值(月数)：
+SELECT PERIOD_DIFF(200302,199802); 
+--在Mysql中计算年龄： 
+SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(birthday)), '%Y')+0 AS age FROM employee; 
+--这样，如果Brithday是未来的年月日的话，计算结果为0。 下面的SQL语句计算员工的绝对年龄，即当Birthday是未来的日期时，将得到负值。
+SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(birthday, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(birthday, '00-%m-%d')) AS age from employee
+```
+
+
+
 	一、单行函数
 	1、字符函数
-		concat拼接
-		substr截取子串
-		upper转换成大写
-		lower转换成小写
-		trim去前后指定的空格和字符
-		ltrim去左边空格
-		rtrim去右边空格
-		replace替换
-		lpad左填充
-		rpad右填充
-		instr返回子串第一次出现的索引
-		length 获取字节个数
+	
 		
 	2、数学函数
-		round 四舍五入
-		rand 随机数
-		floor向下取整
-		ceil向上取整
-		mod取余
-		truncate截断
+	round 四舍五入
+	rand 随机数
+	floor向下取整
+	ceil向上取整
+	mod取余
+	truncate截断
 	3、日期函数
-		now当前系统日期+时间
-		curdate当前系统日期
-		curtime当前系统时间
-		str_to_date 将字符转换成日期
-		date_format将日期转换成字符
+	now当前系统日期+时间
+	curdate当前系统日期
+	curtime当前系统时间
+	str_to_date 将字符转换成日期
+	date_format将日期转换成字符
 	4、流程控制函数
 		if 处理双分支
 		case语句 处理多分支
@@ -276,10 +188,7 @@ mysql> source /root/test.sql
 		database当前库
 		user当前连接用户
 	
-	
 
-二、分组函数
-二、分组函数
 二、分组函数
 
 
@@ -299,7 +208,6 @@ mysql> source /root/test.sql
 	
 		   建议使用 count(*)
 
-##进阶5：分组查询
 ##进阶5：分组查询
 	语法：
 	select 查询的字段，分组函数
@@ -548,8 +456,8 @@ sql92
 	#3.删除表
 	
 	DROP TABLE [IF EXISTS] studentinfo;
-	
 
+###常见类型
 ###常见类型
 ###常见类型
 ###常见类型
@@ -788,8 +696,8 @@ sql92
 ###调用函数
 	SELECT 函数名（实参列表）
 	
-	
 
+###函数和存储过程的区别
 ###函数和存储过程的区别
 ###函数和存储过程的区别
 ###函数和存储过程的区别
@@ -950,6 +858,5 @@ sql92
 	如果要搭配leave跳转语句，需要使用标签，否则可以不用标签
 	
 	leave类似于java中的break语句，跳出所在循环！！！
-	
 	
 	
