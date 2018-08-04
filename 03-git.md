@@ -46,7 +46,6 @@ git branch branchname
 git checkout branchname
 #合并分支
 git merge 
-
 #从远程仓库下载新分支与数据
 git fetch
 #从远端仓库提取数据并尝试合并到当前分支：
@@ -54,7 +53,19 @@ git merge
 #要查看当前配置有哪些远程仓库，可以用命令：
 git remote
 git remote -v
-  
+git show # 显示某次提交的内容 git show $id
+git add <file> # 将工作文件修改提交到本地暂存区
+git rm <file> # 从版本库中删除文件
+git reset <file> # 从暂存区恢复到工作文件
+git reset HEAD # 恢复最近一次提交过的状态，即放弃上次提交后的所有本次修改
+git diff <file> # 比较当前文件和暂存区文件差异 git diff
+git log -p <file> # 查看每次详细修改内容的diff
+git branch -r # 查看远程分支
+git merge <branch> # 将branch分支合并到当前分支
+git stash # 暂存
+git stash pop #恢复最近一次的暂存
+git pull # 抓取远程仓库所有分支更新并合并到本地
+git push origin master # 将本地主分支推到远程主分支
 ```
 
 
@@ -71,4 +82,17 @@ git remote -v
 
  git reset 是直接删除暂存区到版本库的 commit 记录
 
- ----
+**fetch和merge和pull的区别**
+
+git fetch：相当于是从远程获取最新版本到本地，不会自动merge，git merge :  将内容合并到当前分支，git pull：相当于是从远程获取最新版本并merge到本地
+
+**tag**
+
+tag指向一次commitId，通常用来给开发分支做一个标记
+
+**Git和SVN的区别**
+
+Git是分布式版本控制系统，SVN是集中式版本控制系统
+
+**Git工作流程**
+
