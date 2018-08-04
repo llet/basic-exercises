@@ -1,4 +1,6 @@
-## 基本概念
+### 基本概念
+
+---
 
 - **工作区：**就是你在电脑里能看到的目录。
 
@@ -30,8 +32,9 @@
 6.  "git checkout HEAD ." 或者 "git checkout HEAD filename" 命令时，会用 HEAD 指向的 master 分支中的全部或者部分文件覆盖暂存区和以及工作区中的文件。这个命令也是极具危险性的，因为不但会清除工作区中未提交的改动，也会清除暂存区中未提交的改动。
 
 
+### 常用命令
 
-## 常用命令
+---
 
 ```bash
 #查看分支
@@ -51,8 +54,20 @@ git merge
 #要查看当前配置有哪些远程仓库，可以用命令：
 git remote
 git remote -v
-
+  
 ```
 
 
+
+### 面试题
+
+---
+
+**git add 和 git stage 有什么区别**
+
+没区别，都是将工作区的文件提交到暂存区。
+
+**git reset、git revert 和 git checkout 有什么区别**
+
+ git reset 是直接删除暂存区到版本库的 commit 记录
 
