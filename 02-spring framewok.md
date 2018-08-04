@@ -1,4 +1,4 @@
-## spring framework 的工程结构
+### spring framework 的工程结构
 
 ```xml
 <group>org.springframework</group>
@@ -31,7 +31,7 @@
 
 
 
-## spring framework 的功能
+### spring framework 的功能
 
 - [Core technologies](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html): dependency injection, events, resources, i18n, validation, data binding, type conversion, SpEL, AOP.
 - [Testing](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/testing.html): mock objects, TestContext framework, Spring MVC Test, `WebTestClient`.
@@ -42,46 +42,34 @@
 
 
 
-
-
-# 面试题
-
-## 什么是 Spring
-
-## Spring 有哪些好处
-
-## IOC 和 DI
-
-## BeanFactory 和 ApplicationContext
-
-## Spring Bean 的生命周期
-
-## Spring Bean 的作用域
-
-## 单例 Beans 是线程安全的么
-
-## 常用的设计模式
-
-没必要把每一个细节都弄明白，当今社会讲究高效，不必重复造轮子。
-
-## spring
+## 面试题
 
 ### 谈谈spring
 
-降低了组件之间的耦合性 ，实现了软件各层之间的解耦，属于低侵入式设计，
-可以使用容易提供的众多服务，如事务管理，消息服务等 
-容器提供单例模式支持 
-容器提供了AOP技术，利用它很容易实现如权限拦截，运行期监控等功能 
-容器提供了众多的辅助类，能加快应用的开发 
+spring的核心功能有：IOC 容器（管理对象的生命周期、提供单例模式支持）、事件处理、资源访问、国际化、数据验证、数据绑定、类型转换、SpEl表达式、AOP（利用它很容易实现如权限拦截，运行期监控等功能）；
+
+提供的众多服务，如事务管理，消息服务等 
+
+容器提供了众多的辅助类
+
 spring对于主流的应用框架提供了集成支持，如hibernate，JPA，Struts等 
 
 独立于各种应用服务器 
-spring的DI机制降低了业务对象替换的复杂性 
-Spring的高度开放性，并不强制应用完全依赖于Spring，开发者可以自由选择spring的部分或全部 
+spring的DI机制降低了业务对象替换的复杂性 IOC 和 DI
 
-### spring核心功能
+### BeanFactory 和 ApplicationContext
 
-spring的核心功能有：IOC 容器、事件处理、资源访问、国际化、数据验证、数据绑定、类型转换、SpEl表达式、AOP；
+### Spring Bean 的生命周期
+
+### Spring Bean 的作用域
+
+### 单例 Beans 是线程安全的么
+
+### 常用的设计模式
+
+没必要把每一个细节都弄明白，当今社会讲究高效，不必重复造轮子。
+
+
 
 ### EL表达式
 
