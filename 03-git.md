@@ -71,4 +71,4 @@ git remote -v
 
  git reset 是直接删除暂存区到版本库的 commit 记录
 
- 
+ ----
