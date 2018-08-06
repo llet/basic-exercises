@@ -1,6 +1,5 @@
-### 
-
 ### 预备
+
 
 [*Node.js* 中文网](https://www.baidu.com/link?url=nRmjRwMo_EYcmaeSJg1n-qB30sLwAQxQs9m0mFFkwdB1Sf1F69a1Udbo8CLnWbUp&wd=&eqid=9fd465280005e177000000065b5dc1c8) npm是随同nodejs一起安装的包管理工具
 
@@ -218,4 +217,11 @@ scss引入方法
 
 3.找到对应版本`COMPATIBILITY`的插件下载 
 
-#### 
+#### NPM Unexpected end of JSON input while parsing near
+
+```bash
+npm install --registry=https://registry.npm.taobao.org --loglevel=silly
+
+npm cache clean --force
+```
+
