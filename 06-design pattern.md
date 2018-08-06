@@ -13,74 +13,40 @@
 
 ### 工厂模式 Factory
 
+工厂模式有三个角色： 工厂、产品接口、产品
+
 简单工厂模式又叫做静态工厂模式,不属于23中设计模式之一,由工厂类根据入参决定创建一个具体的产品.spring的BeanFactory就是简单工厂模式.具体是在传入参数时创建还是传入参数前创建需要根据具体情况来定.
 
 ```java
-//创建一个接口:
-public interface Shape { void draw();}
-//创建实现接口的实体类。
-public class Rectangle implements Shape {
-   @Override
-   public void draw() {
-      System.out.println("Inside Rectangle::draw() method.");
-   }
-}
-public class Square implements Shape {
-   @Override
-   public void draw() {
-      System.out.println("Inside Square::draw() method.");
-   }
-}
-public class Circle implements Shape {
-   @Override
-   public void draw() {
-      System.out.println("Inside Circle::draw() method.");
-   }
-}
-//创建一个工厂，生成基于给定信息的实体类的对象。
-public class ShapeFactory {
-   //使用 getShape 方法获取形状类型的对象
-   public Shape getShape(String shapeType){
-      if(shapeType == null){
-         return null;
-      }        
-      if(shapeType.equalsIgnoreCase("CIRCLE")){
-         return new Circle();
-      } else if(shapeType.equalsIgnoreCase("RECTANGLE")){
-         return new Rectangle();
-      } else if(shapeType.equalsIgnoreCase("SQUARE")){
-         return new Square();
-      }
-      return null;
-   }
-}
-//使用该工厂，通过传递类型信息来获取实体类的对象。
-public class FactoryPatternDemo {
- 
-   public static void main(String[] args) {
-      ShapeFactory shapeFactory = new ShapeFactory();
-      //获取 Circle 的对象，并调用它的 draw 方法
-      Shape shape1 = shapeFactory.getShape("CIRCLE");
-      //调用 Circle 的 draw 方法
-      shape1.draw();
-      //获取 Rectangle 的对象，并调用它的 draw 方法
-      Shape shape2 = shapeFactory.getShape("RECTANGLE");
-      //调用 Rectangle 的 draw 方法
-      shape2.draw();
-      //获取 Square 的对象，并调用它的 draw 方法
-      Shape shape3 = shapeFactory.getShape("SQUARE");
-      //调用 Square 的 draw 方法
-      shape3.draw();
-   }
-}
+ShapeFactory shapeFactory = new ShapeFactory();
+Shape shape1 = shapeFactory.getShape("CIRCLE");
+Shape shape2 = shapeFactory.getShape("RECTANGLE");
 ```
 
+### 工厂方法模式
 
+工厂方法模式有四个角色： 工厂接口、工厂、产品接口、产品
+
+让子类工厂去决定实例化哪一个对象。在新增产品时，新增一个对应的工厂即可，不需要修改原有代码。
 
 ### 抽象工厂模式 Abstract Factory
+
+抽象工厂模式是工厂方法模式的升级版本，他与工厂方法模式的区别就在于，工厂方法模式针对的是一个产品接口，而抽象工厂模式则是针对的多个产品接口，即抽象工厂可以提供不同接口的产品。
+
 ### 单例模式 Singleton
+
+确保一个类只有一个实例。单例模式根据实例化对象时机的不同分为两种：饿汉式，懒汉式。饿汉式单例在单例类被加载时候，就实例化一个对象交给自己的引用；而懒汉式在调用取得实例方法的时候才会实例化对象.
+
 ### 建造者模式 Builder
 ### 原型模式 Prototype
+
+通过调用实例的clone() 方法 创建新的对象。
+
+实现Cloneable 接口，重写一个clone() 方法即完成了原型模式。Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，比直接new一个对象在性能上要好的多。
+
+#### 深拷贝与浅拷贝
+
+Object类的clone方法只会拷贝对象中的基本的数据类型，对于数组、容器对象、引用对象等都不会拷贝，这就是浅拷贝。如果要实现深拷贝，必须将原型模式中的数组、容器对象、引用对象等另行拷贝。java提供的大部分的容器类都实现了Cloneable接口，所以实现深拷贝并不是特别困难。
 
 ## 结构型模式 
 
@@ -185,6 +151,11 @@ public class HelloInterceptor implements MethodInterceptor {
 ### 空对象模式 Null Object
 ### 策略模式 Strategy
 ### 模板模式 Template
+
+两个角色：模板抽象类、实现类
+
+钩子方法：是对于抽象方法或者接口中定义的方法的一个空实现，在实际中的应用，比如说有一个接口，这个接口里有7个方法，而你只想用其中一个方法，那么这时，你可以写一个抽象类实现这个接口，在这个抽象类里将你要用的那个方法设置为abstract,其它方法进行空实现，然后你再继承这个抽象类，就不需要实现其它不用的方法，这就是钩子方法的作用。
+
 ### 访问者模式 Visitor
 
 ### AbstractDocument
