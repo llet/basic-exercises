@@ -65,9 +65,9 @@ public class MyEchoServer extends Thread{
 				//读取Http body
 				String body = "";
 				if(contentLength!=0){
-					byte[] bytes= new byte[contentLength];
-					inputStream.read(bytes);
-					body= new String(bytes,Charset.forName("UTF-8"));
+					char[] chars= new char[contentLength];
+					reader.read(chars);
+					body= new String(chars);
 					System.out.println(body);
 				}
 				OutputStream outputStream = socket.getOutputStream();
@@ -95,6 +95,10 @@ public class MyEchoServer extends Thread{
 				writer.write(resBody.toString());
 				writer.flush();
 				
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+				}
 				reader.close();
 				inputStream.close();
 				writer.close();
