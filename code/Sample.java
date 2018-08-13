@@ -1,3 +1,4 @@
+package myapi;
 
 import java.io.IOException;
 
@@ -17,7 +18,21 @@ public class Sample {
 	public static final String SECRET_KEY = "upBiY3Nquuwq0EOV94tGbPy9NG1VWPmp";
 
 	public static void main(String[] args) throws IOException {
-		sdk() ;
+		AipSpeech client = new AipSpeech(APP_ID, API_KEY, SECRET_KEY);
+		client.setConnectionTimeoutInMillis(2000);
+		client.setSocketTimeoutInMillis(60000);
+	    String path =  "w2.wav";
+	    byte[] bs = Util.readFileByBytes(path);
+	    int batchLen=1920000;
+	    int batch = (int) Math.ceil(((double)bs.length/batchLen));
+	    for(int i=0;i<batch;i++) {
+	    	int len = Math.min(batchLen, bs.length-i*batchLen-70);
+	    	byte[] copy= new byte[len];
+	    	int index = i*batchLen;
+		    System.arraycopy(bs, 70+index, copy,0, len);
+			JSONObject res = client.asr(copy, "pcm", 16000, null);
+			System.out.println(res.get("result"));
+	    }
 	}
 
 	/**
@@ -25,12 +40,8 @@ public class Sample {
 	 * @throws IOException
 	 */
 	private static void sdk() throws IOException {
-		AipSpeech client = new AipSpeech(APP_ID, API_KEY, SECRET_KEY);
-		client.setConnectionTimeoutInMillis(2000);
-		client.setSocketTimeoutInMillis(60000);
-	    String path =  "E:\\sp\\myapi\\myapi\\src\\main\\resources\\16k.pcm";
-		JSONObject res = client.asr(Util.readFileByBytes(path), "pcm", 16000, null);
-		System.out.println(res.toString(2));
+		
+	    
 	}
 	
 	/**wav 与 pcm 互转
