@@ -51,10 +51,113 @@ Object类的clone方法只会拷贝对象中的基本的数据类型，对于数
 ## 结构型模式 
 
 ### 适配器模式 Adapter
+
+将一个接口转换成另一个接口。
+
+interface A 、class AImpl implements A 、class AImplx implements A 、...
+interface B  、class BImpl implements B  、class BAdapter implements B 
+
+```java
+interface PlayerB{play(String audioType, String fileName);}
+interface PlayerA{
+    playVlc(String fileName);
+    playMp4(String fileName);
+}
+class VlcPlayer implements PlayerA{
+    @Override playVlc(String fileName) {//代码实现...}
+    @Override playMp4(String fileName) {//什么也不做};
+}
+class Mp4Player implements PlayerA{
+    @Override playVlc(String fileName) { /**代码实现...*/}
+    @Override playMp4(String fileName) { /**什么也不做*/};
+}
+class MediaAdapter implements PlayerB{
+    PlayerA playerA;
+    public MediaAdapter(String audioType){
+      if(audioType.equalsIgnoreCase("vlc") ){
+         playerA = new VlcPlayer();       
+      } else if (audioType.equalsIgnoreCase("mp4")){
+         playerA = new Mp4Player();
+      }  
+   }
+    @Override play(String audioType, String fileName) {
+        if(audioType.equals("vlc")){
+            playerA.playVlc(fileName);
+        }else if(audioType.equals("mp4")){
+            playerA.playMp4(fileName);
+        }
+    }
+}
+class PlayerB implements PlayerB{
+    @Override play(String audioType, String fileName) { 
+      if(audioType.equals("mp3")){ /**新增播放mp3的功能*/} 
+      else if(audioType.equals("vlc") || audioType.equals("mp4")){//适配原有功能
+        new MediaAdapter(audioType).play(audioType, fileName); 
+      }else{ /**Invalid media. */}
+    }
+}
+```
+
+
+
 ### 桥接模式 Bridge
+
+我们有一个作为桥接实现的 *DrawAPI* 接口和实现了 *DrawAPI* 接口的实体类 *RedCircle*、*GreenCircle*。*Shape* 是一个抽象类，将使用 *DrawAPI* 的对象。*BridgePatternDemo*，我们的演示类使用 *Shape* 类来画出不同颜色的圆。
+
+```java
+public abstract class Shape {
+   protected DrawAPI drawAPI; //这里进行桥接
+   protected Shape(DrawAPI drawAPI){this.drawAPI = drawAPI;}
+   public abstract void draw();  
+}
+public class Circle extends Shape {
+   private int x, y, radius;
+   public Circle(int x, int y, int radius, DrawAPI drawAPI) {super(drawAPI);/**其他代码.*/}
+   public void draw(){drawAPI.drawCircle(radius,x,y);}
+}
+//测试
+Shape redCircle = new Circle(100,100, 10, new RedCircle());
+redCircle.draw();
+```
+
+
+
 ### 过滤器模式 Filter、Criteria
+
+这种模式允许开发人员使用不同的标准来过滤一组对象，通过逻辑运算以解耦的方式把它们连接起来。这种类型的设计模式属于结构型模式，
+
+```java
+class Person{
+    String name;
+    String genger;
+    String maritalStatus;
+}
+public interface Criteria {
+   public List<Person> meetCriteria(List<Person> persons);
+}
+//测试代码
+Criteria male = new CriteriaMale();
+Criteria female = new CriteriaFemale();
+Criteria single = new CriteriaSingle();
+Criteria singleMale = new AndCriteria(single, male);
+Criteria singleOrFemale = new OrCriteria(single, female);
+
+male.meetCriteria(persons);
+female.meetCriteria(persons);
+singleMale.meetCriteria(persons);
+singleOrFemale.meetCriteria(persons);
+```
+
+
+
 ### 组合模式 Composite
+
+组合模式依据树形结构来组合对象，用来表示部分以及整体层次。这种类型的设计模式属于结构型模式，它创建了对象组的树形结构。
+
 ### 装饰器模式 Decorator
+
+
+
 ### 外观模式 Facade
 ### 享元模式 Flyweight
 ### 代理模式 Proxy
@@ -147,6 +250,9 @@ public class HelloInterceptor implements MethodInterceptor {
 ### 中介者模式 Mediator
 ### 备忘录模式 Memento
 ### 观察者模式 Observer
+
+
+
 ### 状态模式 State
 ### 空对象模式 Null Object
 ### 策略模式 Strategy
