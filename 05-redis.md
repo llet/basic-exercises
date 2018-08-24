@@ -47,7 +47,7 @@ redis> get foo
 "bar"
 ```
 
-### 练习
+## 练习 http://try.redis.io/
 
 http://try.redis.io/
 
