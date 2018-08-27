@@ -1,4 +1,8 @@
+## 
+
 ## node 的数据类型
+
+function、object、Infinity、undefined、NaN
 
 ```js
 typeof 001; //'number'
@@ -22,17 +26,67 @@ typeof require('./foo.js'); //'object'
 typeof export; //Unexpected token export
 ```
 
+## 重要概念
+
+### 构造函数
+
+用来初始化新创建的对象的函数是构造函数。
+
+构造函数有一个prototype属性，指向实例对象的原型对象。
+
+通过同一个构造函数实例化的多个对象具有相同的原型对象。
+
+```js
+function Foo(){};
+
+//相当于new Foo();
+var obj = {};
+obj._proto_ = Foo.prototype; //这也是instanceof判断类型的依据
+
+/*
+如果 obj._proto__ = Foo.prototype; 相当于new Foo();
+那么 f._proto__ = Function.prototype; 相当于new Function(); 
+*/
+
+```
+
+![](E:\sp\doc\img\js-prototype.png)
+
+
+
+### 实例对象
+
+通过构造函数的new操作创建的对象是实例对象。
+
+```js
+function Foo(){};
+var f1 = new Foo;
+var f2 = new Foo;
+console.log(f1 === f2);//false
+```
+
+### 原型对象
+
+原型对象有一个constructor属性，指向该原型对象对应的构造函数
+
+```js
+function Foo(){};
+console.log(Foo.prototype.constructor === Foo);//true
+```
+
+
+
 ## CommonJS和ES6
 
 CommonJS模块规范：
 
-​	每一个文件就是一个 module object
+	每一个文件就是一个 module object
 
-​	require、module.exports、exports, 这些是函数或者对象
+	require、module.exports、exports, 这些是函数或者对象
 
 ES6语法：
 
-​	import、export、export default , 这些是ES6关键字
+	import、export、export default , 这些是ES6关键字
 
 ## 常见用法
 
@@ -152,19 +206,19 @@ export { foo, bar };
 
 ## 常见问题
 
-**module.exports**和**exports**
+### **module.exports**和**exports**
 
 exports变量实际指向module.exports，这等同在每个模块头部，有一行这样的命令： `var exports = module.exports;`
 
-**export**和**export default**
+### **export**和**export default**
 
 一个是导出一个个单独接口，一个是默认导出一个整体接口。使用`import`命令的时候，用户需要知道所要加载的变量名或函数名，否则无法加载。这里就有一个简单写法不用去知道有哪些具体的暴露接口名，就用`export default`命令，为模块指定默认输出。
 
-**import和require**
+### **import和require**
 
 import是es6关键字，require是commonJs中的函数，作用都是导入模块。
 
-**lambda**和**function**
+### **lambda**和**function**
 
 在普通函数里常见的`this`、`arguments`、`caller`在lambda里是统统没有的。
 
@@ -176,3 +230,73 @@ Car = ()=>{this.name=name;}
 new Car() //TypeError: Car is not a constructor
 ```
 
+### instanceof  原理
+
+```js
+//先看一段代码
+var  arr = [1,2,3,4,5];
+console.log(typeof arr);//object
+console.log(arr instanceof Array);//true
+```
+
+instanceof 检测一个对象A是不是另一个对象B的实例的原理是：查看对象B的prototype指向的对象是否在对象A的[[prototype]]链上。如果在，则返回true,如果不在则返回false。不过有一个特殊的情况，当对象B的prototype为null将会报错(类似于空指针异常)。
+
+```js
+function Cat(){}  
+Cat.prototype = {}  
+function Dog(){}  
+Dog.prototype ={}  
+var dog1 = new Dog();  
+console.log(dog1 instanceof Dog);//true  
+console.log(dog1 instanceof Object);//true  
+Dog.prototype = Cat.prototype;  
+console.log(dog1 instanceof Dog);//false  
+console.log(dog1 instanceof Cat);//false  
+console.log(dog1 instanceof Object);//true;  
+var  dog2= new Dog();  
+console.log(dog2 instanceof Dog);//true  
+console.log(dog2 instanceof Cat);//true  
+console.log(dog2 instanceof Object);//true  
+Dog.prototype = null;  
+var dog3 = new Dog();  
+console.log(dog3 instanceof Cat);//false  
+console.log(dog3 instanceof Object);//true  
+console.log(dog3 instanceof Dog);//error  
+```
+
+### **typeof 能干什么？** 
+
+判断基本类型的，比如：Number, Boolean, Undefined, String, Null， 其他的引用类型和Null会返回object；
+
+http://www.ecma-international.org/ecma-262/8.0/index.html
+
+
+
+**Table 35 — typeof Operator Results**
+
+| **Type of** val                                              | Result                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Undefined                                                    | `"undefined"`                                                |
+| Null                                                         | `"object"`                                                   |
+| Boolean                                                      | `"boolean"`                                                  |
+| Number                                                       | `"number"`                                                   |
+| String                                                       | `"string"`                                                   |
+| Symbol                                                       | `"symbol"`                                                   |
+| Object (ordinary and does not implement [[Call]])            | `"object"`                                                   |
+| Object (standard exotic and does not implement [[Call]])     | `"object"`                                                   |
+| Object (implements [[Call]])                                 | `"function"`                                                 |
+| Object (non-standard exotic and does not implement [[Call]]) | Implementation-defined. Must not be `"undefined"`, `"boolean"`, `"function"`, `"number"`, `"symbol"`, or `"string".` |
+
+### prototype 原理
+
+```js
+//先看一段代码
+function f(){};
+console.log(f.prototype.constructor===f)  // ==> true
+```
+
+
+
+## 问题
+
+实例对象是没有prototype属性的，
