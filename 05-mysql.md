@@ -263,9 +263,9 @@ sql92
 特点：
 
 	1.起始条目索引从0开始
-
+	
 	2.limit子句放在查询语句的最后
-
+	
 	3.公式：select * from  表 limit （page-1）*sizePerPage,sizePerPage
 	假如:
 	每页显示条目数sizePerPage
@@ -345,7 +345,7 @@ sql92
 	#1.truncate不能加where条件，而delete可以加where条件
 
 	#2.truncate的效率高一丢丢
-
+	
 	#3.truncate 删除带自增长的列的表后，如果再插入数据，数据从1开始
 	#delete 删除带自增长列的表后，如果再插入数据，数据从上一次的断点处开始
 	
@@ -370,7 +370,7 @@ sql92
 
 
 	);
-
+	
 	DESC studentinfo;
 	#2.修改表 alter
 	语法：ALTER TABLE 表名 ADD|MODIFY|DROP|CHANGE COLUMN 字段名 【字段类型】;
@@ -391,7 +391,7 @@ sql92
 
 
 	#3.删除表
-
+	
 	DROP TABLE [IF EXISTS] studentinfo;
 
 ###常见类型
@@ -500,7 +500,7 @@ sql92
 		使用方式	占用物理空间
 
 	视图	完全相同	不占用，仅仅保存的是sql逻辑
-
+	
 	表	完全相同	占用
 
 视图的好处：
@@ -516,7 +516,7 @@ sql92
 	查询语句;
 ###视图的增删改查
 	1、查看视图的数据 ★
-
+	
 	SELECT * FROM my_v4;
 	SELECT * FROM my_v1 WHERE last_name='Partners';
 	
@@ -585,7 +585,7 @@ sql92
 类似于方法：
 
 	修饰符 返回类型 方法名(参数类型 参数名,...){
-
+	
 		方法体;
 	}
 
@@ -629,20 +629,14 @@ sql92
 
 ###调用函数
 	SELECT 函数名（实参列表）
-​	
+
 
 ###函数和存储过程的区别
-###函数和存储过程的区别
-###函数和存储过程的区别
-###函数和存储过程的区别
-
 			关键字		调用语法	返回值			应用场景
 	函数		FUNCTION	SELECT 函数()	只能是一个		一般用于查询结果为一个值并返回时，当有返回值而且仅仅一个
 	存储过程	PROCEDURE	CALL 存储过程()	可以有0个或多个		一般用于更新
 
 ##流程控制结构
-##流程控制结构
-
 ###系统变量
 一、全局变量
 
@@ -719,8 +713,6 @@ sql92
 	select 变量名
 
 二者的区别：
-二者的区别：
-二者的区别：
 
 			作用域			定义位置		语法
 用户变量	当前会话		会话的任何地方		加@符号，不用指定类型
@@ -788,9 +780,48 @@ sql92
 特点：
 
 	只能放在BEGIN END里面
-
+	
 	如果要搭配leave跳转语句，需要使用标签，否则可以不用标签
-
+	
 	leave类似于java中的break语句，跳出所在循环！！！
 
-​	
+## 常见问题
+
+### 导入sql文件
+
+常用source 命令
+
+进入mysql数据库控制台,
+
+mysql -u root -proot --default-character-set=utf8
+
+use dataCollection;
+
+source D:\src\data\datacollection.sql
+
+### 导出一个表
+
+mysqldump -u w	cnc -p  smgp_apps_wcnc users> wcnc_users.sql 
+
+> mysqldump -u 用户名 -p 数据库名 表名> 导出的文件名 
+
+### 导出表结构
+
+mysqldump -u wcnc -p -d --add-drop-table --default-character-set=utf8 smgp_apps_wcnc >d:wcnc_db.sql 
+
+> -d 没有数据 --add-drop-table 在每个create语句之前增加一个drop table ，
+
+
+
+
+
+### 授权
+
+```
+grant all privileges on *.* to root@"%" identified by "root";
+
+flush privileges;
+```
+
+
+

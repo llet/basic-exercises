@@ -81,7 +81,7 @@ console.log(Foo.prototype.constructor === Foo);//true
 CommonJS模块规范：
 
 	每一个文件就是一个 module object
-
+	
 	require、module.exports、exports, 这些是函数或者对象
 
 ES6语法：
@@ -264,7 +264,7 @@ console.log(dog3 instanceof Object);//true
 console.log(dog3 instanceof Dog);//error  
 ```
 
-### **typeof 能干什么？** 
+### typeof 原理 
 
 判断基本类型的，比如：Number, Boolean, Undefined, String, Null， 其他的引用类型和Null会返回object；
 
