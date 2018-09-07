@@ -153,4 +153,30 @@ fd1/*
 !/fw/sf/
 说明：忽略全部内容，但是不忽略 .gitignore 文件、根目录下的 /fw/bin/ 和 /fw/sf/ 目录；注意要先对bin/的父目录使用!规则，使其不被排除。
 ```
-
+**开源软件和商业软件版本的介绍**
+```
+开发阶段划分：Alpha版：内测版，内部交流或者专业测试人员测试用。
+Beta版：公测版，专业爱好者大规模测试用
+Gamma版：成熟的测试版
+RC版：Release Candidate
+RC版：Release Candidate　的缩写，意思是发布倒计时，候选版本，处于Gamma阶段，该版本已经完成全部功能并清除大部分的BUG。
+Final：正式版
+GA：general availability 首次发行稳定的版本
+其他版本
+Enhance：增强版或者加强版，属于正式版1
+Free：自由版
+Release：发行版，有时间限制
+Upgrade：升级版
+Retail：零售版
+Cardware：属共享软件的一种，只要给作者回复一封电邮或明信片即可。（有的作者并由此提供注册码等），目前这种形式已不多见。/　S
+Plus：属增强版，不过这种大部分是在程序界面及多媒体功能上增强。
+Preview：预览版
+Corporation&Enterprise：企业版
+Standard：标准版
+Mini：迷你版也叫精简版只有最基本的功能
+Premium：贵价版
+Professional：专业版
+Express：特别版
+Deluxe：豪华版
+Regged：已注册版
+```
