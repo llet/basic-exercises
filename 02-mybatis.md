@@ -1,4 +1,4 @@
-### 读取配置文件
+## Demo环境搭建
 
 pom.xml
 
@@ -153,37 +153,7 @@ public static void main(String[] args) throws Exception {
 }
 ```
 
-### #和$的区别
-
-#
-
-```java
-public interface BookMapper {
-	@Select("select * from book where bookname=#{bookname}")
-	Book selectBlog(String bookname);
-}
-```
-
-```java
-public interface BlogMapper {
-	@Select("select * from blog where tittle = #{tittle}")
-	Blog selectBlog(Blog blog);
-}
-```
-
-$
-
-### 关联查询和嵌套查询
-
-### 缓存使用场景
-
-### 与Spring 集成
-
-### 动态代理
-
-
-
-## 基于注解的 mybatis demo 
+### 基于注解的 mybatis demo 
 
 >  文件清单如下
 
@@ -366,3 +336,28 @@ User(username=Tom0.49938776319143174, password=0.7153057032136195)
 记者采访一百岁高龄的老太，问她年纪大了之后有没有什么烦恼?
 
 奶奶想了想答道：“我喜欢比自己年龄大的、成熟稳重的男生。可是他们现在都死光了，哎
+
+## 面试题
+
+####和$的区别
+
+```#相当于一个参数占位符“?”，用来补全预编译语句。
+# 相当于一个参数占位符“?”，用来补全预编译语句。它补全预编译语句时，可以理解为在此参数值两端加了单引号。
+$ 是单纯的字符串拼接，拼接完成后才会对SQL进行编译、执行，所以性能较低，也无法复用。
+但是在有些#{}无法胜任的地方，还是会需要${}来完成。比如当SQL中数据库表名为参数时，由于表名不能加单引号，如果使用#{}语法错误。这时候就需要使用${}来进行字符串拼接。
+select * from #{tableName};
+select * from 'my_user';
+```
+
+### PreparedStatement和Statement
+
+```
+PreparedStatement对象允许数据库预先编译SQL语句，数据库可以解析SQL并计算访问计划，而Statement不会
+
+一个sql语句执行过程中，将经历这么几个步骤：
+1、提交一个sql语句给数据库
+2、数据库验证并解析SQL
+3、数据库计算访问计划。
+4、根据访问计划进行检索，返回数据。
+```
+
