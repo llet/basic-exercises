@@ -17,19 +17,61 @@
   当前目录下最近的一次commit
 - `FETCH_HEAD`: The SHAs of branch/remote heads that were updated during the last git fetch  从远端或分支fetch过来的标志
 - `ORIG_HEAD`: When doing a merge, this is the SHA of the branch you’re merging into. 
-做合并时合并后的分支
+  做合并时合并后的分支
 - `MERGE_HEAD`: When doing a merge, this is the SHA of the branch you’re merging from. 
-合并时合并前的分支
+  合并时合并前的分支
 - `CHERRY_PICK_HEAD`: When doing a cherry-pick, this is the SHA of the commit which you are cherry-picking.
 
 ![](./img/git/git-01.jpg)
 
 1.  "git add"时 ，暂存区的目录树被更新，同时工作区修改（或新增）的文件内容被写入到对象库中的一个新的对象中，而该对象的ID被记录在index中。
-2. "git commit"时，暂存区的目录树写到版本库（对象库）中，master 分支会做相应的更新。即 master 指向的目录树就是提交时暂存区的目录树。
+2.  "git commit"时，暂存区的目录树写到版本库（对象库）中，master 分支会做相应的更新。即 master 指向的目录树就是提交时暂存区的目录树。
 3.  "git checkout ." 或者 "git checkout --filename" 时，会用暂存区全部或指定的文件覆盖工作区的文件。这个操作很危险，会清除工作区中未添加到暂存区的改动。
-4. "git reset HEAD" 时，暂存区的目录树会被重写，被 master 分支指向的目录树所覆盖，但是工作区不受影响。
+4.  "git reset HEAD" 时，暂存区的目录树会被重写，被 master 分支指向的目录树所覆盖，但是工作区不受影响。
 5.  "git rm --cached filename" 时，会直接从暂存区删除文件，工作区则不做出改变。
 6.  "git checkout HEAD ." 或者 "git checkout HEAD filename" 命令时，会用 HEAD 指向的 master 分支中的全部或者部分文件覆盖暂存区和以及工作区中的文件。这个命令也是极具危险性的，因为不但会清除工作区中未提交的改动，也会清除暂存区中未提交的改动。
+
+
+### 工作区文件还原
+
+（1）修改，但没有用git add将修改添加到暂存区；
+
+（2）修改，已经使用git add将修改添加到暂存区；
+
+（3）修改，已经使用git add将修改添加到暂存区，并再次进行修改。
+
+对于第一种情况，直接使用git checkout -- 文件，即可撤销修改，撤销修改就回到和版本库一模一样的样子。
+
+第二种情况，先使用git reset HEAD -- 文件，然后在使用git checkout -- 文件进行修改撤销。
+
+第三种情况 先使用git checkout -- 文件，文件就会变成添加到暂存区后的状态，也就转换成了“第二种情况”，然后，在使用情况（2）中的处理方法，即可将文件恢复到与版本库一致的状态。
+
+**总之，记住一点：“git checkout -- 文件”命令，撤销的是工作中文件的修改，而“git reset HEAD -- 文件”命令，撤销的是暂存区中文件的修改。**
+
+---
+
+在使用git pull时,经常会遇到报错: 
+Please move or remove them before you can merge
+
+这是因为本地有修改,与云端别人提交的修改冲突,又没有merge.
+
+如果确定使用云端的代码,最方便的解决方法是删除本地修改,可以使用以下命令:
+
+```
+git clean  -d  -fx ""
+d  -----删除未被添加到git的路径中的文件
+f  -----强制运行
+x  -----删除忽略文件已经对git来说不识别的文件1234
+```
+
+注意:该命令会删除本地的修改,最好先备份再使用
+
+git clean 参数 
+-n 显示 将要 删除的 文件 和 目录 
+-f 删除 文件，-df 删除 文件 和 目录
+
+
+
 
 
 ### 常用命令
