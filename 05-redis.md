@@ -12,8 +12,6 @@ Window 版本: https://github.com/MicrosoftArchive/redis/releases
 
 从github上下载**Redis-x64-xxx.zip**，解压后，将文件夹重新命名为 **redis**。
 
-### 验证
-
 >  打开一个 **cmd** 窗口 切换到安装目录 **E:\Program Files\redis** 
 
 E:\Program Files\redis> .\redis-server.exe .\redis.windows.conf
@@ -47,87 +45,45 @@ redis> get foo
 "bar"
 ```
 
-## 练习 http://try.redis.io/
+## 面试题
 
-http://try.redis.io/
+[Redis 命令参考]( http://doc.redisfans.com/) 
 
-```bash
-> tutorial
-SET GET
-> set server:name "hello"
-OK
-> get server:name
-"hello"
-> next
- SET INCR DEL 
-> set i 10
-OK
-> incr i
-(integer) 11
-> incr i
-(integer) 12
-> del i
-(integer) 1
-```
+**Redis有哪些数据类型？**
 
-```
-decr , decrby, del, exists, expire, get, getset, hdel, hexists, hget, hgetall, hincrby, hkeys, hlen, hmget, hmset, hset, hvals, incr, incrby, keys, lindex, llen, lpop, lpush, lrange, lrem, lset, ltrim, mget,mset, msetnx, multi, pexpire, rename, renamenx, rpop, rpoplpush, rpush, sadd, scard, sdiff, sdiffstore, set, setex, setnx, sinter, sinterstore, sismember, smembers, smove, sort, spop, srandmember, srem, sunion, sunionstore, ttl, type, zadd, zcard, zcount, zincrby, zrange, zrangebyscore, zrank, zrem, zremrangebyscore, zrevrange, zscore
-```
+- String、List、Set、SortedSet、Hash
 
+**可以对List做哪些操作？**
 
+- 左弹出一个元素 `lpop key`、左插入一个元素 `lpush key value`、阻塞左弹出一个元素 `blpop key`、求集合长度 `llen key`、修改元素 `lset key index value`、查询元素  `lindex key index`、查询所有元素 `lrange key 0 -1` 
 
-integer string hash list set 
+**可以对Set做哪些操作？**
 
-set i 10 ，设置i=10。get i ，获取i的值。
+- 增加元素 `sadd key value`、随机弹出一个元素 `spop key` 、求集合长度`scard key`、查询所有元素`smembers key`
+- 求交集 `sinter key1 key2`、求差集 `sdiff key1 key2`、 求并集 `sunion key1 key2`
 
-**incr i** 自增1。**decr i** 自减1。**del i** 删除一个键，删除成功返回1，键不存在返回0。
+**可以对Hash做哪些操作？**
 
-**decrby i 2**  以2递减。**exists i** ：i存在则返回1。expire i 10 ，设置有效时间为10秒。
+- 增加元素 `hset key field`、 删除元素`hdel key field` 、查询元素 `hget key field`、 获取hash表中所有key  `hkeys key` 、获取hash表中所有值`hvals key` 、获取长度 `hlen  key `
 
-getset i 123 ，原子操作，先获取原值，再重新赋值。
+**Redis除了存数据还可以干啥？**
 
+- 发布和订阅。发布:`publish channel message`,订阅:`subscribe channel`,退订: `unsubscribe channel`,查看订阅CH1频道的个数:`pubsub numsub CH1`,查看活动的频道:`pubsub channels`
+- 队列。
+- 主从分区。
+- 序列化支持。
+- Lua脚本支持。
 
+**Redis为什么要集群？**
 
-### list
+- 第一种情况：数据量较大，单机无法存储大量数据，需要扩展容量。Redis是一个内存数据库，数据存储容量要受到主机内存的限制，一般主机内存在几十G，当存储的数据量超过单机内存时就需要通过集群来扩展容量。
+- 第二种情况：需要一个稳定可靠的系统，允许单点故障。
 
-序号	命令及描述
+**Redis怎么备份和恢复数据？**
 
-> 1	BLPOP key1 [key2 ] timeout 
+- 在redis-cli中直接运行 `save` 命令可生成备份文件，备份文件的名称是dump.rdb 
+- 将dump.rdb 移动到redis安装目录并启动redis服务即可恢复数据
 
-移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。
+**【侃大山环节】谈谈你对Redis的理解？**
 
-> 2	BRPOP key1 [key2 ] timeout  
-
-移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。
-
-> 3	BRPOPLPUSH source destination timeout 
-
-从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它； 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。
-4	LINDEX key index 
-通过索引获取列表中的元素
-5	LINSERT key BEFORE|AFTER pivot value 
-在列表的元素前或者后插入元素
-6	LLEN key 
-获取列表长度
-7	LPOP key 
-移出并获取列表的第一个元素
-8	LPUSH key value1 [value2] 
-将一个或多个值插入到列表头部
-9	LPUSHX key value 
-将一个值插入到已存在的列表头部
-10	LRANGE key start stop 
-获取列表指定范围内的元素
-11	LREM key count value 
-移除列表元素
-12	LSET key index value 
-通过索引设置列表元素的值
-13	LTRIM key start stop 
-对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
-14	RPOP key 
-移除并获取列表最后一个元素
-15	RPOPLPUSH source destination 
-移除列表的最后一个元素，并将该元素添加到另一个列表并返回
-16	RPUSH key value1 [value2] 
-在列表中添加一个或多个值
-17	RPUSHX key value 
-为已存在的列表添加值
+Redis本质上是一个Key-Value类型的内存数据库，很像memcached
