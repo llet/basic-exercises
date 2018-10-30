@@ -2,86 +2,70 @@
 
 # java基础
 
-## java语言相关
-
 ### 类的实例化顺序
 
-> 1. 赋值父类静态变量和执行静态代码块
-> 2. 赋值子类静态变量和执行静态代码块
-> 3. 执行父类构造代码块和构造方法
-> 4. 执行子类构造代码块和构造方法
+答：同一个类中：先执行静态代码，静态代码包括静态静态代码块和静态字段，静态代码按代码顺序执行；之后执行构造代码块和赋值实例字段，多个构造代码和实例字段按代码顺序执行；最后执行构造函数；
 
-### 面向对象特性
+有继承关系的类中：先执行静态代码，由父类到子类的顺序依次执行；静态代码全部执行完毕后再执行父类构造代码块和构造函数，最后执行子类的构造代码和构造函数；
 
-### 多态
+**一个类中可以有多个静态代码块吗？**
 
-### 抽象类和接口
+答：可以
 
-## 集合框架
+**一个类中可以有多个构造代码块吗？**
 
-### 常用集合有哪些
+答：可以
 
-> 集合框架有两大接口:Collection  和 Map 
-> Collection下有 List可重复集合 和Set不可重复集合
-> List的实现有:数组结构的ArrayList,Vector和Stack,链表结构的LinkedList
-> Set的实现有:HashSet,LinkedHashSet,TreeSet
-> Map的实现有:HashMap,LinkedHashMap,TreeMap,Hashtable
+### 介绍下Object中的方法
 
+equals使用 “==” 比较两个对象的地址是否相同。
 
+hashCode 是本地方法，它根据一定的规则将对象相关的信息转化成一个数值，这个数值称作为散列值。
 
-### ArrayList 原理
+clone 也是本地方法，用来拷贝对象，它的访问修饰符是protected，子类不能直接访问，子类必须实现Cloneable接口并重写clone方法。子类重写clone方法时如果直接调用父类，则是一种浅拷贝。
 
-> ArrayList 是数组实现的.它有一个重要的成员变量 Object[] elementData;
-> 插入元素的时候,找到索引所在的位置插入相应的元素,并把当前位置后的元素依次向后移动一位.
-> 查询的时候可以直接根据索引获取到对应的元素.
->
-> ArrayList 初始容量为10, oldCapacity + (oldCapacity >> 1) 大概1.5倍增长
->
-> transient Object[] 是实际存放数据的地方,transient 是为了节省内存做的优化, 
-> ArrayList 中自定义了序列化的规则,  
-> 只对Object[] 中实际存在的对象进行序列化,而不是整个数组,这样节省了内存.
+notify 
 
+wait 
 
+### 解释下深拷贝浅拷贝
 
-### Vector 原理
+浅拷贝：如果成员变量是基本数据类型和String则复制值，如果是其他对象则复制引用。
 
-> Vector 与ArrayList 的实现原理一样,都是使用数组来保存数据,
-> 不同的是Vector的增删改查操作都是线程同步的。使用了synchronized关键字
-> 保证了线程同步.
+深拷贝：在浅拷贝的基础上，对其他成员对象也进行clone而不是复制引用。
 
+### java中的数据结构   
 
+java.util 包里面的各种数据结构,线性表,链表,哈希表等
+List的实现有:数组结构的ArrayList,Vector和Stack,链表结构的LinkedList  
+Set的实现有:HashSet,LinkedHashSet,TreeSet  
+Map的实现有:HashMap,LinkedHashMap,TreeMap,Hashtable  
 
-### LinkedList 原理
+#### ArrayList 
 
-> LinkedList 是基于双向链表实现的, 它有一个内部类 Node实现了双向的链表的数据结构,Node 中包含了上一个节点和下一个节点的引用
-> java8 中LinkedList 有这三个成员变量:Node first ；Node last ；int size ；
->
-> 假如size为10,现在需要在索引为3的位置插入一个元素,则从 first 开始,递归向后查找到第四个元素后,
-> 在这个Node前面插入新 Node,  
-> 然后维护好这两个Node的指针.如果是在索引为8的位置插入 则从last开始,由后向前进行.
->
-> 查询index为3的元素时,从first开始,由第一个节点向后查询到第四个元素返回.
+ArrayList 可以看成一个数组。
+
+#### Vector 
+
+Vector 与ArrayList 的实现原理一样,都是使用数组来保存数据,不同的是Vector的增删改查操作都是线程同步的。
 
 
 
-### HashMap 原理
+#### LinkedList 
 
-> HashMap 是数组和链表的结合体，本质上是一个数组，数组中保存的是具有链表数据结构的Entry。
-> HashMap 的一些私有变量：int capacity；float loadFactor; Entry[] table;int size;int threshold;
->
-> put操作的实现：HashMap 的 hash 方法会根据 key 的 hashCode 生成一个索引，如果 table 数组在该位置没有元素，就 new 一个 Entry 保存在该位置，如果已经存在元素且两者的 key 不相等，就将新元素保存在链表头部，如果已经存在元素且两者的 key 相等，就将新元素覆盖旧元素。在JDK8中，当链表长度达到8，会转化成红黑树
->
-> 读取的实现：hash 方法会根据 key 的 hashCode 生成一个索引，再取出table数组中的索引处的Entry，然后返回该key对应的value。
->
-> HashMap 的扩容：capacity是数组的长度，默认是大小为16，loadFactor 是装载因子，默认0.75，当元素个数，size表示HashMap中存放KV的数量 。threshold 是扩容临界值。当size > threshold 时会进行扩容。扩容会创建一个原来2倍大小的新数组，然后将原哈希表中的所有数据移动到新的哈希表中，相当于对原哈希表中所有的数据重新做了一个put操作。所以性能消耗很大
->
-> 链的产生：新的Entry对象添加到 table 中时，新添加的 Entry 对象将持有对原有 Entry 对象的引用，形成Entry链。
->
-> Hash 冲突：当试图将两个key的hashCode相同时，会产生hash冲突，hashMap是通过链表的形式解决hash冲突。后添加的 Entry 对象将持有对原有 Entry 对象的引用，形成Entry链。这是哈希算法中解决冲突的一种方法,叫链地址法
+LinkedList 是基于双向链表实现的, 它有一个内部类 Node实现了双向的链表的数据结构,Node 中包含了上一个节点和下一个节点的引用
+
+#### HashMap 
+
+HashMap 是数组和链表的结合体，本质上是一个数组，数组中保存的是具有链表数据结构的Entry。
+
+#### Hash 冲突
+
+hashMap中当两个key的hashCode相同时，会产生hash冲突，hashMap是通过链表的形式解决hash冲突。后添加的 Entry 对象将持有对原有 Entry 对象的引用，形成Entry链。这是哈希算法中解决冲突的一种方法,叫链地址法
 
 
 
-### **LinkedHashMap 原理**
+#### LinkedHashMap  
 
 > LinkedHashMap 是HashMap的子类，拥有HashMap的所有特性。并自己维护了一个双向链表。类里有两个成员变量 Entry head ;Entry  tail, 分别指向双向链表的表头、表尾。  accessOrder 默认 false ,表示 基于插入顺序 
 >
@@ -100,15 +84,15 @@ for (String value : map.keySet()) {
 }
 ```
 
-### **TreeMap 原理**
+#### TreeMap 
 
-> TreeMap 初始化的时候会初始化下列参数，第一个Comparator是可以自己定义实现的一个比较的实现，默认为Null,那么默认的比较方式就是compare方法。Entry root;默认为Null。其中Entry内部维护了left,right,parent,color  其中color默认是black。https://www.cnblogs.com/daoluanxiaozi/p/3340382.html
+TreeMap 初始化的时候会初始化下列参数，第一个Comparator是可以自己定义实现的一个比较的实现，默认为Null,那么默认的比较方式就是compare方法。Entry root;默认为Null。其中Entry内部维护了left,right,parent,color  其中color默认是black。https://www.cnblogs.com/daoluanxiaozi/p/3340382.html
 
 
 
-### HashSet 原理
+#### HashSet
 
-> HashSet 聚合了 一个HashMap ，使用HashMap的key来保存数据， 它所有的方法都是调用HashMap对应的方法来实现的
+HashSet 聚合了 一个HashMap ，使用HashMap的key来保存数据， 它所有的方法都是调用HashMap对应的方法来实现的
 
 
 
