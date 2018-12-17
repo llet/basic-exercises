@@ -8,7 +8,7 @@ import com.baidu.aip.speech.AipSpeech;
 import com.baidu.aip.util.Util;
 
 public class Sample {
-	// 设置APPID/AK/SK
+	// 设置APPID/AK/SK 《测试冲突》
 	
 	String[] headers = { "Content-Type", "application/json" };
 	public static final String URL = "http://vop.baidu.com/server_api";
