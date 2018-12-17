@@ -222,3 +222,25 @@ Express：特别版
 Deluxe：豪华版
 Regged：已注册版
 ```
+
+
+
+[Git](http://lib.csdn.net/base/git)相关的配置文件有三个
+
+1. /etc/gitconfig：包含了适用于系统所有用户和所有项目的值。
+2. 2.~/.gitconfig：只适用于当前登录用户的配置。
+
+3. 位于[git](http://lib.csdn.net/base/git)项目目录中的.git/config：适用于特定git项目的配置。
+
+   对于同一配置项，三个配置文件的优先级是1<2<3
+
+
+
+[merge]
+	tool = bc3
+[diff]
+	tool = bc3
+[difftool "bc3"]
+	path = E:\\Program Files\\Beyond Compare 4\\BComp.exe
+[mergetool "bc3"]
+	path = E:\\Program Files\\Beyond Compare 4\\BComp.exe
