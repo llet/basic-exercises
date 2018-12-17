@@ -235,7 +235,7 @@ Regged：已注册版
    对于同一配置项，三个配置文件的优先级是1<2<3
 
 
-
+```properties
 [merge]
 	tool = bc3
 [diff]
@@ -244,3 +244,4 @@ Regged：已注册版
 	path = E:\\Program Files\\Beyond Compare 4\\BComp.exe
 [mergetool "bc3"]
 	path = E:\\Program Files\\Beyond Compare 4\\BComp.exe
+```
