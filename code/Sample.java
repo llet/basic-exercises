@@ -8,11 +8,16 @@ import com.baidu.aip.speech.AipSpeech;
 import com.baidu.aip.util.Util;
 
 public class Sample {
+<<<<<<< HEAD
 	// 设置APPID/AK/SK	// 设置APPID/AK/SK
+=======
+	// 设置APPID/AK/SK 《测试冲突》
+	
+>>>>>>> 18a556c8461685c56e989d5b546a426b87559c73
 	String[] headers = { "Content-Type", "application/json" };
 	public static final String URL = "http://vop.baidu.com/server_api";
 	public static final String local = "http://localhost";
-
+	
 	public static final String APP_ID = "11664912";
 	public static final String API_KEY = "LXcmGzgbQGS5XYoHNTxRveRL";
 	public static final String SECRET_KEY = "upBiY3Nquuwq0EOV94tGbPy9NG1VWPmp";
