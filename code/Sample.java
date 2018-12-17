@@ -8,7 +8,7 @@ import com.baidu.aip.speech.AipSpeech;
 import com.baidu.aip.util.Util;
 
 public class Sample {
-	// 设置APPID/AK/SK
+	// 设置APPID/AK/SK	// 设置APPID/AK/SK
 	String[] headers = { "Content-Type", "application/json" };
 	public static final String URL = "http://vop.baidu.com/server_api";
 	public static final String local = "http://localhost";
@@ -42,6 +42,7 @@ public class Sample {
 	private static void sdk() throws IOException {
 		
 	    
+        
 	}
 	
 	/**wav 与 pcm 互转
