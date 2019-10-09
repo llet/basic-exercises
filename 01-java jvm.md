@@ -2,10 +2,6 @@
 
 ## JVM
 
-### 虚拟机启动参数
-
-第一种是标准参数: 比如 -version 、 -verbose:class 、-verbose:gc、 -Dfile.encoding=UTF-8、第二种是扩展参数 -Xms512m  -Xmx1024m -Xmn200m -Xss1m -Xloggc:gc.log ,第三种是非标准参数,常用的有: -XX:PermSize -XX:MaxPermSize  -XX:newSize -XX:MaxnewSize -XX:+PrintGCDetails -XX:+PrintGCDateStamps 
-
 ### JVM内存模型
 
 线程共享的: 方法区: (常量、静态变量、类的元数据信息), 堆区, 线程私有的: 虚拟机栈, 本地方法栈, 程序计数器
